@@ -1,0 +1,29 @@
+# Runs valgrind to ensure that everything is safe
+name: Test
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: 
+      - Build
+    branches: 
+      - main
+    types:
+      - completed
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.9.1
+    - name: Checkout repo
+      uses: actions/checkout@v2
+    - name: Install gtnh-2-packwiz
+      uses: ./.github/actions/install-program
+    - name: Install test dependancies
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: valgrind
+        version: 1.0
+    - name: Valgrind tests
+      run: valgrind -v --leak-check=full --show-leak-kinds=all /usr/local/bin/gtnh-2-packwiz
