@@ -8,6 +8,11 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Install boost
+      uses: MarkusJx/install-boost@v2
+      id: install-boost
+      with:
+        boost_version: 1.88.0
     - name: Checkout repo
       uses: actions/checkout@v2
       with:
@@ -17,7 +22,6 @@ runs:
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
         packages: |
-          libboost-all
           libmagicenum
           nlohmann-json3
           libtomlplusplus
@@ -49,7 +53,6 @@ runs:
           llvm-20
           llvm-20-dev
           ninja-build
-          libboost-all-dev
           libmagicenum-dev
           nlohmann-json3-dev
           libtomlplusplus-dev
