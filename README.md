@@ -1,4 +1,6 @@
 # gtnh-2-packwiz
+[![Build](https://github.com/p1x3l101-10/gtnh-2-packwiz/actions/workflows/build.yml/badge.svg)](https://github.com/p1x3l101-10/gtnh-2-packwiz/actions/workflows/build.yml) [![Valgrind leak checks](https://github.com/p1x3l101-10/gtnh-2-packwiz/actions/workflows/valgrind.yml/badge.svg)](https://github.com/p1x3l101-10/gtnh-2-packwiz/actions/workflows/valgrind.yml)
+
 Not finished at all yet, but it is a proof of concept that GTNH can be distributed using packwiz
 
 Although upstream uses DreamAssemblerXXL, that is written in python. I do not know python that well, but I will try to comment my code well enough so that it could be reimplimented if needed.
