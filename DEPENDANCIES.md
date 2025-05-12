@@ -14,3 +14,6 @@ The minimum versions here are the lib versions I developed with, there are no gu
 # Program versions (build time)
 - [CMake](https://cmake.org) 4.0.1
 - [PkgConf](http://pkgconf.org/) 2.4.3
+
+# Testing (used for development) (not needed for client usage)
+- [Valgrind](https://valgrind.org/), used to ensure memory safety
