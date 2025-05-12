@@ -1,6 +1,10 @@
 #include "gtnh2Packwiz/init.hpp"
 #include "config.hpp"
+#ifdef OLD_MAGIC_ENUM
+#include <magic_enum.hpp>
+#else
 #include <magic_enum/magic_enum.hpp>
+#endif
 #include <stdexcept>
 
 enum class PriorityLevelMirror { // Magic enum can understand this

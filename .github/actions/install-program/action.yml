@@ -76,6 +76,7 @@ runs:
         options: |
           CMAKE_BUILD_TYPE=Release
           CMAKE_PREFIX_PATH=${{ steps.boost.outputs.root }}/stage/x64/Release
+          OLD_MAGIC_ENUM=ON
     - name: Install to cache
       if: ${{ ! steps.gtnh-2-packwiz-cache-restore.cache-hit }}
       shell: bash
