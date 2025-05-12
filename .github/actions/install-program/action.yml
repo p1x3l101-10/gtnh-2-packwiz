@@ -71,7 +71,7 @@ runs:
         generator: Ninja
         cxx-compiler: clang++
         options: 
-        - CMAKE_BUILD_TYPE=Release
+        - "CMAKE_BUILD_TYPE=Release"
     - name: Install to cache
       if: ${{ ! steps.gtnh-2-packwiz-cache-restore.cache-hit }}
       shell: bash
