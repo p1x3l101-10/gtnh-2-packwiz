@@ -75,7 +75,7 @@ runs:
         cxx-compiler: clang++
         options: |
           CMAKE_BUILD_TYPE=Release
-          CMAKE_PREFIX_PATH=${{ steps.install-boost.outputs.root }}/lib/cmake/Boost-1.87.0
+          CMAKE_PREFIX_PATH=${{ steps.boost.outputs.root }}/stage/x64/Release
     - name: Install to cache
       if: ${{ ! steps.gtnh-2-packwiz-cache-restore.cache-hit }}
       shell: bash
