@@ -9,7 +9,7 @@ runs:
   using: composite
   steps:
     - name: Install boost
-      uses: egor-tensin/build-boost@v1
+      uses: mickem/build-boost@v1
       id: boost
       with:
         version: 1.87.0
