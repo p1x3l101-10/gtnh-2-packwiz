@@ -1,3 +1,4 @@
+# Creates a release on a new semver style git tag
 name: Release
 on:
   push:
