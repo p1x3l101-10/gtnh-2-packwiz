@@ -74,7 +74,7 @@ runs:
         options: |
           CMAKE_BUILD_TYPE=Release
           CMAKE_PREFIX_PATH=${{ steps.install-boost.outputs.BOOST_ROOT }}
-          Boost_DIR=${{ steps.install-boost.outputs.BOOST_ROOT }}\
+          Boost_DIR=${{ steps.install-boost.outputs.BOOST_ROOT }}/lib/cmake
     - name: Install to cache
       if: ${{ ! steps.gtnh-2-packwiz-cache-restore.cache-hit }}
       shell: bash
