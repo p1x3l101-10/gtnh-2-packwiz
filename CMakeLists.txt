@@ -25,7 +25,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
 find_package(Boost 1.87.0 REQUIRED COMPONENTS program_options)
 find_package(magic_enum 0.9.5 REQUIRED)
-find_package(nlohmann_json 3.12.0 REQUIRED)
+find_package(nlohmann_json 3.11.3 REQUIRED)
 find_package(PkgConfig 2.4.3 REQUIRED)
 pkg_check_modules(tomlplusplus REQUIRED IMPORTED_TARGET tomlplusplus>=3.4.0)
 pkg_check_modules(log4cpp REQUIRED IMPORTED_TARGET log4cpp>=1.1)
