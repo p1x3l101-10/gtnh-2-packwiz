@@ -12,7 +12,7 @@ runs:
       uses: MarkusJx/install-boost@v2
       id: install-boost
       with:
-        boost_version: 1.88.0
+        boost_version: 1.87.0
     - name: Checkout repo
       uses: actions/checkout@v2
       with:

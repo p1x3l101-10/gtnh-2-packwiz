@@ -23,7 +23,7 @@ project(
 include(cmake-libs/all)
 set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
-find_package(Boost 1.88.0 REQUIRED COMPONENTS program_options)
+find_package(Boost 1.87.0 REQUIRED COMPONENTS program_options)
 find_package(magic_enum 0.9.7 REQUIRED)
 find_package(nlohmann_json 3.12.0 REQUIRED)
 find_package(PkgConfig 2.4.3 REQUIRED)
