@@ -20,8 +20,7 @@ void gtnh2Packwiz::init::argProcesser(std::pair<int,char**> arg) {
     ("license", "print the full license info for this program")
     ("logfile", po::value<std::string>(), "path to log file")
     ("loglevel", po::value<std::string>(), "minimum loglevel to use")
-    ("buildinfo", "the config values used to build this binary")
-    ("pack-version", po::value<std::string>(), "the pack version to set up for")
+    ("config", "the config file to use")
   ;
   try {
     po::store(po::parse_command_line(arg.first, arg.second, desc), args);
