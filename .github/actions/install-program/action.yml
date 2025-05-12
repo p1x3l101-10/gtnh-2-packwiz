@@ -12,6 +12,7 @@ runs:
       uses: actions/checkout@v2
       with:
         repository: p1x3l101-10/gtnh-2-packwiz
+        fetch-tags: true
     - name: Install runtime dependancies
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
