@@ -23,6 +23,7 @@ runs:
           liblog4cpp5v5
           libcurlpp0t64
     - name: Install Boost
+      id: boost
       uses: ./.github/actions/install-boost # This one action has cost me like 100 commits to get right...
       with:
         version: 1.87.0

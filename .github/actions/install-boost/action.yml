@@ -30,6 +30,10 @@ inputs:
   directory:
     description: Destination directory
     required: false
+outputs:
+  root:
+    description: "Root path to boost installation"
+    value: ${{ steps.boost.outputs.root }}
 runs:
   using: composite
   steps:
