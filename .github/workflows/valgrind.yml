@@ -14,12 +14,21 @@ jobs:
     name: Valgrind
     runs-on: ubuntu-latest
     steps:
-    - name: Cancel Previous Runs
-      uses: styfle/cancel-workflow-action@0.9.1
-    - name: Checkout repo
-      uses: actions/checkout@v2
-    - name: Install gtnh-2-packwiz
-      uses: ./.github/actions/install-program
+    - name: Restore built binaries
+      id: cache-restore
+      uses: actions/cache/restore@v4
+      with:
+        path: /usr/local
+        key: gtnh2Packwiz-usrLocal
+    - name: Install runtime dependancies
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: |
+          libmagicenum
+          nlohmann-json3
+          libtomlplusplus
+          liblog4cpp5v5
+          libcurlpp0t64
     - name: Install test dependancies
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
