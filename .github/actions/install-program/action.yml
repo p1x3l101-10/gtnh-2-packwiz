@@ -8,14 +8,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Install boost # This one action has cost me like 100 commits to get right...
-      uses: mickem/build-boost@v1
-      id: boost
-      with:
-        version: 1.87.0
-        libraries: program_options
-        platform: x64
-        configuration: Release
     - name: Checkout repo
       uses: actions/checkout@v2
       with:
@@ -30,6 +22,13 @@ runs:
           libtomlplusplus
           liblog4cpp5v5
           libcurlpp0t64
+    - name: Install Boost
+      uses: ./.github/actions/install-boost # This one action has cost me like 100 commits to get right...
+      with:
+        version: 1.87.0
+        libraries: program_options
+        platform: x64
+        configuration: Release
     - name: Check version argument
       shell: bash
       id: version-check

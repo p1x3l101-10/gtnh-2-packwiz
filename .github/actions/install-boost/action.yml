@@ -1,0 +1,51 @@
+name: Install Boost
+description: Installs gtnh2Packwiz via cmake
+inputs:
+  version:
+    description: Version to build
+    required: true
+  libraries:
+    description: Space-separated list of libraries
+    required: true
+  toolset:
+    description: Toolset to use
+    required: false
+    default: auto
+  platform:
+    description: Target platform
+    required: false
+    default: x64
+  configuration:
+    description: Configuration to build
+    required: false
+    default: Release
+  static:
+    description: Build static libraries
+    required: false
+    default: 0
+  static-runtime:
+    description: Link to the static runtime
+    required: false
+    default: 0
+  directory:
+    description: Destination directory
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: Cache Boost
+      uses: actions/cache@v2
+      with:
+        path: '${{ runner.workspace }}/boost_*.tar.gz'
+        key: 'boost-${{ inputs.version }}'
+    - name: Install boost
+      uses: mickem/build-boost@v1
+      id: boost
+      with:
+        version: ${{ inputs.version }}
+        libraries: ${{ inputs.libraries }}
+        platform: ${{ inputs.platform }}
+        configuration: ${{ inputs.configuration }}
+        static: ${{ inputs.static }}
+        static-runtime: ${{ inputs.static-runtime }}
+        directory: ${{ inputs.directory }}
