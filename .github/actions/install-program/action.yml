@@ -1,0 +1,65 @@
+name: Install gtnh2Packwiz
+description: Installs gtnh2Packwiz via cmake
+inputs:
+  version:
+    description: Version of gtnh2Packwiz to install
+    required: false
+    default: HEAD
+runs:
+  using: composite
+  steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+    - name: Install runtime dependancies
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: |
+          boost
+          magic_enum
+          nlohmann_json
+          tomlplusplus
+          log4cpp
+          curlpp
+    - name: Restore cached packwiz
+      if: ${{ inputs.version =~ '^v[0-9]+\.[0-9]+\.[0-9]+$' }}
+      id: gtnh-2-packwiz-cache-restore
+      uses: actions/cache/restore@v4
+      with:
+        path: ~/gtnh2Packwiz
+        key: ${{ runner.os }}-gtnh-2-packwiz-${{ inputs.version }}
+    - name: Install build dependancies
+      if: ${{ ! steps.gtnh-2-packwiz-cache-restore.cache-hit }}
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        version: 1.0
+        packages: |
+          cmake
+          pkgconf
+          clang++
+          ninja
+    - name: Checkout repo
+      if: ${{ ! steps.gtnh-2-packwiz-cache-restore.cache-hit }}
+      with:
+        ref: ${{ inputs.version }}
+        submodules: true
+      uses: actions/checkout@v2
+    - name: Build CMake Project
+      if: ${{ ! steps.gtnh-2-packwiz-cache-restore.cache-hit }}
+      uses: threeal/cmake-action@v2.1.0
+      with: 
+        generator: Ninja
+        cxx-compiler: clang++
+    - name: Install to cache
+      if: ${{ ! steps.gtnh-2-packwiz-cache-restore.cache-hit }}
+      shell: bash
+      run: |
+        mkdir -p ~/gtnh2Packwiz
+        cmake --install ./build --prefix ~/gtnh2Packwiz
+    - name: Cache installation
+      if: ${{ inputs.version =~ '^v[0-9]+\.[0-9]+\.[0-9]+$' }}
+      uses: actions/cache@v4
+      with:
+        path: ~/gtnh2Packwiz
+        key: ${{ runner.os }}-gtnh-2-packwiz-${{ inputs.version }}
+        restore-keys: |
+          ${{ runner.os }}-gtnh-2-packwiz-
