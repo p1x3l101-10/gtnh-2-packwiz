@@ -27,9 +27,6 @@ inputs:
     description: Link to the static runtime
     required: false
     default: 0
-  directory:
-    description: Destination directory
-    required: false
 outputs:
   root:
     description: "Root path to boost installation"
@@ -37,14 +34,16 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Cache Boost
-      uses: actions/cache@v4
+    - name: Restore cached Boost
+      id: boost-cache-restore
+      uses: actions/cache/restore@v4
       with:
-        path: '${{ runner.workspace }}/boost_*.tar.gz'
-        key: 'boost-${{ inputs.version }}'
+        path: ~/boost
+        key: boost-${{ inputs.version }}-${{ hashFiles(${{ inputs.libraries }}) }}
     - name: Install boost
       uses: mickem/build-boost@v1
       id: boost
+      if: ${{ ! steps.boost-cache-restore.cache-hit }}
       with:
         version: ${{ inputs.version }}
         libraries: ${{ inputs.libraries }}
@@ -52,4 +51,11 @@ runs:
         configuration: ${{ inputs.configuration }}
         static: ${{ inputs.static }}
         static-runtime: ${{ inputs.static-runtime }}
-        directory: ${{ inputs.directory }}
+        directory: ~/boost
+    - name: Cache Boost
+      uses: actions/cache@v4
+      if: ${{ ! steps.boost-cache-restore.cache-hit }}
+      with:
+        path: ~/boost
+        key: boost-${{ inputs.version }}-${{ hashFiles(${{ inputs.libraries }}) }}
+        restore-keys: boost-${{ inputs.version }}
