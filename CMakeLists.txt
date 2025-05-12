@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 4.0.1)
 # Autoversion
 execute_process(
     COMMAND git describe --tags --abbrev=0
