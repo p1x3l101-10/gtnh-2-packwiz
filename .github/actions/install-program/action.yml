@@ -45,8 +45,10 @@ runs:
         packages: |
           cmake
           pkgconf
-          clang++
-          ninja
+          clang-20
+          llvm-20
+          llvm-20-dev
+          ninja-build
           libboost1.88-all-dev
           libmagicenum-dev
           nlohmann-json3-dev
