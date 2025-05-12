@@ -1,5 +1,5 @@
 # Runs valgrind to ensure that everything is safe
-name: Test
+name: Valgrind leak checks
 on:
   workflow_dispatch:
   workflow_run:
@@ -11,7 +11,7 @@ on:
       - completed
 jobs:
   build:
-    name: Test
+    name: Valgrind
     runs-on: ubuntu-latest
     steps:
     - name: Cancel Previous Runs
