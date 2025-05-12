@@ -10,6 +10,7 @@ The minimum versions here are the lib versions I developed with, there are no gu
 - [Toml++](https://marzer.github.io/tomlplusplus/) 3.4.0
 - [Log 4 C++](https://log4cpp.sourceforge.net/) 1.1
 - [cURLpp](https://www.curlpp.org/) 0.8.1
+
 # Program versions (build time)
 - [CMake](https://cmake.org) 4.0.1
 - [PkgConf](http://pkgconf.org/) 2.4.3
