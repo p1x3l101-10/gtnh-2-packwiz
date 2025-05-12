@@ -17,7 +17,7 @@ runs:
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
         packages: |
-          libboost1.88
+          libboost1.88-all
           libmagicenum
           nlohmann-json3
           libtomlplusplus
@@ -47,7 +47,7 @@ runs:
           pkgconf
           clang++
           ninja
-          libboost1.88-dev
+          libboost1.88-all-dev
           libmagicenum-dev
           nlohmann-json3-dev
           libtomlplusplus-dev
