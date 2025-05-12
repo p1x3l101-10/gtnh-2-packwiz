@@ -8,11 +8,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Cache Boost
-      uses: actions/cache@v2
-      with:
-        path: '${{ runner.workspace }}/boost_*.tar.gz'
-        key: 'boost-1.87.0'
     - name: Install boost
       uses: egor-tensin/build-boost@v1
       id: boost
