@@ -57,5 +57,5 @@ runs:
       if: ${{ ! steps.boost-cache-restore.cache-hit }}
       with:
         path: ~/boost
-        key: boost-${{ inputs.version }}-${{ hashFiles(${{ inputs.libraries }}) }}
+        key: boost-${{ inputs.version }}-${{ hashFiles(inputs.libraries) }}
         restore-keys: boost-${{ inputs.version }}
