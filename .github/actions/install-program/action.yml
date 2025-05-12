@@ -95,3 +95,7 @@ runs:
         key: ${{ runner.os }}-gtnh-2-packwiz-${{ inputs.version }}
         restore-keys: |
           ${{ runner.os }}-gtnh-2-packwiz-
+    - name: Install from cache
+      shell: bash
+      run: |
+        install -Dm755 ~/gtnh2Packwiz/bin/gtnh-2-packwiz /usr/local/bin/gtnh-2-packwiz
