@@ -8,7 +8,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Install boost
+    - name: Install boost # This one action has cost me like 100 commits to get right...
       uses: mickem/build-boost@v1
       id: boost
       with:
