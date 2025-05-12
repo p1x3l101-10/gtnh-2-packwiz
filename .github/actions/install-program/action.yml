@@ -55,7 +55,7 @@ runs:
           clang-20
           llvm-20
           llvm-20-dev
-          ninja-build
+          gnumake
           libmagicenum-dev
           nlohmann-json3-dev
           libtomlplusplus-dev
@@ -71,7 +71,7 @@ runs:
       if: ${{ ! steps.gtnh-2-packwiz-cache-restore.cache-hit }}
       uses: threeal/cmake-action@v2.1.0
       with: 
-        generator: Ninja
+        generator: Unix Makefiles
         cxx-compiler: clang++
         options: |
           CMAKE_BUILD_TYPE=Release
