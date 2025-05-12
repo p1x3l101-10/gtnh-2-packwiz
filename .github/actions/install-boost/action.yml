@@ -58,4 +58,6 @@ runs:
       with:
         path: ~/boost
         key: boost-${{ inputs.version }}-${{ hashFiles(inputs.libraries) }}
-        restore-keys: boost-${{ inputs.version }}
+        restore-keys: |
+          boost-${{ inputs.version }}-
+          boost-
