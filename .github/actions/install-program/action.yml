@@ -16,12 +16,12 @@ runs:
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
         packages: |
-          boost
-          magic_enum
-          nlohmann_json
-          tomlplusplus
-          log4cpp
-          curlpp
+          libboost1.88
+          libmagicenum
+          nlohmann-json3
+          libtomlplusplus
+          liblog4cpp5v5
+          libcurlpp0t64
     - name: Check version argument
       shell: bash
       id: version-check
@@ -46,6 +46,12 @@ runs:
           pkgconf
           clang++
           ninja
+          libboost1.88-dev
+          libmagicenum-dev
+          nlohmann-json3-dev
+          libtomlplusplus-dev
+          liblog4cpp5-dev
+          libcurlpp-dev
     - name: Checkout repo
       if: ${{ ! steps.gtnh-2-packwiz-cache-restore.cache-hit }}
       with:
