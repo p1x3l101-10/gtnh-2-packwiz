@@ -4,7 +4,7 @@ inputs:
   version:
     description: Version of gtnh2Packwiz to install
     required: false
-    default: HEAD
+    default: main
 runs:
   using: composite
   steps:
