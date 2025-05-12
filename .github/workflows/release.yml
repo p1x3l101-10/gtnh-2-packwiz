@@ -13,6 +13,8 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action
     - name: Release
       uses: softprops/action-gh-release@v2
       with:
