@@ -1,6 +1,6 @@
 NOTE: sometimes `cURLpp`'s pkgconf file has a broken version field, you can build with the flag `-DBAD_CURLPP_VERSION_FORMAT` to get around this. THIS WILL NOT CHECK THE VERSIONS, YOU HAVE BEEN WARNED
 
-The minimum versions here are the lib versions I developed with, there are no guaruntees that this program works with older versions, but it might. I will not help you much if the versions are outdated though, I will just tell you to update the libs first unless this is definitavly a problem with my program (I will still tell you to update tho).
+The minimum versions here are the lib versions I developed and tested with, there are no guaruntees that this program works with older versions, but it might. I will not help you much if the versions are outdated though, I will just tell you to update the libs first unless this is definitavly a problem with my program (I will still tell you to update tho).
 
 ---
 # Lib versions
@@ -12,7 +12,7 @@ The minimum versions here are the lib versions I developed with, there are no gu
 - [cURLpp](https://www.curlpp.org/) 0.8.1
 
 # Program versions (build time)
-- [CMake](https://cmake.org) 4.0.1
+- [CMake](https://cmake.org) 3.31.6
 - [PkgConf](http://pkgconf.org/) 2.4.3
 
 # Testing (used for development) (not needed for client usage)
