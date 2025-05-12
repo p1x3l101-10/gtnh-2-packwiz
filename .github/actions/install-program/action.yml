@@ -22,8 +22,15 @@ runs:
           tomlplusplus
           log4cpp
           curlpp
+    - name: Check version argument
+      shell: bash
+      id: version-check
+      run: |
+        if [[ ${{ inputs.version }} =~ '^v[0-9]+\.[0-9]+\.[0-9]+$' ]]; then
+          echo "stable=true" >> $GITHUB_OUTPUT
+        fi
     - name: Restore cached packwiz
-      if: ${{ inputs.version =~ '^v[0-9]+\.[0-9]+\.[0-9]+$' }}
+      if: ${{ steps.version-check.stable == 'true' }}
       id: gtnh-2-packwiz-cache-restore
       uses: actions/cache/restore@v4
       with:
@@ -62,7 +69,7 @@ runs:
       shell: bash
       run: sudo cp -r ~/gtnh2Packwiz/* /usr/local/
     - name: Cache installation
-      if: ${{ inputs.version =~ '^v[0-9]+\.[0-9]+\.[0-9]+$' }}
+      if: ${{ steps.version-check.stable == 'true' }}
       uses: actions/cache@v4
       with:
         path: ~/gtnh2Packwiz
