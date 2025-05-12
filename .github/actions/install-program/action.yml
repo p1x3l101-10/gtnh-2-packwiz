@@ -83,10 +83,10 @@ runs:
       run: |
         mkdir -p ~/gtnh2Packwiz
         cmake --install ./build --prefix ~/gtnh2Packwiz
-    - name: Install cached build to /usr/local
-      if: ${{ steps.gtnh-2-packwiz-cache-restore.cache-hit }}
+    - name: Install boost to cache
+      if: ${{ ! steps.gtnh-2-packwiz-cache-restore.cache-hit }}
       shell: bash
-      run: sudo cp -r ~/gtnh2Packwiz/* /usr/local/
+      run: cp -r ${{ steps.boost.outputs.root }}/stage/x64/Release/lib ~/gtnh2Packwiz
     - name: Cache installation
       if: ${{ steps.version-check.stable == 'true' }}
       uses: actions/cache@v4
@@ -98,4 +98,4 @@ runs:
     - name: Install from cache
       shell: bash
       run: |
-        install -Dm755 ~/gtnh2Packwiz/bin/gtnh-2-packwiz /usr/local/bin/gtnh-2-packwiz
+        sudo cp -r ~/gtnh2Packwiz/* /usr/local/
