@@ -1,3 +1,3 @@
 #include "semver.hpp"
 
-semVer::semVer(semVerStruct structured): version({ 0, 0, 0, "", false}) {} // Shortcut
+semVer::semVer(): version({ 0, 0, 0, "", false}) {} // Shortcut
