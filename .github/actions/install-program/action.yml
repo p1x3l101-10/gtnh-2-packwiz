@@ -28,7 +28,7 @@ runs:
       uses: ./.github/actions/install-boost # This one action has cost me like 100 commits to get right...
       with:
         version: 1.87.0
-        libraries: program_options
+        libraries: program_options asio
         platform: x64
         configuration: Release
     - name: Check version argument
