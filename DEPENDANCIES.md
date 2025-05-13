@@ -14,6 +14,7 @@ I also use LLVM clang++ to compile this, I *should'nt* have used any compiler sp
 - [Toml++](https://marzer.github.io/tomlplusplus/) 3.4.0
 - [Log 4 C++](https://log4cpp.sourceforge.net/) 1.1
 - [cURLpp](https://www.curlpp.org/) 0.8.1
+- [Crypto++](https://cryptopp.com/) 8.9.0
 
 # Program versions (build time)
 - [CMake](https://cmake.org) 3.31.6

@@ -17,6 +17,7 @@ runs:
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
         packages: |
+          libcrypto++
           libmagicenum
           nlohmann-json3
           libtomlplusplus
@@ -56,6 +57,7 @@ runs:
           llvm-20
           llvm-20-dev
           gnumake
+          libcrypto++-dev
           libmagicenum-dev
           nlohmann-json3-dev
           libtomlplusplus-dev

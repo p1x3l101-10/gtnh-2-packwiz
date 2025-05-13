@@ -29,10 +29,11 @@ find_package(nlohmann_json 3.11.3 REQUIRED)
 find_package(PkgConfig 1.8.1 REQUIRED)
 pkg_check_modules(tomlplusplus REQUIRED IMPORTED_TARGET tomlplusplus>=3.4.0)
 pkg_check_modules(log4cpp REQUIRED IMPORTED_TARGET log4cpp>=1.1)
+pkg_check_modules(cryptopp REQUIRED IMPORTED_TARGET libcryptopp>=8.9.0)
 if(BAD_CURLPP_VERSION_FORMAT)
-    pkg_check_modules(CURLPP REQUIRED IMPORTED_TARGET curlpp)
+    pkg_check_modules(curlpp REQUIRED IMPORTED_TARGET curlpp)
 else()
-    pkg_check_modules(CURLPP REQUIRED IMPORTED_TARGET curlpp>=0.8.1)
+    pkg_check_modules(curlpp REQUIRED IMPORTED_TARGET curlpp>=0.8.1)
 endif()
 
 include(GNUInstallDirs)
@@ -51,6 +52,8 @@ build(
     LIBRARIES
         PkgConfig::tomlplusplus
         PkgConfig::log4cpp
+        PkgConfig::cryptopp
+        PkgConfig::curlpp
         Boost::program_options
         magic_enum::magic_enum
         nlohmann_json::nlohmann_json
