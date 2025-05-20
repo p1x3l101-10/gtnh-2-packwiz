@@ -1,3 +1,4 @@
+#define INIT_VARS
 #include <memory>
 #include <utility>
 #include <log4cpp/Category.hh>
@@ -15,7 +16,7 @@ int main(int c, char** v) {
   std::shared_ptr<gtnh2Packwiz::configFile> config = nullptr;
   if (gtnh2Packwiz::init::args.count("config")) {
     logger.debug("Loading from user-specified config file");
-    config = std::make_shared<gtnh2Packwiz::configFile>(gtnh2Packwiz::init::args["config"]);
+    config = std::make_shared<gtnh2Packwiz::configFile>(gtnh2Packwiz::init::args["config"].as<std::string>());
   } else {
     logger.debug("Loading default config file");
     config = std::make_shared<gtnh2Packwiz::configFile>(DEFAULT_ADMIN_CONFIG_PATH);
