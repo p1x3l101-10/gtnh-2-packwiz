@@ -1,4 +1,6 @@
 #pragma once
+#include <filesystem>
+#include <fstream>
 #include <string>
 #include "semver.hpp"
 #include "gtnh2Packwiz/configFile.hpp"
@@ -8,8 +10,13 @@ namespace gtnh2Packwiz {
     protected:
     private:
       log4cpp::Category& logger = log4cpp::Category::getInstance(NAME".configFile");
-      semVer packVersion;
-      std::shared_ptr<gtnh2Packwiz::configFile> config;
+      const semVer packVersion;
+      const std::shared_ptr<gtnh2Packwiz::configFile> config;
+      const std::filesystem::path outdir;
+      std::ofstream writeToOut(std::string &fileName);
+      std::filesystem::path getFile(std::string &fileName);
+      void deleteFile(std::string fileName);
+      void extractZip(std::filesystem::path zip, std::string outDir);
     public:
       void build();
       pack(std::string version, std::shared_ptr<gtnh2Packwiz::configFile> config);
