@@ -2,14 +2,12 @@
 #include <string>
 #include <log4cpp/Category.hh>
 #include "config.hpp"
-#include "semver.hpp"
 
 namespace gtnh2Packwiz {
   class configFile {
     protected:
       struct configStruct {
         std::string repo;
-        semVer version;
         std::string cfApiKey;
         bool generateRemoteHashes;
         std::string outPath;

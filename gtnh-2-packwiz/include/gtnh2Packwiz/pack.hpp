@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "semver.hpp"
 #include "gtnh2Packwiz/configFile.hpp"
 
 namespace gtnh2Packwiz {
@@ -7,7 +8,7 @@ namespace gtnh2Packwiz {
     protected:
     private:
       log4cpp::Category& logger = log4cpp::Category::getInstance(NAME".configFile");
-      std::string packVersion;
+      semVer packVersion;
       std::shared_ptr<gtnh2Packwiz::configFile> config;
     public:
       void build();

@@ -41,7 +41,6 @@ gtnh2Packwiz::configFile::configFile(std::string configPath) {
     logger.debug("Setting internal configuration");
     config = {
       GET_VALUE("config.repo", string),
-      GET_VALUE("config.version", string),
       GET_VALUE("config.cfApiKey", string),
       GET_VALUE("config.generateRemoteHashes", bool),
       GET_VALUE("config.outPath", string)
