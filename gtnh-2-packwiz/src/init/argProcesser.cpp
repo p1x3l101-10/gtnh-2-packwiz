@@ -17,6 +17,7 @@ void gtnh2Packwiz::init::argProcesser(std::pair<int,char**> arg) {
   desc.add_options()
     ("help", "prints this help message")
     ("version", "print the version info")
+    ("buildinfo", "prints the options used to build this program")
     ("license", "print the full license info for this program")
     ("logfile", po::value<std::string>(), "path to log file")
     ("loglevel", po::value<std::string>(), "minimum loglevel to use")
