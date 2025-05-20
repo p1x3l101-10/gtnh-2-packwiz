@@ -13,6 +13,10 @@ else()
     set(CMAKE_PROJECT_VERSION "0.0.0")  # Fallback if no tag is found
 endif()
 
+if(NOT LOCALSTATEDIR)
+    set(LOCALSTATEDIR "/tmp")
+endif()
+
 project(
     "gtnh-2-packwiz"
     DESCRIPTION "Processes the GTNH build scripts to create a packwiz release"
