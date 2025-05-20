@@ -28,7 +28,8 @@ namespace gtnh2Packwiz {
       void forceRefresh();
       nlohmann::json get() const;
       metadataStruct getMeta() const;
-      std::shared_future<std::filesystem::path> getFile() const;
+      std::filesystem::path getFile() const;
+      std::shared_future<std::filesystem::path> getFuture() const;
   };
 }
 
