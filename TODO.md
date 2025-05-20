@@ -3,6 +3,7 @@
 - [ ] File storage
 - [ ] Parsing the json for needed versions
 - [ ] Assemble list of files to download
+- [ ] Serialize to packwiz format
 
 # Functionality
 - [ ] Pull the GTNH `assets.json` for file info
