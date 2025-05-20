@@ -1,0 +1,5 @@
+[config]
+repo="https://raw.githubusercontent.com/GTNewHorizons/DreamAssemblerXXL/refs/heads/master"
+cfApiKey=""
+generateRemoteHashes=true
+outPath="."
