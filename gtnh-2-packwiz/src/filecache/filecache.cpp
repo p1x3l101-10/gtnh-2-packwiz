@@ -1,3 +1,4 @@
+#define INIT_VARS
 #include "gtnh2Packwiz/filecache.hpp"
 #include "config.hpp"
 #include <cryptopp/sha.h>

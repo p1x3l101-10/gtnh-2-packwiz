@@ -1,4 +1,3 @@
-#define INIT_VARS
 #include <memory>
 #include <utility>
 #include <log4cpp/Category.hh>
