@@ -40,6 +40,10 @@ else()
     pkg_check_modules(curlpp REQUIRED IMPORTED_TARGET curlpp>=0.8.1)
 endif()
 
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+    set(CMAKE_INSTALL_PREFIX ".")
+endif()
+
 include(GNUInstallDirs)
 if(PREFIXED_BUILD) # fix the build for things like homebrew
     set(CMAKE_INSTALL_FULL_SYSCONFDIR "${CMAKE_INSTALL_SYSCONFDIR}")
