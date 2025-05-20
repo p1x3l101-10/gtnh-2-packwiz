@@ -3,6 +3,7 @@
 #include <log4cpp/Category.hh>
 #include "gtnh2Packwiz/configFile.hpp"
 #include "gtnh2Packwiz/init.hpp"
+#include "gtnh2Packwiz/pack.hpp"
 #include "config.hpp"
 
 int main(int c, char** v) {
@@ -19,5 +20,12 @@ int main(int c, char** v) {
   } else {
     logger.debug("Loading default config file");
     config = std::make_shared<gtnh2Packwiz::configFile>(DEFAULT_ADMIN_CONFIG_PATH);
+  }
+  if (gtnh2Packwiz::init::args.count("pack-version")) {
+    gtnh2Packwiz::pack pack(gtnh2Packwiz::init::args["pack-version"].as<std::string>(), config);
+    pack.build();
+  } else {
+    logger.fatal("You need to specify a version of the pack to build!");
+    return 1;
   }
 }
