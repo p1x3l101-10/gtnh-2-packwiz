@@ -1,3 +1,10 @@
+# Needed
+- [ ] File caching with downloading
+- [ ] File storage
+- [ ] Parsing the json for needed versions
+- [ ] Assemble list of files to download
+
+# Functionality
 - [ ] Pull the GTNH `assets.json` for file info
 - [ ] Parse the `releases/versions/<version>.json` files
 - [ ] Impliment caching
