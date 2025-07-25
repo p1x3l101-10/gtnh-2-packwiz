@@ -2,7 +2,16 @@
 , internal
 , stdenv
 , toml-cli
+, pkg-config
 , cmakeMinimal
+# Project Deps
+, boost
+, magic-enum
+, nlohmann_json
+, tomlplusplus
+, log4cpp
+, curlpp
+, cryptopp
 }:
 
 let
@@ -31,7 +40,10 @@ let
     ];
     sourceRoot = ".";
     buildPhase = ''
-      mv source root/cmake-libs 
+      if [[ -e root/cmake-libs ]]; then
+        rm -rvf root/cmake-libs
+      fi
+      mv -v source root/cmake-libs 
     '';
     installPhase = ''
       mv root $out
@@ -46,9 +58,18 @@ stdenv.mkDerivation {
   nativeBuildInputs = [
     cmakeMinimal
     toml-cli
+    pkg-config
   ];
 
-  buildInputs = [];
+  buildInputs = [
+    boost
+    magic-enum
+    nlohmann_json
+    tomlplusplus
+    log4cpp
+    curlpp
+    cryptopp
+  ];
 
   meta = with lib; {
     inherit (internal.metadata) homepage description;
