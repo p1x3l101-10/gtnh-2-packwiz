@@ -9,16 +9,30 @@ inputs: inputs.flake-utils.lib.eachDefaultSystem (system:
         metadata = builtins.fromTOML (builtins.readFile ../metadata.toml);
       };
     };
-    apps = {
+    apps = let
+      llvm = llvmPackages_20;
+    in {
       format = {
         type = "app";
         program = pkgs.writeShellApplication {
           name = "formatter";
           runtimeInputs = with pkgs; [
-            llvmPackages_20.clang-tools
+            llvm.clang-tools
           ];
           text = ''
             clang-format
+          '';
+        };
+      };
+      clangd = {
+        type = "app";
+        program = pkgs.writeShellApplication {
+          name = "clangd";
+          runtimeInputs = with pkgs; [
+            llvm.clang-tools
+          ];
+          text = ''
+            clangd
           '';
         };
       };
