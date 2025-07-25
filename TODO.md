@@ -1,14 +1,12 @@
 # Needed
-- [x] File caching with downloading
-- [x] File storage
-- [x] Parsing the json for needed versions
+- [ ] Parsing the json for needed versions
 - [ ] Assemble list of files to download
 - [ ] Serialize to packwiz format
 
 # Functionality
-- [x] Pull the GTNH `assets.json` for file info
-- [x] Parse the `releases/versions/<version>.json` files
-- [x] Impliment caching
+- [ ] Pull the GTNH `assets.json` for file info
+- [ ] Parse the `releases/versions/<version>.json` files
+- [ ] Impliment caching
 - [ ] Download files to allow for version hashing (ask upstream to add file hashes)
 - [ ] Output a packwiz file
 - [ ] Generate an `unsup.ini` file

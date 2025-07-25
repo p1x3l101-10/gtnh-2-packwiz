@@ -79,7 +79,14 @@ stdenv.mkDerivation {
 
   cmakeFlags = [
     "-DBAD_CURLPP_VERSION_FORMAT=TRUE"
+    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
   ];
+
+  outputs = [ "out" "ccJson" ];
+
+  postInstall = ''
+    mv build/compile_commands.json $ccJson
+  '';
 
   meta = with lib; {
     inherit (internal.metadata) homepage description;
