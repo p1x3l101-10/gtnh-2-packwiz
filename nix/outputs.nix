@@ -10,7 +10,7 @@ inputs: inputs.flake-utils.lib.eachDefaultSystem (system:
       };
     };
     apps = let
-      llvm = llvmPackages_20;
+      llvm = pkgs.llvmPackages_20;
     in {
       format = {
         type = "app";
