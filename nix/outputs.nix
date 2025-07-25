@@ -17,9 +17,10 @@ inputs: inputs.flake-utils.lib.eachDefaultSystem (system:
         name = "formatter";
         runtimeInputs = with pkgs; [
           llvm.clang-tools
+          findutils
         ];
         text = ''
-          exec clang-format "$@"
+          find . \( -name '*.hpp' -or -name '*.cpp' \) -print0 | xargs -0 clang-format -i
         '';
       });};
       clangd = mkApp { drv = (pkgs.writeShellApplication {
