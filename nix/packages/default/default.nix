@@ -72,6 +72,10 @@ stdenv.mkDerivation {
     cryptopp
   ];
 
+  cmakeFlags = [
+    "-DBAD_CURLPP_VERSION_FORMAT=TRUE"
+  ];
+
   meta = with lib; {
     inherit (internal.metadata) homepage description;
     license = licenses.bsd3;
