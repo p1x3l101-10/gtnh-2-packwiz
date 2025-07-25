@@ -80,7 +80,6 @@ build(
         nlohmann_json::nlohmann_json
     EMBED_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE"
     INSTALL_TARGET
-    PUBLIC_COMPILE_OPTIONS "-fexperimental-library"
 )
 
 install(
