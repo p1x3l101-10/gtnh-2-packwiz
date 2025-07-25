@@ -16,4 +16,7 @@ Contributions are welcome, but I don't expect this to really take off...
 You can view the list of needed dependancies to build in the [`CMakeLists.txt`](./CMakeLists.txt), or a nicer formatted version [here](./DEPENDANCIES.md)
 
 # NOTE
+The version of curlpp that I am developing against has a broken pkgconf file for versioning. If this happens to you, just add `-DBAD_CURLPP_VERSION_FORMAT=TRUE` to your cmake args. IF YOU DO THIS, YOU ARE RESPONCABLE FOR ENSURING THAT CURLPP IS THE CORRECT VERSION.
+
+# NOTE 2
 I use nix as a development tool. Because of that, a lot of the tooling in this repo is written with the assumption that nix is installed. The program itself and the compilation is not. Just most of the dev tooling.
