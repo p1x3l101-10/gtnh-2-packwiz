@@ -30,6 +30,7 @@ let
             (fs.gitTracked baseDir)
             (fs.unions [
               (fs.maybeMissing (baseDir + "/result"))
+              (fs.maybeMissing (baseDir + "/build"))
               (baseDir + "/flake.lock")
               (baseDir + "/flake.nix")
               (baseDir + "/nix")
