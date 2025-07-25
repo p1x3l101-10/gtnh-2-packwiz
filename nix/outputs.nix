@@ -19,7 +19,7 @@ inputs: inputs.flake-utils.lib.eachDefaultSystem (system:
           llvm.clang-tools
         ];
         text = ''
-          clang-format
+          exec clang-format "$@"
         '';
       });};
       clangd = mkApp { drv = (pkgs.writeShellApplication {
@@ -28,7 +28,7 @@ inputs: inputs.flake-utils.lib.eachDefaultSystem (system:
           llvm.clang-tools
         ];
         text = ''
-          clangd
+          exec clangd "$@"
         '';
       });};
     };
