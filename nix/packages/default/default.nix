@@ -2,7 +2,7 @@
 , internal
 , stdenv
 , toml-cli
-, pkg-config
+, pkgconf
 , cmakeMinimal
 # Project Deps
 , boost
@@ -59,7 +59,7 @@ stdenv.mkDerivation {
   nativeBuildInputs = [
     cmakeMinimal
     toml-cli
-    pkg-config
+    pkgconf
   ];
 
   buildInputs = [
