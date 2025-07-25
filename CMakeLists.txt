@@ -1,29 +1,41 @@
 cmake_minimum_required(VERSION 3.31.6)
-# Autoversion
+# Import metadata
+find_program(TOML_CLI_BIN toml-cli REQUIRED)
 execute_process(
-    COMMAND git describe --tags --abbrev=0
+    COMMAND ${TOML_CLI_BIN} get ./metadata.toml pname
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_TAG
+    OUTPUT_VARIABLE CMAKE_PROJECT_NAME
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-string(REGEX REPLACE "^v" "" GIT_TAG "${GIT_TAG}")
-if(GIT_TAG)
-    set(CMAKE_PROJECT_VERSION ${GIT_TAG})
-else()
-    set(CMAKE_PROJECT_VERSION "0.0.0")  # Fallback if no tag is found
-endif()
-
-if(NOT LOCALSTATEDIR)
-    set(LOCALSTATEDIR "/tmp")
-endif()
+execute_process(
+    COMMAND ${TOML_CLI_BIN} get ./metadata.toml version
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE CMAKE_PROJECT_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+execute_process(
+    COMMAND ${TOML_CLI_BIN} get ./metadata.toml description
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE CMAKE_PROJECT_DESCRIPTION
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+execute_process(
+    COMMAND ${TOML_CLI_BIN} get ./metadata.toml homepage
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE CMAKE_PROJECT_HOMEPAGE_URL
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
 
 project(
-    "gtnh-2-packwiz"
-    DESCRIPTION "Processes the GTNH build scripts to create a packwiz release"
-    HOMEPAGE_URL "https://github.com/p1x3l101-10/gtnh-2-packwiz"
+    ${CMAKE_PROJECT_NAME}
+    DESCRIPTION ${CMAKE_PROJECT_DESCRIPTION}
+    HOMEPAGE_URL ${CMAKE_PROJECT_HOMEPAGE_URL}
     LANGUAGES CXX
     VERSION ${CMAKE_PROJECT_VERSION}
 )
+if(NOT LOCALSTATEDIR)
+    set(LOCALSTATEDIR "/tmp")
+endif()
 include(cmake-libs/all)
 set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
