@@ -1,6 +1,7 @@
 { lib
 , internal
-, stdenv
+, llvmPackages_20
+, stdenvNoCC
 , toml-cli
 , pkgconf
 , cmakeMinimal
@@ -12,10 +13,12 @@
 , log4cpp
 , curlpp
 , cryptopp
+, curl
 }:
 
 let
-  src = stdenv.mkDerivation {
+  stdenv = llvmPackages_20.stdenv;
+  src = stdenvNoCC.mkDerivation {
     name = "sources-merged";
     srcs = let
       fs = lib.fileset;
@@ -70,6 +73,8 @@ stdenv.mkDerivation {
     log4cpp
     curlpp
     cryptopp
+  ] ++ [ # Deps not in search path???
+    curl
   ];
 
   cmakeFlags = [
