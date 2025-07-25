@@ -11,31 +11,26 @@ inputs: inputs.flake-utils.lib.eachDefaultSystem (system:
     };
     apps = let
       llvm = pkgs.llvmPackages_20;
+      inherit (inputs.flake-utils.lib) mkApp;
     in {
-      format = {
-        type = "app";
-        program = pkgs.writeShellApplication {
-          name = "formatter";
-          runtimeInputs = with pkgs; [
-            llvm.clang-tools
-          ];
-          text = ''
-            clang-format
-          '';
-        };
-      };
-      clangd = {
-        type = "app";
-        program = pkgs.writeShellApplication {
-          name = "clangd";
-          runtimeInputs = with pkgs; [
-            llvm.clang-tools
-          ];
-          text = ''
-            clangd
-          '';
-        };
-      };
+      format = mkApp { drv = (pkgs.writeShellApplication {
+        name = "formatter";
+        runtimeInputs = with pkgs; [
+          llvm.clang-tools
+        ];
+        text = ''
+          clang-format
+        '';
+      });};
+      clangd = mkApp { drv = (pkgs.writeShellApplication {
+        name = "clangd";
+        runtimeInputs = with pkgs; [
+          llvm.clang-tools
+        ];
+        text = ''
+          clangd
+        '';
+      });};
     };
   }
 )
