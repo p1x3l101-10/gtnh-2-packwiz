@@ -1,0 +1,11 @@
+{
+   "nixEnvPicker.envFile": "${workspaceFolder}${/}flake.nix",
+   "nixEnvPicker.terminalAutoActivate": true,
+   "nixEnvPicker.terminalActivateCommand": "exec nix develop",
+   "clangd.path": "/usr/bin/env",
+   "clangd.arguments": [
+      "nix",
+      "run",
+      ".#clangd"
+   ]
+}
