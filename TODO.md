@@ -2,6 +2,7 @@
 - [ ] Parsing the json for needed versions
 - [ ] Assemble list of files to download
 - [ ] Serialize to packwiz format
+- [ ] Create a zip manager that deletes the extracted contents on destruction
 
 # Functionality
 - [ ] Basic Functionality
