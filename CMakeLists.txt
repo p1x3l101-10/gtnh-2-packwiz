@@ -1,26 +1,26 @@
 cmake_minimum_required(VERSION 3.31.6)
 # Import metadata
-find_program(TOML_CLI_BIN toml-cli REQUIRED)
+find_program(TOML_CLI_BIN toml-cli toml REQUIRED)
 execute_process(
-    COMMAND ${TOML_CLI_BIN} get ./metadata.toml pname
+    COMMAND ${TOML_CLI_BIN} get --raw ./metadata.toml pname
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     OUTPUT_VARIABLE CMAKE_PROJECT_NAME
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 execute_process(
-    COMMAND ${TOML_CLI_BIN} get ./metadata.toml version
+    COMMAND ${TOML_CLI_BIN} get --raw ./metadata.toml version
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     OUTPUT_VARIABLE CMAKE_PROJECT_VERSION
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 execute_process(
-    COMMAND ${TOML_CLI_BIN} get ./metadata.toml description
+    COMMAND ${TOML_CLI_BIN} get --raw ./metadata.toml description
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     OUTPUT_VARIABLE CMAKE_PROJECT_DESCRIPTION
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 execute_process(
-    COMMAND ${TOML_CLI_BIN} get ./metadata.toml homepage
+    COMMAND ${TOML_CLI_BIN} get --raw ./metadata.toml homepage
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     OUTPUT_VARIABLE CMAKE_PROJECT_HOMEPAGE_URL
     OUTPUT_STRIP_TRAILING_WHITESPACE
