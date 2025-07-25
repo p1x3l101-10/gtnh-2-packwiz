@@ -14,3 +14,6 @@ The program is versioned using git tags following [semver](https://semver.org/)
 Contributions are welcome, but I don't expect this to really take off...
 
 You can view the list of needed dependancies to build in the [`CMakeLists.txt`](./CMakeLists.txt), or a nicer formatted version [here](./DEPENDANCIES.md)
+
+# NOTE
+I use nix as a development tool. Because of that, a lot of the tooling in this repo is written with the assumption that nix is installed. The program itself and the compilation is not. Just most of the dev tooling.
