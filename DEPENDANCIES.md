@@ -20,6 +20,7 @@ I also use LLVM clang++ to compile this, I *should'nt* have used any compiler sp
 - [CMake](https://cmake.org) 3.31.6
 - [PkgConf](http://pkgconf.org/) 1.8.1
 - [LLVM](https://llvm.org) 20.1.3
+- [toml-cli](https://github.com/gnprice/toml-cli) 0.2.3
 
 # Testing (used for development) (not needed for client usage)
 - [Valgrind](https://valgrind.org/), used to ensure memory safety
