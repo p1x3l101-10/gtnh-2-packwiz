@@ -14,7 +14,3 @@ The program is versioned using git tags following [semver](https://semver.org/)
 Contributions are welcome, but I don't expect this to really take off...
 
 You can view the list of needed dependancies to build in the [`CMakeLists.txt`](./CMakeLists.txt), or a nicer formatted version [here](./DEPENDANCIES.md)
-
-# Usage
-
-You need to have the gtnh assembler repo cloned next to the binary so that it can use it
