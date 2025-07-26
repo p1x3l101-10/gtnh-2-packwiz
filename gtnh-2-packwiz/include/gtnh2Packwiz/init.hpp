@@ -10,6 +10,6 @@ namespace gtnh2Packwiz::init {
   extern boost::program_options::variables_map args;
 #endif
   log4cpp::Priority::PriorityLevel getPriority();
-  void argProcesser(std::pair<int, char **> args);
+  void argProcesser(std::pair<int, char**> args);
   void logger();
 } // namespace gtnh2Packwiz::init

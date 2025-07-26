@@ -8,7 +8,7 @@
 static auto program_start = std::chrono::system_clock::now();
 using std::string;
 
-std::string gtnh2Packwiz::loggerLayout::format(const log4cpp::LoggingEvent &event) {
+std::string gtnh2Packwiz::loggerLayout::format(const log4cpp::LoggingEvent& event) {
   std::ostringstream out;
 
   // Get log time

@@ -44,7 +44,7 @@ gtnh2Packwiz::configFile::configFile(std::string configPath) {
         GET_VALUE("config.cfApiKey", string),
         GET_VALUE("config.generateRemoteHashes", bool),
         GET_VALUE("config.outPath", string)};
-  } catch (toml::parse_error &e) {
+  } catch (toml::parse_error& e) {
     logger.fatalStream() << "Toml parsing error!" << e.description();
     exit(1);
   }

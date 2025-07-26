@@ -23,3 +23,5 @@ SortIncludes: true
 SpaceBeforeParens: ControlStatements
 AlwaysBreakAfterDefinitionReturnType: None
 EmptyLineBeforeAccessModifier: Never
+DerivePointerAlignment: false
+PointerAlignment: Left

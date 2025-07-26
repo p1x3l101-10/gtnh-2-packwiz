@@ -16,4 +16,4 @@ constexpr std::string extractFileBase(std::string_view path) {
 
 #define CURRENT_FILE_BASENAME (::extractFileBase(__FILE__)) // Macro friendly
 
-#define createLogger(VAR_NAME) log4cpp::Category &VAR_NAME = log4cpp::Category::getInstance(this->logger.getName() + "." + CURRENT_FILE_BASENAME) // will return a named logger
+#define createLogger(VAR_NAME) log4cpp::Category& VAR_NAME = log4cpp::Category::getInstance(this->logger.getName() + "." + CURRENT_FILE_BASENAME) // will return a named logger

@@ -12,12 +12,12 @@ namespace po = boost::program_options;
 
 boost::program_options::variables_map args;
 
-void gtnh2Packwiz::init::argProcesser(std::pair<int, char **> arg) {
+void gtnh2Packwiz::init::argProcesser(std::pair<int, char**> arg) {
   po::options_description desc("Allowed options");
   desc.add_options()("help", "prints this help message")("version", "print the version info")("buildinfo", "prints the options used to build this program")("license", "print the full license info for this program")("logfile", po::value<std::string>(), "path to log file")("loglevel", po::value<std::string>(), "minimum loglevel to use")("config", po::value<std::string>(), "the config file to use")("pack-version", po::value<std::string>(), "version of pack to assemble");
   try {
     po::store(po::parse_command_line(arg.first, arg.second, desc), args);
-  } catch (po::unknown_option &uo) {
+  } catch (po::unknown_option& uo) {
     std::cerr << uo.what() << "\n"
               << desc << std::endl;
     exit(1);
@@ -46,7 +46,7 @@ void gtnh2Packwiz::init::argProcesser(std::pair<int, char **> arg) {
   }
   if (args.count("buildinfo")) {
     std::cout << "Build config: ";
-    for (const auto &config : ::configInfo) {
+    for (const auto& config : ::configInfo) {
       std::cout << "\n\t" << config.first << "=" << config.second;
     }
     std::cout << std::endl;

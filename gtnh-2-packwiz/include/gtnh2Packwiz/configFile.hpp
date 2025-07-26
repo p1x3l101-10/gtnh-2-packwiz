@@ -13,7 +13,7 @@ namespace gtnh2Packwiz {
           std::string outPath;
       };
     private:
-      log4cpp::Category &logger = log4cpp::Category::getInstance(NAME ".configFile");
+      log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".configFile");
       configStruct config;
     public:
       configFile(std::string filePath);
