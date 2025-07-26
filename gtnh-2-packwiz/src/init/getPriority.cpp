@@ -1,5 +1,5 @@
-#include "gtnh2Packwiz/init.hpp"
 #include "config.hpp"
+#include "gtnh2Packwiz/init.hpp"
 #ifdef OLD_MAGIC_ENUM
 #include <magic_enum.hpp>
 #else
@@ -8,15 +8,15 @@
 #include <stdexcept>
 
 enum class PriorityLevelMirror { // Magic enum can understand this
-  EMERG  = 0, 
-  FATAL  = 1,
-  ALERT  = 10,
-  CRIT   = 20,
-  ERROR  = 30,
-  WARN   = 40,
+  EMERG = 0,
+  FATAL = 1,
+  ALERT = 10,
+  CRIT = 20,
+  ERROR = 30,
+  WARN = 40,
   NOTICE = 50,
-  INFO   = 60,
-  DEBUG  = 70,
+  INFO = 60,
+  DEBUG = 70,
   NOTSET = 80
 };
 

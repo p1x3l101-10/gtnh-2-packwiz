@@ -5,7 +5,7 @@ bool semVer::samePre(semVer other) {
   semVerStruct otherRaw = other.raw();
   if (version.usingPrerelease && otherRaw.usingPrerelease) {
     return (version.prerelease == otherRaw.prerelease);
-  } else if ((! version.usingPrerelease) && (! otherRaw.usingPrerelease)) {
+  } else if ((!version.usingPrerelease) && (!otherRaw.usingPrerelease)) {
     return true;
   } else {
     return false;

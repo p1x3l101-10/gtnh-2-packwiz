@@ -2,14 +2,14 @@
 #include <filesystem>
 #include <fstream>
 #include <string>
-#include "semver.hpp"
 #include "gtnh2Packwiz/configFile.hpp"
+#include "semver.hpp"
 
 namespace gtnh2Packwiz {
   class pack {
     protected:
     private:
-      log4cpp::Category& logger = log4cpp::Category::getInstance(NAME".configFile");
+      log4cpp::Category &logger = log4cpp::Category::getInstance(NAME ".configFile");
       const semVer packVersion;
       const std::shared_ptr<gtnh2Packwiz::configFile> config;
       const std::filesystem::path outdir;
@@ -21,4 +21,4 @@ namespace gtnh2Packwiz {
       void build();
       pack(std::string version, std::shared_ptr<gtnh2Packwiz::configFile> config);
   };
-}
+} // namespace gtnh2Packwiz

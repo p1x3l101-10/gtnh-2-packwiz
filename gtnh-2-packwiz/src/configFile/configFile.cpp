@@ -1,7 +1,7 @@
 #include "gtnh2Packwiz/configFile.hpp"
+#include <filesystem>
 #include <toml++/impl/parse_error.hpp>
 #include <toml++/impl/parser.hpp>
-#include <filesystem>
 #include "config.hpp"
 
 #define GET_VALUE(PATH, TYPE) cfg.at_path(PATH).value_or(sys.at_path(PATH).ref<TYPE>())
@@ -20,13 +20,13 @@ gtnh2Packwiz::configFile::configFile(std::string configPath) {
     std::string homeDir = std::getenv("HOME");
     rawConfigFile = homeDir + filePath;
   }
-  if (! rawConfigFile.is_absolute()) {
+  if (!rawConfigFile.is_absolute()) {
     logger.debug("File path is not absolute, correcting...");
     configFile = std::filesystem::absolute(rawConfigFile);
   } else {
     configFile = rawConfigFile;
   }
-  if (! sysConfigFile.is_absolute()) {
+  if (!sysConfigFile.is_absolute()) {
     logger.warn("System file path is not absolute, please check your build system. Proceding anyway...");
     sysConfigFile = std::filesystem::absolute(sysConfigFile);
   }
@@ -40,12 +40,11 @@ gtnh2Packwiz::configFile::configFile(std::string configPath) {
     }
     logger.debug("Setting internal configuration");
     config = {
-      GET_VALUE("config.repo", string),
-      GET_VALUE("config.cfApiKey", string),
-      GET_VALUE("config.generateRemoteHashes", bool),
-      GET_VALUE("config.outPath", string)
-    };
-  } catch (toml::parse_error& e) {
+        GET_VALUE("config.repo", string),
+        GET_VALUE("config.cfApiKey", string),
+        GET_VALUE("config.generateRemoteHashes", bool),
+        GET_VALUE("config.outPath", string)};
+  } catch (toml::parse_error &e) {
     logger.fatalStream() << "Toml parsing error!" << e.description();
     exit(1);
   }

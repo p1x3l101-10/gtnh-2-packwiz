@@ -4,11 +4,11 @@
 class semVer {
   protected:
     struct semVerStruct {
-      int major;
-      int minor;
-      int patch;
-      std::string prerelease = "";
-      bool usingPrerelease;
+        int major;
+        int minor;
+        int patch;
+        std::string prerelease = "";
+        bool usingPrerelease;
     };
   private:
     semVerStruct version;

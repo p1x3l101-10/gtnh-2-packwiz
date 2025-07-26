@@ -1,5 +1,5 @@
-#include "semver.hpp"
 #include <sstream>
+#include "semver.hpp"
 
 const std::string semVer::string() const {
   std::ostringstream out;
