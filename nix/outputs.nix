@@ -1,7 +1,7 @@
 inputs: inputs.flake-utils.lib.eachDefaultSystem (system:
   let
     pkgs = inputs.nixpkgs.legacyPackages.${system};
-  in {
+  in inputs.nixpkgs.lib.fix (self: {
     formatter = pkgs.nixpkgs-fmt;
     packages = inputs.system-lib.lib.flake.genPackages ./packages pkgs.newScope {
       internal = {
@@ -33,5 +33,18 @@ inputs: inputs.flake-utils.lib.eachDefaultSystem (system:
         '';
       });};
     };
-  }
+    checks = {
+      builds = self.packages.default;
+      valgrind = pkgs.writeShellApplication {
+        name = "valgrind-leak-checks";
+        runtimeInputs = with pkgs; [
+          self.packages.default
+          valgrind
+        ];
+        text = ''
+          valgrind --leak-check=full ${self.packages.default.pname}
+        '';
+      };
+    };
+  })
 )
