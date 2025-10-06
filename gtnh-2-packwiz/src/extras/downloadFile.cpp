@@ -23,6 +23,9 @@ class fileOb {
       file = fopen(filename.c_str(), writeMode.c_str()); // SEGFAULTS HERE
     }
     ~fileOb() {
+      close();
+    }
+    void close() {
       fclose(file);
     }
     FILE* getFile() {
@@ -49,6 +52,7 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination) {
     request.setOpt(data);
     request.setOpt(new curlpp::options::Url(url));
     request.perform();
+    file.close();
     return; // Done now
   } catch (curlpp::LogicError& e) {
     logger.fatalStream() << e.what();
