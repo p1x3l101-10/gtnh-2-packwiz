@@ -1,3 +1,4 @@
+#include <boost/asio/thread_pool.hpp>
 #include <log4cpp/Category.hh>
 #include <memory>
 #include <utility>
@@ -5,7 +6,6 @@
 #include "gtnh2Packwiz/configFile.hpp"
 #include "gtnh2Packwiz/init.hpp"
 #include "gtnh2Packwiz/pack.hpp"
-#include <boost/asio/thread_pool.hpp>
 
 boost::asio::thread_pool tp(THREAD_POOL_MAX_THREADS);
 
