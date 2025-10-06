@@ -16,24 +16,38 @@ using std::string;
 
 void gtnh2Packwiz::pack::build() {
   createLogger(logger);
+
+  path packDir = CACHE "/pack";
+  path configDir = CACHE "/config";
+
   // Create cache directory
   logger.debugStream() << "Created cache at: " << CACHE;
   fs::create_directories(CACHE);
-  // Download zips
-  path packDir = CACHE "/pack";
-  path configDir = CACHE "/config";
+  
   {
     path packZip = packDir.string() + ".zip";
-    string packUrl = config->getConfig().repo + "/archive/refs/heads/master.zip";
     path configZip = configDir.string() + ".zip";
-    string configUrl = config->getConfig().configRepo + "/archive/refs/tags/" + packVersion.string() + ".zip";
-    logger.info("Downloading files");
-    post(tp, [packUrl, packZip]() { gtnh2Packwiz::extras::downloadFile(packUrl, packZip); });
-    post(tp, [configUrl, configZip]() { gtnh2Packwiz::extras::downloadFile(configUrl, configZip); });
-    tp.join();
-    logger.info("Files downloaded.");
+
+    // Download zips
+    {
+      string packUrl = config->getConfig().repo + "/archive/refs/heads/master.zip";
+      string configUrl = config->getConfig().configRepo + "/archive/refs/tags/" + packVersion.string() + ".zip";
+      logger.info("Downloading files...");
+      post(tp, [packUrl, packZip]() { gtnh2Packwiz::extras::downloadFile(packUrl, packZip); });
+      post(tp, [configUrl, configZip]() { gtnh2Packwiz::extras::downloadFile(configUrl, configZip); });
+      tp.join();
+      logger.info("Files downloaded.");
+    }
+
+    // Extract zips
+    {
+      logger.info("Extracting downloaded files...");
+      post(tp, [packZip, packDir](){ gtnh2Packwiz::extras::extractZip(packZip, packDir); });
+      post(tp, [configZip, configDir](){ gtnh2Packwiz::extras::extractZip(configZip, configDir); });
+      tp.join();
+      logger.info("Files extracted");
+    }
   }
-  // Extract zips
   // Parse version
   // Get files from config repo
   // Read mods to metadata container

@@ -15,8 +15,6 @@ namespace gtnh2Packwiz {
       const std::filesystem::path outdir;
       std::ofstream writeToOut(std::string& fileName);
       std::filesystem::path getFile(std::string& fileName);
-      void deleteFile(std::string fileName);
-      void extractZip(std::filesystem::path zip, std::string outDir);
     public:
       void build();
       pack(std::string version, std::shared_ptr<gtnh2Packwiz::configFile> config);
