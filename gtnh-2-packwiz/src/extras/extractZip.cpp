@@ -100,14 +100,19 @@ void safeCreateDirs (path dirName) {
 void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.extractZip");
 
-    logger.debugStream() << "Opening file: '" << zipFile.string() << "'";
-    zip za(zipFile.string());
+    try {
+        logger.debugStream() << "Opening file: '" << zipFile.string() << "'";
+        zip za(zipFile.string());
 
-    for (const auto &file : za.getContents()) {
-        logger.debugStream() << "Extracting file: '" << file.first << "'";
-        path filePath = outDir.string() + "/" + file.first;
-        safeCreateDirs(filePath.parent_path());
-        std::ofstream outFile(filePath);
-        za.writeFile(file.first, &outFile);
+        for (const auto &file : za.getContents()) {
+            logger.debugStream() << "Extracting file: '" << file.first << "'";
+            path filePath = outDir.string() + "/" + file.first;
+            safeCreateDirs(filePath.parent_path());
+            std::ofstream outFile(filePath);
+            za.writeFile(file.first, &outFile);
+        }
+    } catch (std::runtime_error &e) {
+        logger.fatalStream() << e.what();
+        throw;
     }
 }
