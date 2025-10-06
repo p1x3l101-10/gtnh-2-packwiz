@@ -25,6 +25,7 @@ find_package(Boost 1.89.0 REQUIRED COMPONENTS program_options process)
 find_package(magic_enum 0.9.5 REQUIRED)
 find_package(nlohmann_json 3.11.3 REQUIRED)
 find_package(PkgConfig 1.8.1 REQUIRED)
+find_package(libzip 1.11.4 REQUIRED)
 pkg_check_modules(tomlplusplus REQUIRED IMPORTED_TARGET tomlplusplus>=3.4.0)
 pkg_check_modules(log4cpp REQUIRED IMPORTED_TARGET log4cpp>=1.1)
 pkg_check_modules(cryptopp REQUIRED IMPORTED_TARGET libcryptopp>=8.9)
@@ -70,6 +71,7 @@ build(
         Boost::program_options
         magic_enum::magic_enum
         nlohmann_json::nlohmann_json
+        libzip::libzip
     EMBED_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE"
     INSTALL_TARGET
 )

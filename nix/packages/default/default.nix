@@ -14,6 +14,7 @@
 , curlpp
 , cryptopp
 , curl
+, libzip
 }:
 
 let
@@ -73,6 +74,7 @@ stdenv.mkDerivation {
     log4cpp
     curlpp
     cryptopp
+    libzip
   ] ++ [ # Deps not in search path???
     curl
   ];
