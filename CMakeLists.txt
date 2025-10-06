@@ -62,6 +62,10 @@ endif()
 set(THREAD_POOL_MAX_THREADS 4)
 
 build(
+    HEADER_LIBRARY indicators
+)
+
+build(
     BINARY ${CMAKE_PROJECT_NAME}
     LIBRARIES
         PkgConfig::tomlplusplus
@@ -72,6 +76,7 @@ build(
         magic_enum::magic_enum
         nlohmann_json::nlohmann_json
         PkgConfig::libzip
+        indicators
     EMBED_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE"
     INSTALL_TARGET
 )

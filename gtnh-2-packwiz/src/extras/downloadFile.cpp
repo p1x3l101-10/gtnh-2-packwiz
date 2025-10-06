@@ -16,6 +16,8 @@ using fs::path;
 using std::string;
 namespace co = curlpp::options;
 
+extern gtnh2Packwiz::poolManager pool;
+
 void gtnh2Packwiz::extras::downloadFile(string url, path destination) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.downloadFile");
     if (fs::exists(destination)) {
