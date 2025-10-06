@@ -9,7 +9,7 @@ namespace gtnh2Packwiz {
   class pack {
     protected:
     private:
-      log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".configFile");
+      log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".pack");
       const semVer packVersion;
       const std::shared_ptr<gtnh2Packwiz::configFile> config;
       const std::filesystem::path outdir;
