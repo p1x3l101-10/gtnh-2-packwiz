@@ -5,7 +5,17 @@
             "name": "basic",
             "displayName": "Basic Build",
             "binaryDir": "${sourceDir}/build",
-            "generator": "Ninja"
+            "generator": "Ninja",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "dev",
+            "inherits": "basic",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
         }
     ],
     "buildPresets": [
@@ -13,6 +23,11 @@
             "name": "basic",
             "displayName": "Basic Build",
             "configurePreset": "basic"
+        },
+        {
+            "name": "dev",
+            "inherits": "basic",
+            "configurePreset": "dev"
         }
     ],
     "workflowPresets": [
@@ -27,6 +42,20 @@
                 {
                     "type": "build",
                     "name": "basic"
+                }
+            ]
+        },
+        {
+            "name": "dev",
+            "displayName": "Dev Build",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "dev"
+                },
+                {
+                    "type": "build",
+                    "name": "dev"
                 }
             ]
         }
