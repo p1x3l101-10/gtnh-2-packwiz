@@ -4,10 +4,15 @@
 #include "config.hpp"
 #include "gtnh2Packwiz/extras.hpp"
 #include "loggerMacro.hpp"
+#include <boost/asio/thread_pool.hpp>
+#include <boost/asio/post.hpp>
+
+extern boost::asio::thread_pool tp;
 
 namespace fs = std::filesystem;
 using std::string;
 using fs::path;
+using boost::asio::post;
 
 void gtnh2Packwiz::pack::build() {
   createLogger(logger);
@@ -21,8 +26,10 @@ void gtnh2Packwiz::pack::build() {
     string packUrl = config->getConfig().repo + "/archive/refs/heads/master.zip";
     string configUrl = config->getConfig().configRepo + "/archive/refs/tags/" + packVersion.string() + ".zip";
     logger.info("Downloading files");
-    gtnh2Packwiz::extras::downloadFile(packUrl, packZip);
-    gtnh2Packwiz::extras::downloadFile(configUrl, configZip);
+    post(tp, [packUrl, packZip](){gtnh2Packwiz::extras::downloadFile(packUrl, packZip);});
+    post(tp, [configUrl, configZip](){gtnh2Packwiz::extras::downloadFile(configUrl, configZip);});
+    tp.join();
+    logger.info("Files downloaded.");
   }
   // Parse version
   // Get files from config repo

@@ -5,8 +5,12 @@
 #include "gtnh2Packwiz/configFile.hpp"
 #include "gtnh2Packwiz/init.hpp"
 #include "gtnh2Packwiz/pack.hpp"
+#include <boost/asio/thread_pool.hpp>
+
+boost::asio::thread_pool tp(THREAD_POOL_MAX_THREADS);
 
 int main(int c, char** v) {
+  // Create the thread pool
   // Process args
   gtnh2Packwiz::init::argProcesser({c, v});
   // Set up logging

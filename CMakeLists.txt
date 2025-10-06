@@ -21,7 +21,7 @@ include(cmake-libs/all)
 set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
 # Import libs
-find_package(Boost 1.87.0 REQUIRED COMPONENTS program_options process)
+find_package(Boost 1.89.0 REQUIRED COMPONENTS program_options process)
 find_package(magic_enum 0.9.5 REQUIRED)
 find_package(nlohmann_json 3.11.3 REQUIRED)
 find_package(PkgConfig 1.8.1 REQUIRED)
@@ -57,6 +57,8 @@ else()
     set(SYSTEM_CONFIG_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/defaultConfigs.toml")
     set(DEFAULT_ADMIN_CONFIG_PATH "${CMAKE_CURRENT_BINARY_DIR}/config.toml")
 endif()
+# Threads
+set(THREAD_POOL_MAX_THREADS 4)
 
 build(
     BINARY ${CMAKE_PROJECT_NAME}
