@@ -1,5 +1,5 @@
 #include <boost/asio/post.hpp>
-#include <boost/asio/thread_pool.hpp>
+#include "gtnh2Packwiz/poolManager.hpp"
 #include <filesystem>
 #include <string>
 #include "config.hpp"
@@ -8,6 +8,8 @@
 #include "loggerMacro.hpp"
 
 extern boost::asio::thread_pool tp;
+
+extern gtnh2Packwiz::poolManager pool;
 
 namespace fs = std::filesystem;
 using boost::asio::post;
@@ -33,18 +35,20 @@ void gtnh2Packwiz::pack::build() {
       string packUrl = config->getConfig().repo + "/archive/refs/heads/master.zip";
       string configUrl = config->getConfig().configRepo + "/archive/refs/tags/" + packVersion.string() + ".zip";
       logger.info("Downloading files...");
-      post(tp, [packUrl, packZip]() { gtnh2Packwiz::extras::downloadFile(packUrl, packZip); });
-      post(tp, [configUrl, configZip]() { gtnh2Packwiz::extras::downloadFile(configUrl, configZip); });
-      tp.join();
+      auto tp = pool.getPool().lock();
+      post(*tp, [packUrl, packZip]() { gtnh2Packwiz::extras::downloadFile(packUrl, packZip); });
+      post(*tp, [configUrl, configZip]() { gtnh2Packwiz::extras::downloadFile(configUrl, configZip); });
+      pool.reset();
       logger.info("Files downloaded.");
     }
 
     // Extract zips
     {
       logger.info("Extracting downloaded files...");
-      post(tp, [packZip, packDir]() { gtnh2Packwiz::extras::extractZip(packZip, packDir); });
-      post(tp, [configZip, configDir]() { gtnh2Packwiz::extras::extractZip(configZip, configDir); });
-      tp.join();
+      auto tp = pool.getPool().lock();
+      post(*tp, [packZip, packDir]() { gtnh2Packwiz::extras::extractZip(packZip, packDir); });
+      post(*tp, [configZip, configDir]() { gtnh2Packwiz::extras::extractZip(configZip, configDir); });
+      pool.reset();
       logger.info("Files extracted");
     }
   }

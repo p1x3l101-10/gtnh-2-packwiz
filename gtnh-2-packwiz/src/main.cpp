@@ -1,4 +1,3 @@
-#include <boost/asio/thread_pool.hpp>
 #include <log4cpp/Category.hh>
 #include <memory>
 #include <utility>
@@ -6,8 +5,9 @@
 #include "gtnh2Packwiz/configFile.hpp"
 #include "gtnh2Packwiz/init.hpp"
 #include "gtnh2Packwiz/pack.hpp"
+#include "gtnh2Packwiz/poolManager.hpp"
 
-boost::asio::thread_pool tp(THREAD_POOL_MAX_THREADS);
+gtnh2Packwiz::poolManager pool(THREAD_POOL_MAX_THREADS);
 
 int main(int c, char** v) {
   // Create the thread pool
@@ -30,6 +30,7 @@ int main(int c, char** v) {
     pack.build();
   } else {
     logger.fatal("You need to specify a version of the pack to build!");
+    pool.~poolManager(); // Terminate thread pool (manually call destructor)
     return 1;
   }
 }
