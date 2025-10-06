@@ -23,7 +23,7 @@ void gtnh2Packwiz::pack::build() {
   // Create cache directory
   logger.debugStream() << "Created cache at: " << CACHE;
   fs::create_directories(CACHE);
-  
+
   {
     path packZip = packDir.string() + ".zip";
     path configZip = configDir.string() + ".zip";
@@ -42,8 +42,8 @@ void gtnh2Packwiz::pack::build() {
     // Extract zips
     {
       logger.info("Extracting downloaded files...");
-      post(tp, [packZip, packDir](){ gtnh2Packwiz::extras::extractZip(packZip, packDir); });
-      post(tp, [configZip, configDir](){ gtnh2Packwiz::extras::extractZip(configZip, configDir); });
+      post(tp, [packZip, packDir]() { gtnh2Packwiz::extras::extractZip(packZip, packDir); });
+      post(tp, [configZip, configDir]() { gtnh2Packwiz::extras::extractZip(configZip, configDir); });
       tp.join();
       logger.info("Files extracted");
     }
