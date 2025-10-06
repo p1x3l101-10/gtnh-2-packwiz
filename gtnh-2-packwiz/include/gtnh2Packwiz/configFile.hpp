@@ -8,6 +8,7 @@ namespace gtnh2Packwiz {
     protected:
       struct configStruct {
           std::string repo;
+          std::string configRepo;
           std::string cfApiKey;
           bool generateRemoteHashes;
           std::string outPath;

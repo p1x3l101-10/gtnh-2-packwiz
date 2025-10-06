@@ -1,5 +1,6 @@
 [config]
-repo="https://github.com/GTNewHorizons/DreamAssemblerXXL/archive/refs/heads/master.zip"
+repo="https://github.com/GTNewHorizons/DreamAssemblerXXL"
+configRepo="https://github.com/GTNewHorizons/GT-New-Horizons-Modpack"
 cfApiKey=""
 generateRemoteHashes=false # TODO: impliment downloading and hashing
 outPath="."
