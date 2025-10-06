@@ -14,6 +14,7 @@
 namespace fs = std::filesystem;
 using fs::path;
 using std::string;
+namespace co = curlpp::options;
 
 void gtnh2Packwiz::extras::downloadFile(string url, path destination) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.downloadFile");
@@ -27,8 +28,8 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination) {
         // Write to file
         std::ofstream outFile(destination);
         // Create the request
-        request.setOpt(new curlpp::options::Url(url));
-        request.setOpt(new curlpp::options::WriteStream(&outFile));
+        request.setOpt(new co::Url(url));
+        request.setOpt(new co::WriteStream(&outFile));
         request.perform();
         return; // Done now
     } catch (curlpp::LogicError& e) {
