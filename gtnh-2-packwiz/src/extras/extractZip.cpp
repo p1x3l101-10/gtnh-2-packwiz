@@ -1,10 +1,10 @@
-#include "gtnh2Packwiz/extras.hpp"
 #include <zip.h>
 #include <filesystem>
 #include <fstream>
-#include <stdexcept>
 #include <log4cpp/Category.hh>
+#include <stdexcept>
 #include "config.hpp"
+#include "gtnh2Packwiz/extras.hpp"
 
 namespace fs = std::filesystem;
 using fs::path;
@@ -15,15 +15,15 @@ class zip {
         struct zip* za;
         int errorp = 0;
         struct zipFile {
-            int index;
-            struct zip_stat file;
+                int index;
+                struct zip_stat file;
         };
         std::map<string, zipFile> contents;
         bool contentsInitialized = false;
         void parseContents() {
             struct zip_stat sb;
-            for(int i = 0; i < getEntryCount(); i++) {
-                if (zip_stat_index(za, i, 0, &sb) == 0){
+            for (int i = 0; i < getEntryCount(); i++) {
+                if (zip_stat_index(za, i, 0, &sb) == 0) {
                     int len = strlen(sb.name);
                     if (sb.name[len - 1] == '/') {
                         // Directory
@@ -31,8 +31,7 @@ class zip {
                         // File
                         zipFile file = {
                             i,
-                            sb
-                        };
+                            sb};
                         contents.insert_or_assign(sb.name, file);
                     }
                 }
@@ -73,7 +72,7 @@ class zip {
             struct zip_file* zf = zip_fopen_index(za, contents[zipPath].index, 0);
             int sum = 0;
             while (sum != contents[zipPath].file.size) {
-#               define BUFFERSIZE 100 // Set the buffer size
+#define BUFFERSIZE 100 // Set the buffer size
                 char buffer[BUFFERSIZE];
                 int len = zip_fread(zf, buffer, BUFFERSIZE);
                 if (len < 0) {
@@ -86,7 +85,7 @@ class zip {
         }
 };
 
-void safeCreateDirs (path dirName) {
+void safeCreateDirs(path dirName) {
     if (!fs::create_directories(dirName)) {
         if (fs::exists(dirName)) {
             // Folder exists
@@ -104,14 +103,14 @@ void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir) {
         logger.debugStream() << "Opening file: '" << zipFile.string() << "'";
         zip za(zipFile.string());
 
-        for (const auto &file : za.getContents()) {
+        for (const auto& file : za.getContents()) {
             logger.debugStream() << "Extracting file: '" << file.first << "'";
             path filePath = outDir.string() + "/" + file.first;
             safeCreateDirs(filePath.parent_path());
             std::ofstream outFile(filePath);
             za.writeFile(file.first, &outFile);
         }
-    } catch (std::runtime_error &e) {
+    } catch (std::runtime_error& e) {
         logger.fatalStream() << e.what();
         throw;
     }

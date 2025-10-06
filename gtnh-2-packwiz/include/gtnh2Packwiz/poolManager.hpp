@@ -17,4 +17,4 @@ namespace gtnh2Packwiz {
             const int getThreadCount();
             void setNewThreadCount(int count);
     };
-}
+} // namespace gtnh2Packwiz
