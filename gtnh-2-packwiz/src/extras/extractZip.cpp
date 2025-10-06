@@ -4,7 +4,6 @@
 #include <fstream>
 #include <stdexcept>
 #include <log4cpp/Category.hh>
-#include <vector>
 #include "config.hpp"
 
 namespace fs = std::filesystem;
@@ -100,9 +99,9 @@ void safeCreateDirs (path dirName) {
 
 void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.extractZip");
-    
-    zip za(zipFile);
-    logger.debug("Opened zip file");
+
+    logger.debugStream() << "Opening file: '" << zipFile.string() << "'";
+    zip za(zipFile.string());
 
     for (const auto &file : za.getContents()) {
         logger.debugStream() << "Extracting file: '" << file.first << "'";
