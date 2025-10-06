@@ -3,6 +3,7 @@
 #include <curlpp/Exception.hpp>
 #include <curlpp/Option.hpp>
 #include <curlpp/Options.hpp>
+#include <filesystem>
 #include <log4cpp/Category.hh>
 #include <stdexcept>
 #include <string>
@@ -16,6 +17,10 @@ using std::string;
 
 void gtnh2Packwiz::extras::downloadFile(string url, path destination) {
   log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.downloadFile");
+  if (fs::exists(destination)) {
+    logger.debug("Deleting old file...");
+    fs::remove(destination);
+  }
   try {
     logger.infoStream() << "Downloading URL: '" << url << "'";
     curlpp::Easy request;
