@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include "config.hpp"
 #include "gtnh2Packwiz/extras.hpp"
+#include <indicators/multi_progress.hpp>
+#include <indicators/progress_bar.hpp>
 
 namespace fs = std::filesystem;
 using fs::path;
@@ -96,7 +98,11 @@ void safeCreateDirs(path dirName) {
     return;
 }
 
-void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir) {
+namespace pb = indicators;
+using pb::ProgressBar;
+using pb::DynamicProgress;
+
+void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir, int barID, DynamicProgress<ProgressBar>* bars) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.extractZip");
 
     try {
