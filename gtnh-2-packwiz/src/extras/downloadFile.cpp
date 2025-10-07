@@ -1,4 +1,6 @@
+#include <chrono>
 #include <cstddef>
+#include <ctime>
 #include <curlpp/Easy.hpp>
 #include <curlpp/Exception.hpp>
 #include <curlpp/Option.hpp>
@@ -11,7 +13,6 @@
 #include <string>
 #include "config.hpp"
 #include "gtnh2Packwiz/extras.hpp"
-#include "config.hpp"
 
 namespace fs = std::filesystem;
 using fs::path;
@@ -29,16 +30,15 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination) {
         logger.infoStream() << "Downloading URL: '" << url << "'";
         curlpp::Easy request;
         // Create callback
-        int percent = 0;
-        ct::ProgressFunctionFunctor progressCallback = [&percent](double dltotal, double dlnow, double ultotal, double ulnow){
-            double dlOnePercent = dltotal / 100;
-            int dlnowR = std::round(dlnow);
-            int dlOnePercentR = std::round(dlOnePercent);
-            if (dlnow < dlOnePercent) {
-                percent = 0;
-            } else {
-                percent = (dlnowR % dlOnePercentR);
-                // Set percent here
+        log4cpp::Category& callbacklogger = log4cpp::Category::getInstance(NAME ".extras.downloadFile.callback");
+        auto t0 = std::chrono::high_resolution_clock::now();
+        auto tf = std::chrono::high_resolution_clock::now();
+        auto deltaT = std::chrono::milliseconds(500);
+        ct::ProgressFunctionFunctor progressCallback = [&logger = callbacklogger, &t0, &tf, deltaT](double dltotal, double dlnow, double ultotal, double ulnow){
+            tf = std::chrono::high_resolution_clock::now();
+            if ((tf - t0) >= deltaT) {
+                logger.debugStream() << "Downloaded: `" << std::round(dlnow) << "` out of: `" << std::round(dltotal) << "`"; 
+                t0 = std::chrono::high_resolution_clock::now();
             }
             return 0; // 0 to continue, 1 to abort
         };
