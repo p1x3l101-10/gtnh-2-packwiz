@@ -109,7 +109,17 @@ void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir, int barID, Dyna
         logger.debugStream() << "Opening file: '" << zipFile.string() << "'";
         zip za(zipFile.string());
 
+        int onePercent = za.getEntryCount() / 100;
+        int fileCount = 0;
+        int percent = 0;
         for (const auto& file : za.getContents()) {
+            if (fileCount >= onePercent) {
+                fileCount = 0;
+                percent++;
+                (*bars)[barID].set_progress(percent);
+            } else {
+                fileCount++;
+            }
             logger.debugStream() << "Extracting file: '" << file.first << "'";
             path filePath = outDir.string() + "/" + file.first;
             safeCreateDirs(filePath.parent_path());

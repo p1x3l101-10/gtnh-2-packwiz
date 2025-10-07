@@ -41,9 +41,9 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination, int barID,
             int dlOnePercentR = std::round(dlOnePercent);
             if (dlnow < dlOnePercent) {
                 percent = 0;
-            } else if ((dlnowR % dlOnePercentR) != percent) {
-                percent++;
-                (*bars)[barID].tick();
+            } else {
+                percent = (dlnowR % dlOnePercentR);
+                (*bars)[barID].set_progress(percent);
             }
             return 0; // 0 to continue, 1 to abort
         };
