@@ -43,7 +43,7 @@ constexpr std::unique_ptr<ProgressBar> makeBar(string text) {
 void gtnh2Packwiz::pack::build() {
     createLogger(logger);
     DynamicProgress<ProgressBar> bars;
-    bars.set_option(pbo::HideBarWhenComplete{true});
+    bars.set_option(pbo::HideBarWhenComplete{false});
 
     path packDir = CACHE "/pack";
     path configDir = CACHE "/config";

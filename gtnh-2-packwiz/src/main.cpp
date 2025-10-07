@@ -6,11 +6,33 @@
 #include "gtnh2Packwiz/init.hpp"
 #include "gtnh2Packwiz/pack.hpp"
 #include "gtnh2Packwiz/poolManager.hpp"
+#include <indicators/cursor_control.hpp>
 
 gtnh2Packwiz::poolManager pool(THREAD_POOL_MAX_THREADS);
 
+void shutdown(bool fatal = false, bool silent = false) {
+    log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".main.shutdown");
+    if (!silent) {
+        logger.alert("Shutting down...");
+    }
+    indicators::show_console_cursor(true);
+    if (fatal) {
+        exit(1);
+    }
+    exit(0);
+}
+
+extern "C" void sigHandler(int sig) {
+    shutdown();
+}
+
 int main(int c, char** v) {
-    // Create the thread pool
+    // Register signal handlers
+    std::signal(SIGINT, sigHandler);
+    std::signal(SIGTERM, sigHandler);
+    std::signal(SIGHUP, sigHandler);
+    // Hide cursor
+    indicators::show_console_cursor(false);
     // Process args
     gtnh2Packwiz::init::argProcesser({c, v});
     // Set up logging
@@ -30,7 +52,7 @@ int main(int c, char** v) {
         pack.build();
     } else {
         logger.fatal("You need to specify a version of the pack to build!");
-        pool.~poolManager(); // Terminate thread pool (manually call destructor)
-        return 1;
+        shutdown(true);
     }
+    shutdown();
 }
