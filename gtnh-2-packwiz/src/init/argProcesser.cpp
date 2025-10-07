@@ -12,7 +12,7 @@ namespace po = boost::program_options;
 
 boost::program_options::variables_map args;
 
-extern void shutdown(bool fatal = false, bool silent = false);
+extern void shutdown(bool fatal = false, bool silent = true);
 
 void gtnh2Packwiz::init::argProcesser(std::pair<int, char**> arg) {
     po::options_description desc("Allowed options");
