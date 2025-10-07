@@ -62,10 +62,10 @@ void gtnh2Packwiz::pack::build() {
             string configUrl = config->getConfig().configRepo + "/archive/refs/tags/" + packVersion.string() + ".zip";
             logger.info("Downloading files...");
             auto tp = pool.getPool().lock();
-            auto bar1 = makeBar("Pack archive");
+            auto bar1 = makeBar("Downloading pack archive");
             bars.push_back(std::move(bar1));
             post(*tp, [packUrl, packZip, &bars]() { gtnh2Packwiz::extras::downloadFile(packUrl, packZip, 0, &bars); });
-            auto bar2 = makeBar("Config archive");
+            auto bar2 = makeBar("Downloading config archive");
             bars.push_back(std::move(bar2));
             post(*tp, [configUrl, configZip, &bars]() { gtnh2Packwiz::extras::downloadFile(configUrl, configZip, 0, &bars); });
             pool.reset();
