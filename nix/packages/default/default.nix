@@ -15,6 +15,7 @@
 , cryptopp
 , curl
 , libzip
+, ftxui
 }:
 
 let
@@ -75,6 +76,7 @@ stdenv.mkDerivation {
     curlpp
     cryptopp
     libzip
+    ftxui
   ] ++ [ # Deps not in search path???
     curl
   ];
