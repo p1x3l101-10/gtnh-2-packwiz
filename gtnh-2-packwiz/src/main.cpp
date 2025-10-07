@@ -32,7 +32,6 @@ int main(int c, char** v) {
     std::signal(SIGHUP, sigHandler);
     // Setup
     gtnh2Packwiz::init::argProcesser({c, v});
-    gtnh2Packwiz::init::ftxui();
     gtnh2Packwiz::init::logger();
     // Init
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".main");
