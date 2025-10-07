@@ -19,6 +19,7 @@ using fs::path;
 using std::string;
 namespace co = curlpp::options;
 namespace ct = curlpp::Types;
+using gtnh2Packwiz::extras::humanReadableBytes;
 
 void gtnh2Packwiz::extras::downloadFile(string url, path destination) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.downloadFile");
@@ -37,7 +38,7 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination) {
         ct::ProgressFunctionFunctor progressCallback = [&logger = callbacklogger, &t0, &tf, deltaT](double dltotal, double dlnow, double ultotal, double ulnow){
             tf = std::chrono::high_resolution_clock::now();
             if ((tf - t0) >= deltaT) {
-                logger.debugStream() << "Downloaded: `" << std::round(dlnow) << "` out of: `" << std::round(dltotal) << "`"; 
+                logger.debugStream() << "Downloaded: `" << humanReadableBytes<1024>(dlnow) << "` out of: `" << humanReadableBytes<1024>(dltotal) << "`"; 
                 t0 = std::chrono::high_resolution_clock::now();
             }
             return 0; // 0 to continue, 1 to abort
