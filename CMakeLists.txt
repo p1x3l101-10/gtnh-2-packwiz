@@ -24,7 +24,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 find_package(Boost 1.89.0 REQUIRED COMPONENTS program_options process)
 find_package(magic_enum 0.9.5 REQUIRED)
 find_package(nlohmann_json 3.11.3 REQUIRED COMPONENTS screen dom component)
-find_package(ftxui 6.1.9 REQUIRED)
 find_package(PkgConfig 1.8.1 REQUIRED)
 pkg_check_modules(tomlplusplus REQUIRED IMPORTED_TARGET tomlplusplus>=3.4.0)
 pkg_check_modules(log4cpp REQUIRED IMPORTED_TARGET log4cpp>=1.1)
@@ -63,10 +62,6 @@ endif()
 set(THREAD_POOL_MAX_THREADS 4)
 
 build(
-    HEADER_LIBRARY indicators
-)
-
-build(
     BINARY ${CMAKE_PROJECT_NAME}
     LIBRARIES
         PkgConfig::tomlplusplus
@@ -77,10 +72,6 @@ build(
         magic_enum::magic_enum
         nlohmann_json::nlohmann_json
         PkgConfig::libzip
-        ftxui::screen
-        ftxui::dom
-        ftxui::component
-        indicators
     EMBED_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE"
     INSTALL_TARGET
 )
