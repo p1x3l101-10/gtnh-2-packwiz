@@ -11,8 +11,6 @@
 #include <string>
 #include "config.hpp"
 #include "gtnh2Packwiz/extras.hpp"
-#include <indicators/dynamic_progress.hpp>
-#include <indicators/progress_bar.hpp>
 #include "config.hpp"
 
 namespace fs = std::filesystem;
@@ -20,11 +18,8 @@ using fs::path;
 using std::string;
 namespace co = curlpp::options;
 namespace ct = curlpp::Types;
-namespace pb = indicators;
-using pb::ProgressBar;
-using pb::DynamicProgress;
 
-void gtnh2Packwiz::extras::downloadFile(string url, path destination, int barID, DynamicProgress<ProgressBar>* bars) {
+void gtnh2Packwiz::extras::downloadFile(string url, path destination) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.downloadFile");
     if (fs::exists(destination)) {
         logger.debug("Deleting old file...");
@@ -35,7 +30,7 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination, int barID,
         curlpp::Easy request;
         // Create callback
         int percent = 0;
-        ct::ProgressFunctionFunctor progressCallback = [&bars, barID, &percent](double dltotal, double dlnow, double ultotal, double ulnow){
+        ct::ProgressFunctionFunctor progressCallback = [&percent](double dltotal, double dlnow, double ultotal, double ulnow){
             double dlOnePercent = dltotal / 100;
             int dlnowR = std::round(dlnow);
             int dlOnePercentR = std::round(dlOnePercent);
@@ -43,7 +38,7 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination, int barID,
                 percent = 0;
             } else {
                 percent = (dlnowR % dlOnePercentR);
-                (*bars)[barID].set_progress(percent);
+                // Set percent here
             }
             return 0; // 0 to continue, 1 to abort
         };
@@ -56,7 +51,7 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination, int barID,
         request.setOpt(new co::ProgressFunction(progressCallback));
         request.setOpt(new co::FollowLocation(true)); // Fucking github and its countless redirections
         request.perform();
-        (*bars)[barID].mark_as_completed();
+        // Mark as completed
         return; // Done now
     } catch (curlpp::LogicError& e) {
         logger.fatalStream() << e.what();

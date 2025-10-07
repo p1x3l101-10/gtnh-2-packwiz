@@ -12,4 +12,5 @@ namespace gtnh2Packwiz::init {
     log4cpp::Priority::PriorityLevel getPriority();
     void argProcesser(std::pair<int, char**> args);
     void logger();
+    void ftxui();
 } // namespace gtnh2Packwiz::init

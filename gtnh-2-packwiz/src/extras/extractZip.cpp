@@ -5,8 +5,6 @@
 #include <stdexcept>
 #include "config.hpp"
 #include "gtnh2Packwiz/extras.hpp"
-#include <indicators/multi_progress.hpp>
-#include <indicators/progress_bar.hpp>
 
 namespace fs = std::filesystem;
 using fs::path;
@@ -98,11 +96,7 @@ void safeCreateDirs(path dirName) {
     return;
 }
 
-namespace pb = indicators;
-using pb::ProgressBar;
-using pb::DynamicProgress;
-
-void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir, int barID, DynamicProgress<ProgressBar>* bars) {
+void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.extractZip");
 
     try {
@@ -116,7 +110,7 @@ void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir, int barID, Dyna
             if (fileCount >= onePercent) {
                 fileCount = 0;
                 percent++;
-                (*bars)[barID].set_progress(percent);
+                // Set percent
             } else {
                 fileCount++;
             }

@@ -15,7 +15,6 @@ void shutdown(bool fatal = false, bool silent = false) {
     if (!silent) {
         logger.alert("Shutting down...");
     }
-    indicators::show_console_cursor(true);
     if (fatal) {
         exit(1);
     }
@@ -31,12 +30,11 @@ int main(int c, char** v) {
     std::signal(SIGINT, sigHandler);
     std::signal(SIGTERM, sigHandler);
     std::signal(SIGHUP, sigHandler);
-    // Hide cursor
-    indicators::show_console_cursor(false);
-    // Process args
+    // Setup
     gtnh2Packwiz::init::argProcesser({c, v});
-    // Set up logging
+    gtnh2Packwiz::init::ftxui();
     gtnh2Packwiz::init::logger();
+    // Init
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".main");
     logger.debug("Hierarchical application logging set up.");
     std::shared_ptr<gtnh2Packwiz::configFile> config = nullptr;
