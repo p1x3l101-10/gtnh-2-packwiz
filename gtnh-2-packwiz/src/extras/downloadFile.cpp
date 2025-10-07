@@ -54,6 +54,7 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination, int barID,
         request.setOpt(new co::WriteStream(&outFile));
         request.setOpt(new co::NoProgress(false));
         request.setOpt(new co::ProgressFunction(progressCallback));
+        request.setOpt(new co::FollowLocation(true)); // Fucking github and its countless redirections
         request.perform();
         return; // Done now
     } catch (curlpp::LogicError& e) {
