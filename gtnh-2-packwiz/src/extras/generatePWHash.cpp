@@ -4,7 +4,6 @@
 #include <cryptopp/sha.h>
 #include <cryptopp/hex.h>
 #include <sstream>
-#include <stdexcept>
 #include <fstream>
 #include <log4cpp/Category.hh>
 #ifdef OLD_MAGIC_ENUM
@@ -13,7 +12,7 @@
 #include <magic_enum/magic_enum.hpp>
 #endif
 
-extern void shutdown(bool fatal = false, bool silent = false);
+[[noreturn]] void shutdown(bool fatal = false, bool silent = false);
 
 namespace fs = std::filesystem;
 using std::string;
@@ -61,13 +60,12 @@ const string gtnh2Packwiz::extras::generatePWHash(path file, string pwHashFormat
         switch (hashCandidate.value()) {
             case knownHashFunctions::sha256: return helpers::sha256(file);
         }
-    } else {
-        // Achievement Get!: How did we get here?
-        // Seriously tho, how did you bypass my checks?
-        // PLEASE send a bug report if this happened!
-        logger.fatalStream() << "Tried to hash file: '" << file.string() << "' with invalid hash format: '" << pwHashFormat << "'";
-        logger.fatal("Binary must be invalid or compiler must be bad due to a static assert ensuring that this didnt happen");
-        logger.fatal("Just what did you do?");
-        shutdown(true);
     }
+    // Achievement Get!: How did we get here?
+    // Seriously tho, how did you bypass my checks?
+    // PLEASE send a bug report if this happened!
+    logger.fatalStream() << "Tried to hash file: '" << file.string() << "' with invalid hash format: '" << pwHashFormat << "'";
+    logger.fatal("Binary must be invalid or compiler must be bad due to a static assert ensuring that this didnt happen");
+    logger.fatal("Just what did you do?");
+    shutdown(true);
 }

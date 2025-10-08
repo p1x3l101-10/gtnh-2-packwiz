@@ -10,7 +10,7 @@
 
 gtnh2Packwiz::poolManager pool(THREAD_POOL_MAX_THREADS);
 
-void shutdown(bool fatal = false, bool silent = false) {
+[[noreturn]] void shutdown(bool fatal = false, bool silent = false) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".main.shutdown");
     if (!silent) {
         logger.alert("Shutting down...");

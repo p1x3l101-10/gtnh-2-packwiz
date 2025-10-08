@@ -18,7 +18,7 @@ using std::optional;
 
 extern gtnh2Packwiz::poolManager pool;
 
-extern void shutdown(bool fatal = false, bool silent = false);
+[[noreturn]] void shutdown(bool fatal = false, bool silent = false);
 
 namespace fs = std::filesystem;
 using boost::asio::post;
