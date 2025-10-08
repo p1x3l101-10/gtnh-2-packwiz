@@ -59,7 +59,7 @@ constexpr std::array<uint64_t, maxExp<Uint, BASE> + 2> makePowerTable() {
     decltype(makePowerTable<Uint, BASE>()) result;
     uint64_t x = 1;
     for (size_t i = 0; i < result.size(); ++i, x *= BASE) {
-        result.data[i] = x;
+        result.data()[i] = x;
     }
     return result;
 }
