@@ -237,6 +237,7 @@ void gtnh2Packwiz::pack::build() {
     {
         ofstream indexTOML(destDir.string() + "/index.toml");
         indexTOML << packwizIndex;
+        logger.info("Wrote index.toml");
     }
     // Write pack.toml
     {
@@ -266,12 +267,14 @@ void gtnh2Packwiz::pack::build() {
             ofstream packTOML(destDir.string() + "/pack.toml");
             packTOML << pack;
         }
+        logger.info("Wrote pack.toml");
     }
     // If unsup support is enabled and signatures are turned on, sign the files
     if constexpr (USING_UNSUP) {
         if (config->getUnsupConfig().enableSigning) {
             gtnh2Packwiz::extras::callSignify(destDir.string() + "/pack.toml", destDir.string() + "/unsup.sig" , config->getUnsupConfig().privateKeyPath);
             gtnh2Packwiz::extras::callSignify(destDir.string() + "/unsup.ini", destDir.string() + "/unsup.ini.sig" , config->getUnsupConfig().privateKeyPath);
+            logger.info("Signed files for unsup");
         }
     }
     // Also, ditto on conditions, but create a JVMArgs file for bootstrap
@@ -288,6 +291,16 @@ void gtnh2Packwiz::pack::build() {
             jvmArgs << " " << "-Dunsup.bootstrapKey='" << config->getUnsupConfig().publicKey << "'";
         }
         jvmArgs << "\n";
+        logger.info("Wrote unsup bootstrap jvm args");
     }
     // Copy destDir to the destination
+    {
+        fs::copy(destDir, config->getConfig().outPath + "/dist", fs::copy_options::recursive);
+        logger.info("Copied packwiz tree to output path");
+        // Cleanup
+        fs::remove_all(CACHE);
+        logger.info("Cleared cache path");
+        // Alert the user that we are done
+        logger.notice("Build complete");
+    }
 }
