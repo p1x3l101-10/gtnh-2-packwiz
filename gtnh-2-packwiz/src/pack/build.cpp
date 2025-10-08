@@ -268,5 +268,6 @@ void gtnh2Packwiz::pack::build() {
         }
     }
     // If unsup support is enabled and signatures are turned on, sign the files
+    // Also, ditto on conditions, but create a JVMArgs file for bootstrap
     // Copy destDir to the destination
 }
