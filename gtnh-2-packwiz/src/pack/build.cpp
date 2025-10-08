@@ -28,6 +28,7 @@ using std::vector;
 using nlohmann::json;
 using std::ifstream;
 using std::ofstream;
+using std::shared_ptr;
 
 template vector<string> gtnh2Packwiz::extras::setIntersection<string>(std::vector<string> a, std::vector<string> b);
 
@@ -242,7 +243,74 @@ void gtnh2Packwiz::pack::build() {
     }
 
     // Find downloads and write the meta files
-    // Add meta files to index
+    {
+        shared_ptr<json> gtnhAssets; // Oof, thats a big one
+        json gtnhRelease;
+        // These need to be downloaded and have a hash generated for them
+        vector<toml::table> ghMods;
+        vector<toml::table> cfMods;
+        {
+            // Load files
+            ifstream gtnhAssetsFile(packDir.string() + "/gtnh-assets.json");
+            gtnhAssetsFile >> *gtnhAssets;
+            path releaseFile = packDir.string() + "/releases/manifests/" + packVersion.string() + ".json";
+            ifstream gtnhReleaseFile(releaseFile);
+            gtnhReleaseFile >> gtnhRelease;
+        }
+        // Generate meta files
+        {
+            path modDir = destDir.string() + "/mods";
+            fs::create_directory(modDir);
+            // Github mods
+            for (const auto &ghMod : gtnhRelease["github_mods"].get<json::object_t>()) {
+                json modVersion = gtnh2Packwiz::extras::getModVersion(gtnhAssets, ghMod.first, ghMod.second["version"]);
+                toml::table modData;
+                // Header data
+                modData.insert_or_assign("name", ghMod.first);
+                modData.insert_or_assign("filename", modVersion["filename"].get<json::string_t>());
+                modData.insert_or_assign("side", gtnh2Packwiz::extras::convertSidedness(ghMod.second["side"]));
+
+                // Download data
+                toml::table modDownload;
+                modDownload.insert_or_assign("url", modVersion["download_url"].get<json::string_t>());
+                modDownload.insert_or_assign("hash-format", PACKWIZ_HASH_FORMAT);
+
+                // Append tables
+                modData.insert_or_assign("download", modDownload);
+
+                // Add to list
+                ghMods.push_back(modData);
+            }
+            // External mods
+            for (const auto &cfMod : gtnhRelease["external_mods"].get<json::object_t>()) {
+                json modVersion = gtnh2Packwiz::extras::getModVersion(gtnhAssets, cfMod.first, cfMod.second["version"]);
+                toml::table modData;
+                // Header data
+                modData.insert_or_assign("name", cfMod.first);
+                modData.insert_or_assign("filename", modVersion["filename"].get<json::string_t>());
+                modData.insert_or_assign("side", gtnh2Packwiz::extras::convertSidedness(cfMod.second["side"]));
+
+                // Download data
+                toml::table modDownload;
+                modDownload.insert_or_assign("mode", "metadata:curseforge");
+                modDownload.insert_or_assign("hash-format", "sha1"); // CF API has its own hash format :(
+
+                toml::table update;
+                toml::table cfMetadata;
+                cfMetadata.insert_or_assign("file-id", modVersion["curse_file"]["file_no"].get<json::string_t>());
+                cfMetadata.insert_or_assign("project-id", modVersion["curse_file"]["project_no"].get<json::string_t>());
+                update.insert_or_assign("curseforce", cfMetadata);
+
+                // Append tables
+                modData.insert_or_assign("download", modDownload);
+                modData.insert_or_assign("update", update);
+
+                // Add to list
+                cfMods.push_back(modData);
+            }
+        }
+        // Add meta files to index
+    }
     // Write index
     {
         ofstream indexTOML(destDir.string() + "/index.toml");
