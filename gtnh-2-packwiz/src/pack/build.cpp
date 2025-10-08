@@ -91,7 +91,7 @@ void gtnh2Packwiz::pack::build() {
             logger.debug("Coping config repo to destination");
             // Copy files
             path realCFG = configDir.string() + "/GT-New-Horizons-Modpack-" + packVersion.string();
-            fs::copy(realCFG, destDir);
+            fs::copy(realCFG, destDir, fs::copy_options::recursive);
         }
         // Find files that are excluded in both client and server so we can delete them
         {
