@@ -69,6 +69,13 @@ void gtnh2Packwiz::pack::build() {
             pool.reset();
             logger.info("Files extracted");
         }
+
+        // Cleanup
+        {
+            logger.debug("Cleaning used zip files");
+            fs::remove(packZip);
+            fs::remove(configZip);
+        }
     }
     // Parse the modpack json for data
     json gtnhModpack;
@@ -111,9 +118,14 @@ void gtnh2Packwiz::pack::build() {
                 fs::remove(realPath);
             }
         }
+        // Cleanup
+        {
+            logger.debug("Removing config directory as it isnt used anymore");
+            fs::remove_all(configDir);
+        }
     }
     // Construct an index toml
-    
+
     // OLD TODOS
     // Parse version
     // Get files from config repo
