@@ -269,5 +269,19 @@ void gtnh2Packwiz::pack::build() {
     }
     // If unsup support is enabled and signatures are turned on, sign the files
     // Also, ditto on conditions, but create a JVMArgs file for bootstrap
+    if constexpr (USING_UNSUP) {
+        ofstream jvmArgs(destDir.string() + "bootstrapJvmArgs.txt");
+        jvmArgs << "# The following line is the JVM args to allow unsup to download its own configuration\n";
+        if (config->getUnsupConfig().targetURL != "") {
+            jvmArgs << "-Dunsup.bootstrapUrl=" << config->getUnsupConfig().targetURL << "/unsup.ini";
+        } else {
+            jvmArgs << "# NOTE: a placeholder url is used, please set the config option `unsup.targetURL` when building\n";
+            jvmArgs << "-Dunsup.bootstrapUrl=" << "http://example.com" << "/unsup.ini";
+        }
+        if (config->getUnsupConfig().enableSigning) {
+            jvmArgs << " " << "-Dunsup.bootstrapKey='" << config->getUnsupConfig().publicKey << "'";
+        }
+        jvmArgs << "\n";
+    }
     // Copy destDir to the destination
 }
