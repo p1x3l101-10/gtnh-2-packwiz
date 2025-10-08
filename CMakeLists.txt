@@ -64,6 +64,7 @@ set(PACKWIZ_HASH_FORMAT "sha256")
 set(GTNH_AUTHOR "DreamMasterXXL") # Shouldn't need to be changed, but just in case (tm)
 option(USING_UNSUP ON) # Allow generating a normal packwiz tree without unsup compat
 set(UNSUP_MINIMUM_VERSION "1.1.5") # This is the unsup version I am testing against
+option(EXCLUSIVLY_TARGET_CLIENT ON) # I dont want to work out the logic to exclude server files, im just gonna use this on my client anyways
 
 build(
     BINARY ${CMAKE_PROJECT_NAME}
