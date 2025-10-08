@@ -8,7 +8,7 @@ outPath="."
 # Not read if built without support
 [unsup]
 targetURL = "" # Where the files will eventually be hosted at
-enableSigning = true # If true, the next two lines take effect
+enableSigning = false # If true, the next two lines take effect
 publicKey = "" # Same as the `public_key` line in unsup, only supporting signify for now
 privateKeyFile = "" # Path to private key for signing
 noGui = false # Enable if you want clients to see the update gui

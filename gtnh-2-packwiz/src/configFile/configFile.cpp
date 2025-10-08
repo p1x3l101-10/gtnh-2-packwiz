@@ -45,6 +45,16 @@ gtnh2Packwiz::configFile::configFile(std::string configPath) {
             GET_VALUE("config.cfApiKey", string),
             GET_VALUE("config.generateRemoteHashes", bool),
             GET_VALUE("config.outPath", string)};
+        if constexpr (USING_UNSUP) {
+            unsup = {
+                GET_VALUE("unsup.targetURL", string),
+                GET_VALUE("unsup.enableSigning", bool),
+                GET_VALUE("unsup.publicKey", string),
+                GET_VALUE("unsup.privateKeyFile", string),
+                GET_VALUE("unsup.noGui", bool),
+                GET_VALUE("unsup.configPath", string)
+            };
+        }
     } catch (toml::parse_error& e) {
         logger.fatalStream() << "Toml parsing error!" << e.description();
         exit(1);

@@ -13,11 +13,27 @@ namespace gtnh2Packwiz {
                     bool generateRemoteHashes;
                     std::string outPath;
             };
+#if USING_UNSUP == 0
+            struct unsupStruct {
+                std::string targetURL;
+                bool enableSigning;
+                std::string publicKey;
+                std::string privateKeyPath;
+                bool noGui;
+                std::string configPath;
+            };
+#endif
         private:
             log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".configFile");
             configStruct config;
+#if USING_UNSUP == 0
+            unsupStruct unsup;
+#endif
         public:
             configFile(std::string filePath);
             const configStruct getConfig() const;
+#if USING_UNSUP == 0
+            const unsupStruct getUnsupConfig() const;
+#endif
     };
 } // namespace gtnh2Packwiz
