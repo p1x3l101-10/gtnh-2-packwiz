@@ -13,6 +13,7 @@ namespace gtnh2Packwiz::extras {
     void extractZip(std::filesystem::path zip, std::filesystem::path outDir);
     const std::string humanReadableBytes(uint64_t size, unsigned precision = 0);
     const std::string generatePWHash(std::filesystem::path file, std::string pwHashFormat);
+    void callSignify(std::filesystem::path file, std::filesystem::path signature, std::filesystem::path key);
     // Why must templates be horrible like this???
     template <typename T>
         std::vector<T> setIntersection(std::vector<T> a, std::vector<T> b) {

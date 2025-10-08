@@ -268,6 +268,12 @@ void gtnh2Packwiz::pack::build() {
         }
     }
     // If unsup support is enabled and signatures are turned on, sign the files
+    if constexpr (USING_UNSUP) {
+        if (config->getUnsupConfig().enableSigning) {
+            gtnh2Packwiz::extras::callSignify(destDir.string() + "/pack.toml", destDir.string() + "/unsup.sig" , config->getUnsupConfig().privateKeyPath);
+            gtnh2Packwiz::extras::callSignify(destDir.string() + "/unsup.ini", destDir.string() + "/unsup.ini.sig" , config->getUnsupConfig().privateKeyPath);
+        }
+    }
     // Also, ditto on conditions, but create a JVMArgs file for bootstrap
     if constexpr (USING_UNSUP) {
         ofstream jvmArgs(destDir.string() + "bootstrapJvmArgs.txt");
