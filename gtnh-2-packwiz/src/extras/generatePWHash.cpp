@@ -6,11 +6,14 @@
 #include <sstream>
 #include <stdexcept>
 #include <fstream>
+#include <log4cpp/Category.hh>
 #ifdef OLD_MAGIC_ENUM
 #include <magic_enum.hpp>
 #else
 #include <magic_enum/magic_enum.hpp>
 #endif
+
+extern void shutdown(bool fatal = false, bool silent = false);
 
 namespace fs = std::filesystem;
 using std::string;
@@ -34,6 +37,7 @@ static_assert((enum_cast<knownHashFunctions>(PACKWIZ_HASH_FORMAT)).has_value(), 
 
 namespace helpers {
     string sha256(path filePath) {
+        log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.generatePWHash.helpers.sha256");
         CryptoPP::SHA256 hash;
         stringstream buffer;
         {
@@ -45,17 +49,25 @@ namespace helpers {
         // CryptoPP pipelines intentionally look like this
         // Objects are closer to functions in this case (very weird)
         StringSource(buffer.str(), true, new HashFilter(hash, new StringSink(digest)));
+        logger.debugStream() << "Generated hash: '" << digest << "' for file: '" << filePath.string() << "'";
         return digest;
     }
 }
 
 const string gtnh2Packwiz::extras::generatePWHash(path file, string pwHashFormat) {
+    log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.generatePWHash");
     auto hashCandidate = enum_cast<knownHashFunctions>(pwHashFormat);
     if (hashCandidate.has_value()) {
         switch (hashCandidate.value()) {
             case knownHashFunctions::sha256: return helpers::sha256(file);
         }
     } else {
-        throw std::runtime_error("Invalid hash format"); // Should never be reached in this project as there is an assert to ensure that. Only useful when copied
+        // Achievement Get!: How did we get here?
+        // Seriously tho, how did you bypass my checks?
+        // PLEASE send a bug report if this happened!
+        logger.fatalStream() << "Tried to hash file: '" << file.string() << "' with invalid hash format: '" << pwHashFormat << "'";
+        logger.fatal("Binary must be invalid or compiler must be bad due to a static assert ensuring that this didnt happen");
+        logger.fatal("Just what did you do?");
+        shutdown(true);
     }
 }
