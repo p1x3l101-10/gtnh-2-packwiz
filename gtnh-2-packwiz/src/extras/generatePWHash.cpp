@@ -23,6 +23,7 @@ using std::stringstream;
 using CryptoPP::StringSink;
 using CryptoPP::StringSource;
 using CryptoPP::HashFilter;
+using CryptoPP::HexEncoder;
 
 enum class knownHashFunctions {
     sha256
@@ -47,7 +48,7 @@ namespace helpers {
         string digest;
         // CryptoPP pipelines intentionally look like this
         // Objects are closer to functions in this case (very weird)
-        StringSource(buffer.str(), true, new HashFilter(hash, new StringSink(digest)));
+        StringSource(buffer.str(), true, new HashFilter(hash, new HexEncoder(new StringSink(digest))));
         logger.debugStream() << "Generated hash: '" << digest << "' for file: '" << filePath.string() << "'";
         return digest;
     }
