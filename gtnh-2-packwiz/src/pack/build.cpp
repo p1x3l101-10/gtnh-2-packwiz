@@ -123,7 +123,33 @@ void gtnh2Packwiz::pack::build() {
             fs::remove_all(configDir);
         }
     }
-    // Construct an index toml
+    // Construct the index toml
+    toml::table packwizIndex;
+    {
+        vector<path> files; // Temp var to track all found files
+        // Logger for my lambda
+        log4cpp::Category& fileFinderLogger = log4cpp::Category::getInstance(logger.getName() + ".fileFinder");
+        // Create a recursive function (recursion is a bit iffy, but whatever)
+        // Explicitly mark as a void return to avoid any wierdness with auto
+        // TODO: Find a better way to do this
+        auto fileFinder = [&files, &logger = fileFinderLogger](this auto&& self, path baseDir) -> void {
+            for (const auto &entry : fs::directory_iterator(baseDir)) {
+                if (entry.is_regular_file()) {
+                    logger.debugStream() << "Found file: '" << static_cast<path>(entry).string() << "'";
+                    files.push_back(entry);
+                } else if (entry.is_directory()) {
+                    logger.debugStream() << "Recursing into directory: '" << static_cast<path>(entry).string() << "'";
+                    self(entry);
+                } else {
+                    logger.fatal("Unknown file found!");
+                    logger.fatalStream() << "File is: '" << static_cast<path>(entry).string() << "'";
+                    shutdown(true);
+                }
+            }
+        };
+        // Call my recursive function
+        fileFinder(destDir);
+    }
 
     // OLD TODOS
     // Parse version
