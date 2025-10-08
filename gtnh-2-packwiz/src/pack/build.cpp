@@ -181,6 +181,7 @@ void gtnh2Packwiz::pack::build() {
         }
         // Convert custom struct into a toml table for the index
         {
+            logger.info("Merging file vector into index file array");
             toml::array fileArray;
             for (const auto &entry : indexFiles) {
                 toml::table file;
