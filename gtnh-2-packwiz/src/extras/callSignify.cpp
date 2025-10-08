@@ -42,6 +42,7 @@ void gtnh2Packwiz::extras::callSignify(path file, path signature, path key) {
                 signifyBin.string(),
                 args
             );
+            logger.debugStream() << "Signed file: '" << file.string() << "'";
             return; // Needed to avoid triggering bad log messages
         }
     }
