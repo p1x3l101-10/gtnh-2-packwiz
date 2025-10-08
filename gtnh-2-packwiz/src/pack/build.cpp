@@ -163,6 +163,16 @@ void gtnh2Packwiz::pack::build() {
             // Call my recursive function
             fileFinder(destDir);
         }
+        // Add the unsup.toml file if support is enabled
+        if constexpr (USING_UNSUP) {
+            // Ensure that the file has been specified
+            if (config->getUnsupConfig().configPath != "") {
+                // Copy it in
+                fs::copy_file(config->getUnsupConfig().configPath, destDir.string() + "/unsup.toml");
+                // Track it
+                files.push_back("unsup.toml");
+            }
+        }
         // Create the hashes needed
         vector<packwizFileEntry> indexFiles;
         {
