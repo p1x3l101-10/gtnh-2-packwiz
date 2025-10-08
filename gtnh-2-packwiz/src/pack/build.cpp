@@ -128,6 +128,8 @@ void gtnh2Packwiz::pack::build() {
                 logger.debugStream() << "Deleting file: '" << realPath.string() << "'";
                 fs::remove(realPath);
             }
+            // Remove the annoying .github directory
+            fs::remove_all(destDir.string() + "/.github");
         }
         // Cleanup
         {
