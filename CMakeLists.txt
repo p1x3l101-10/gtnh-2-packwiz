@@ -60,6 +60,7 @@ else()
 endif()
 # Threads
 set(THREAD_POOL_MAX_THREADS 4)
+set(PACKWIZ_HASH_FORMAT "sha256")
 
 build(
     BINARY ${CMAKE_PROJECT_NAME}
