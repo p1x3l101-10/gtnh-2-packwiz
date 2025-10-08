@@ -14,6 +14,7 @@
 // Toml is being dump
 using std::optional;
 #include <toml++/impl/table.hpp>
+#include <toml++/impl/array.hpp>
 
 extern gtnh2Packwiz::poolManager pool;
 
@@ -28,6 +29,12 @@ using nlohmann::json;
 using std::ifstream;
 
 template vector<string> gtnh2Packwiz::extras::setIntersection<string>(std::vector<string> a, std::vector<string> b);
+
+struct packwizFileEntry {
+    string file;
+    string hash;
+    bool metafile = false;
+};
 
 void gtnh2Packwiz::pack::build() {
     createLogger(logger);
@@ -155,15 +162,43 @@ void gtnh2Packwiz::pack::build() {
             // Call my recursive function
             fileFinder(destDir);
         }
+        // Create the hashes needed
+        vector<packwizFileEntry> indexFiles;
+        {
+            // Assign hash format
+            packwizIndex.insert_or_assign("hash-format", PACKWIZ_HASH_FORMAT);
+            int baseLength = destDir.string().length() + 1; // Add one to account for trailing '/'
+            // NOTE: None of these files will be metadata files
+            for (const auto &file : files) {
+                string hash = gtnh2Packwiz::extras::generatePWHash(file, PACKWIZ_HASH_FORMAT);
+                string fileBasename = file.string().erase(0, baseLength);
+                indexFiles.push_back({
+                    fileBasename,
+                    hash,
+                    false
+                });
+            }
+        }
+        // Convert custom struct into a toml table for the index
+        {
+            toml::array fileArray;
+            for (const auto &entry : indexFiles) {
+                toml::table file;
+                file.insert_or_assign("file", entry.file);
+                file.insert_or_assign("hash", entry.hash);
+                if (entry.metafile == true) {
+                    file.insert_or_assign("metafile", entry.metafile);
+                }
+                fileArray.push_back(file);
+            }
+            // Add to the index
+            packwizIndex.insert_or_assign("files", fileArray);
+        }
     }
 
-    // OLD TODOS
-    // Parse version
-    // Get files from config repo
-    // Read mods to metadata container
-    // Serialize container to packwiz metafiles
-    // Do the same for everything in the config repo
-    // Write an unsup config file
-    // Hash everything and create an index.toml file
-    // Create the pack.toml file
+    // Find downloads and write the meta files
+    // Add meta files to index
+    // Write index
+    // Write pack.toml
+    // Copy destDir to the destination
 }
