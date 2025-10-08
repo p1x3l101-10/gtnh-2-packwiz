@@ -21,7 +21,7 @@ include(cmake-libs/all)
 set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
 # Import libs
-find_package(Boost 1.89.0 REQUIRED COMPONENTS program_options process)
+find_package(Boost 1.89.0 REQUIRED COMPONENTS program_options process filesystem)
 find_package(magic_enum 0.9.5 REQUIRED)
 find_package(nlohmann_json 3.11.3 REQUIRED COMPONENTS screen dom component)
 find_package(PkgConfig 1.8.1 REQUIRED)
@@ -73,6 +73,8 @@ build(
         PkgConfig::cryptopp
         PkgConfig::curlpp
         Boost::program_options
+        Boost::filesystem
+        Boost::process
         magic_enum::magic_enum
         nlohmann_json::nlohmann_json
         PkgConfig::libzip
