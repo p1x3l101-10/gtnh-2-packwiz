@@ -173,6 +173,29 @@ void gtnh2Packwiz::pack::build() {
                 files.push_back("unsup.toml");
             }
         }
+        // Do the same for the unsup.ini file
+        if constexpr (USING_UNSUP) {
+            ofstream unsupINI(destDir.string() + "/unsup.ini");
+            unsupINI
+                << "version=1\n"
+                << "source_format=packwiz\n"
+                << "preset=minecraft\n"
+                << "behavior=auto";
+            if (config->getUnsupConfig().targetURL != "") {
+                unsupINI << "source=" << config->getUnsupConfig().targetURL << "\n";
+            } else {
+                unsupINI
+                    << "; Uncomment the following line and put the destination path\n"
+                    << ";source=https://example.com/pack.toml\n";
+            }
+            if (config->getUnsupConfig().enableSigning) {
+                unsupINI << "public_key=" << config->getUnsupConfig().publicKey;
+            }
+            if (config->getUnsupConfig().noGui) {
+                unsupINI << "no_gui=true";
+            }
+            files.push_back("unsup.ini");
+        }
         // Create the hashes needed
         vector<packwizFileEntry> indexFiles;
         {
@@ -244,6 +267,6 @@ void gtnh2Packwiz::pack::build() {
             packTOML << pack;
         }
     }
-    // If unsup support is enabled, generate the files for that too
+    // If unsup support is enabled and signatures are turned on, sign the files
     // Copy destDir to the destination
 }
