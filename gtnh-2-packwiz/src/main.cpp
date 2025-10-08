@@ -51,5 +51,5 @@ int main(int c, char** v) {
         logger.fatal("You need to specify a version of the pack to build!");
         shutdown(true);
     }
-    shutdown();
+    shutdown(false, true); // Silent shutdown on normal exit
 }
