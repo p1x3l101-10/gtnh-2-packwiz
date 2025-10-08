@@ -27,6 +27,7 @@ using std::string;
 using std::vector;
 using nlohmann::json;
 using std::ifstream;
+using std::ofstream;
 
 template vector<string> gtnh2Packwiz::extras::setIntersection<string>(std::vector<string> a, std::vector<string> b);
 
@@ -200,6 +201,36 @@ void gtnh2Packwiz::pack::build() {
     // Find downloads and write the meta files
     // Add meta files to index
     // Write index
+    {
+        ofstream indexTOML(destDir.string() + "/index.toml");
+        indexTOML << packwizIndex;
+    }
     // Write pack.toml
+    {
+        toml::table pack;
+        // Write data
+        // Surely there must be a better way to do this????
+        pack.insert_or_assign("name", "GregTech: New Horizons"); // if GTNH ever changes the name, then change this too
+        pack.insert_or_assign("author", GTNH_AUTHOR);
+        pack.insert_or_assign("version", packVersion.string());
+        pack.insert_or_assign("pack-format", "packwiz:1.1.0"); // This is the format version I am targeting
+        {
+            toml::table index;
+            index.insert_or_assign("file", "index.toml");
+            index.insert_or_assign("hash-format", PACKWIZ_HASH_FORMAT);
+            index.insert_or_assign("hash", gtnh2Packwiz::extras::generatePWHash(destDir.string() + "/index.toml", PACKWIZ_HASH_FORMAT));
+            pack.insert_or_assign("index", index);
+        }
+        {
+            toml::table versions;
+            versions.insert_or_assign("forge", "");
+            versions.insert_or_assign("minecraft", "1.7.10");
+        }
+        {
+            ofstream packTOML(destDir.string() + "/pack.toml");
+            packTOML << pack;
+        }
+    }
+    // If unsup support is enabled, generate the files for that too
     // Copy destDir to the destination
 }
