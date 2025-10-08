@@ -4,3 +4,12 @@ configRepo="https://github.com/GTNewHorizons/GT-New-Horizons-Modpack"
 cfApiKey=""
 generateRemoteHashes=false # TODO: impliment downloading and hashing
 outPath="."
+
+# Not read if built without support
+[unsup]
+targetURL = "" # Where the files will eventually be hosted at
+enableSigning = true # If true, the next two lines take effect
+publicKey = "" # Same as the `public_key` line in unsup, only supporting signify for now
+privateKeyFile = "" # Path to private key for signing
+noGui = false # Enable if you want clients to see the update gui
+configPath = "" # Path to the `unsup.toml` file you want included

@@ -225,6 +225,9 @@ void gtnh2Packwiz::pack::build() {
             toml::table versions;
             versions.insert_or_assign("forge", "");
             versions.insert_or_assign("minecraft", "1.7.10");
+            if constexpr (USING_UNSUP) {
+                versions.insert_or_assign("unsup", UNSUP_VERSION);
+            }
         }
         {
             ofstream packTOML(destDir.string() + "/pack.toml");
