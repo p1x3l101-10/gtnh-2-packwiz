@@ -394,7 +394,7 @@ void gtnh2Packwiz::pack::build() {
     }
     // Also, ditto on conditions, but create a JVMArgs file for bootstrap
     if constexpr (USING_UNSUP) {
-        ofstream jvmArgs(destDir.string() + "bootstrapJvmArgs.txt");
+        ofstream jvmArgs(destDir.string() + "/bootstrapJvmArgs.txt");
         jvmArgs << "# The following line is the JVM args to allow unsup to download its own configuration\n";
         if (config->getUnsupConfig().targetURL != "") {
             jvmArgs << "-Dunsup.bootstrapUrl=" << config->getUnsupConfig().targetURL << "/unsup.ini";
