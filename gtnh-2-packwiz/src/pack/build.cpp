@@ -242,6 +242,7 @@ void gtnh2Packwiz::pack::build() {
         vector<toml::table> cfMods;
         {
             // Load files
+            logger.info("Loading pack metadata from JSON");
             logger.debug("Loading the very large file that is the gtnh-assets.json");
             ifstream gtnhAssetsFile(packDir.string() + "/gtnh-assets.json");
             gtnhAssetsFile >> (*gtnhAssets);
