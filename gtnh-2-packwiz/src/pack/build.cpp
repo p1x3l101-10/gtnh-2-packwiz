@@ -320,7 +320,7 @@ void gtnh2Packwiz::pack::build() {
                     logger.debug("Generating hash");
                     string hash = gtnh2Packwiz::extras::generatePWHash(dlPath, PACKWIZ_HASH_FORMAT);
                     // Add the hash to the packwiz file
-                    mods.at(i).insert_or_assign("download.hash", hash);
+                    mods.at(i)["download"].as_table()->insert_or_assign("hash", hash);
                 }
             }
         }
