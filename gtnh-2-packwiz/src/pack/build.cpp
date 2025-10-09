@@ -260,7 +260,7 @@ void gtnh2Packwiz::pack::build() {
             logger.debug("Generating packwiz metafiles for github mods");
             // Github mods
             for (const auto &ghMod : gtnhRelease["github_mods"].get<json::object_t>()) {
-                logger.debugStream() << "Generating metadata for mod: " << ghMod.first << "'";
+                logger.debugStream() << "Generating metadata for mod: '" << ghMod.first << "'";
                 json modVersion = gtnh2Packwiz::extras::getModVersion(gtnhAssets, ghMod.first, ghMod.second["version"]);
                 toml::table modData;
                 // Header data
@@ -282,7 +282,7 @@ void gtnh2Packwiz::pack::build() {
             logger.debug("Generating packwiz metafiles for curseforge mods");
             // External mods
             for (const auto &cfMod : gtnhRelease["external_mods"].get<json::object_t>()) {
-                logger.debugStream() << "Generating metadata for mod: " << cfMod.first << "'";
+                logger.debugStream() << "Generating metadata for mod: '" << cfMod.first << "'";
                 json modVersion = gtnh2Packwiz::extras::getModVersion(gtnhAssets, cfMod.first, cfMod.second["version"]);
                 toml::table modData;
                 // Header data
