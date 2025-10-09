@@ -184,7 +184,7 @@ void gtnh2Packwiz::pack::build() {
                 << "version=1\n"
                 << "source_format=packwiz\n"
                 << "preset=minecraft\n"
-                << "behavior=auto";
+                << "behavior=auto\n";
             if (config->getUnsupConfig().targetURL != "") {
                 unsupINI << "source=" << config->getUnsupConfig().targetURL << "\n";
             } else {
