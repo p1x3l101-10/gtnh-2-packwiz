@@ -410,6 +410,18 @@ void gtnh2Packwiz::pack::build() {
     }
     // Copy destDir to the destination
     {
+        path output;
+        // Avoid clobbering the workdir
+        if (config->getConfig().outPath == ".") {
+            output = config->getConfig().outPath + "/dist";
+        } else {
+            output = config->getConfig().outPath;
+        }
+        // Fix a bug when the destdir already exists
+        if (fs::exists(output)) {
+            logger.warn("Destination already exists, proceding anyways and removing it");
+            fs::remove_all(output);
+        }
         fs::copy(destDir, config->getConfig().outPath + "/dist", fs::copy_options::recursive);
         logger.info("Copied packwiz tree to output path");
         // Cleanup
