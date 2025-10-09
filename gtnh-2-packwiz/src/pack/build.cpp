@@ -335,6 +335,28 @@ void gtnh2Packwiz::pack::build() {
             }
         }
         // Add meta files to index
+        if (! fs::exists(destDir.string() + "/mods")) {
+            fs::create_directory(destDir.string() + "/mods");
+        }
+        {
+            toml::array fileArray = packwizIndex.at_path("files").ref<toml::array>();
+            for (const auto &entry : ghMods) {
+                toml::table file;
+                {
+                    ofstream metaToml(destDir.string() + "/mods/" + entry.at_path("name").ref<string>() + ".pw.toml");
+                    metaToml << entry;
+                }
+                string localPath = "mods/" + entry.at_path("name").ref<string>() + ".pw.toml";
+                file.insert_or_assign("file", localPath);
+                file.insert_or_assign("hash", entry.at_path("download.hash").ref<string>());
+                file.insert_or_assign("metafile", true);
+                fileArray.push_back(file);
+                logger.debugStream() << "Wrote metadata file for mod: '" << entry.at_path("name").ref<string>() << "'";
+            }
+            logger.info("Wrote metadata files to the index");
+            // Add to the index
+            packwizIndex.insert_or_assign("files", fileArray);
+        }
     }
     // Write index
     {
