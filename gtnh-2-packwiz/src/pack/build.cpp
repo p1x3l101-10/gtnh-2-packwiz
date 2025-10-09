@@ -309,8 +309,31 @@ void gtnh2Packwiz::pack::build() {
                 cfMods.push_back(modData);
             }
         }
-        logger.debug("Metadata generated");
+        logger.info("Metadata generated");
         // Generate hashes
+        {
+            vector<packwizFileEntry> indexFiles; // New index file
+            logger.info("Generating hashes for mod files");
+            // Github mods
+            {
+                path tempPath = CACHE "/modDownloads/github";
+                if (!fs::exists(tempPath)) {
+                    fs::create_directory(tempPath);
+                }
+                logger.debug("Downloading github mods for hash calculations");
+                for (int i = 0; i < ghMods.size(); i++) {
+                    const auto &mod = ghMods.at(i);
+                    logger.debugStream() << "Current mod: '" << mod.at_path("name").ref<string>() << "'";
+                    string dlURL = mod.at_path("download.url").ref<string>();
+                    path dlPath = tempPath.string() + "/" + mod.at_path("filename").ref<string>();
+                    extras::downloadFile(dlURL, dlPath);
+                    logger.debug("Generating hash");
+                    string hash = gtnh2Packwiz::extras::generatePWHash(dlPath, PACKWIZ_HASH_FORMAT);
+                    // Add the hash to the packwiz file
+                    ghMods.at(i).insert_or_assign("download.hash", hash);
+                }
+            }
+        }
         // Add meta files to index
     }
     // Write index
