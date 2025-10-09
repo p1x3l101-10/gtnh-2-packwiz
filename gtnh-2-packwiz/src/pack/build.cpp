@@ -80,10 +80,13 @@ void gtnh2Packwiz::pack::build() {
             logger.info("Files extracted");
         }
     }
+    // Redo the path variables for the new paths
+    packDir = packDir.string() + "/DreamAssemblerXXL-master";
+    configDir = configDir.string() + "/GT-New-Horizons-Modpack-" + packVersion.string();
     // Parse the modpack json for data
     json gtnhModpack;
     {
-        path gtnhModpackJSONFile = packDir.string() + "/DreamAssemblerXXL-master/gtnh-modpack.json";
+        path gtnhModpackJSONFile = packDir.string() + "/gtnh-modpack.json";
         ifstream gtnhModpackJSON(gtnhModpackJSONFile);
         gtnhModpackJSON >> gtnhModpack;
     }
@@ -99,8 +102,7 @@ void gtnh2Packwiz::pack::build() {
             }
             logger.debug("Coping config repo to destination");
             // Copy files
-            path realCFG = configDir.string() + "/GT-New-Horizons-Modpack-" + packVersion.string();
-            fs::copy(realCFG, destDir, fs::copy_options::recursive);
+            fs::copy(configDir, destDir, fs::copy_options::recursive);
         }
         // Find files that are excluded in both client and server so we can delete them
         {
@@ -245,7 +247,7 @@ void gtnh2Packwiz::pack::build() {
             logger.info("Loading pack metadata from JSON");
             logger.debug("Loading the very large file that is the gtnh-assets.json");
             ifstream gtnhAssetsFile(packDir.string() + "/gtnh-assets.json");
-            gtnhAssetsFile >> (*gtnhAssets);
+            *gtnhAssets = json::parse(gtnhAssetsFile);
             logger.debug("Loading the release manifest");
             path releaseFile = packDir.string() + "/releases/manifests/" + packVersion.string() + ".json";
             ifstream gtnhReleaseFile(releaseFile);
