@@ -19,12 +19,22 @@ using fs::path;
 using std::string;
 namespace co = curlpp::options;
 namespace ct = curlpp::Types;
+namespace chrono = std::chrono;
 
 void gtnh2Packwiz::extras::downloadFile(string url, path destination) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.downloadFile");
     if (fs::exists(destination)) {
-        logger.debug("Deleting old file...");
-        fs::remove(destination);
+        // Only delete file when it is older than 12 hours
+        auto now = chrono::file_clock::now();
+        auto fileAge = fs::last_write_time(destination);
+        auto age = now - fileAge;
+        if (age > chrono::hours(12)) {
+            logger.debug("Deleting stale file...");
+            fs::remove(destination);
+        } else {
+            logger.info("Using cached file");
+            return;
+        }
     }
     try {
         logger.infoStream() << "Downloading URL: '" << url << "'";

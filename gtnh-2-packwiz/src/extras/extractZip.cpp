@@ -7,6 +7,7 @@
 #include "gtnh2Packwiz/extras.hpp"
 
 namespace fs = std::filesystem;
+namespace chrono = std::chrono;
 using fs::path;
 using std::string;
 
@@ -98,6 +99,21 @@ void safeCreateDirs(path dirName) {
 
 void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.extractZip");
+
+    // Use cached paths
+    if (fs::exists(outDir)) {
+        // Only delete file when it is older than 8 hours
+        auto now = chrono::file_clock::now();
+        auto fileAge = fs::last_write_time(outDir);
+        auto age = now - fileAge;
+        if (age > chrono::hours(8)) {
+            logger.debug("Deleting stale path...");
+            fs::remove_all(outDir);
+        } else {
+            logger.info("Using cached path");
+            return;
+        }
+    }
 
     try {
         logger.debugStream() << "Opening file: '" << zipFile.string() << "'";
