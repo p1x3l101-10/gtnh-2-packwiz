@@ -4,8 +4,16 @@
 #include <log4cpp/OstreamAppender.hh>
 #include "gtnh2Packwiz/init.hpp"
 #include "gtnh2Packwiz/loggerLayout.hpp"
+#include <rang/rang.hpp>
+
+using rang::setControlMode;
+using rang::control;
 
 void gtnh2Packwiz::init::logger() {
+    // Setup colors
+    setControlMode(control::Auto);
+
+    // Setup the actual logger
     log4cpp::Appender* appender;
     if (gtnh2Packwiz::init::args.count("logfile")) {
         appender = new log4cpp::FileAppender("default", args["logfile"].as<std::string>());
