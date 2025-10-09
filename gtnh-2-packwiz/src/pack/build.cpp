@@ -92,6 +92,11 @@ void gtnh2Packwiz::pack::build() {
     {
         // Config has the raw files already
         {
+            // ALWAYS regenerate my dist dir
+            if (fs::exists(destDir)) {
+                logger.debug("Removing old dest dir");
+                fs::remove_all(destDir);
+            }
             logger.debug("Coping config repo to destination");
             // Copy files
             path realCFG = configDir.string() + "/GT-New-Horizons-Modpack-" + packVersion.string();
@@ -370,6 +375,8 @@ void gtnh2Packwiz::pack::build() {
         fs::copy(destDir, config->getConfig().outPath + "/dist", fs::copy_options::recursive);
         logger.info("Copied packwiz tree to output path");
         // Cleanup
+        logger.debug("Cleaned workdir");
+        fs::remove_all(destDir);
         if (args.count("clear-cache")) {
             fs::remove_all(CACHE);
             logger.info("Cleared cache path");
