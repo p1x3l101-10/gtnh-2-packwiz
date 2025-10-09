@@ -253,7 +253,7 @@ void gtnh2Packwiz::pack::build() {
             // Load files
             logger.debug("Loading the very large file that is the gtnh-assets.json");
             ifstream gtnhAssetsFile(packDir.string() + "/gtnh-assets.json");
-            gtnhAssetsFile >> *gtnhAssets;
+            gtnhAssetsFile >> (*gtnhAssets);
             logger.debug("Loading the release manifest");
             path releaseFile = packDir.string() + "/releases/manifests/" + packVersion.string() + ".json";
             ifstream gtnhReleaseFile(releaseFile);
