@@ -241,7 +241,7 @@ void gtnh2Packwiz::pack::build() {
         json gtnhRelease;
         // These need to be downloaded and have a hash generated for them
         vector<toml::table> ghMods;
-        vector<toml::table> cfMods;
+        vector<toml::table> exMods;
         {
             // Load files
             logger.info("Loading pack metadata from JSON");
@@ -281,32 +281,25 @@ void gtnh2Packwiz::pack::build() {
             }
             logger.debug("Generating packwiz metafiles for curseforge mods");
             // External mods
-            for (const auto &cfMod : gtnhRelease["external_mods"].get<json::object_t>()) {
-                logger.debugStream() << "Generating metadata for mod: '" << cfMod.first << "'";
-                json modVersion = gtnh2Packwiz::extras::getModVersion(gtnhAssets, cfMod.first, cfMod.second["version"]);
+            for (const auto &exMod : gtnhRelease["external_mods"].get<json::object_t>()) {
+                logger.debugStream() << "Generating metadata for mod: '" << exMod.first << "'";
+                json modVersion = gtnh2Packwiz::extras::getModVersion(gtnhAssets, exMod.first, exMod.second["version"]);
                 toml::table modData;
                 // Header data
-                modData.insert_or_assign("name", cfMod.first);
+                modData.insert_or_assign("name", exMod.first);
                 modData.insert_or_assign("filename", modVersion["filename"].get<json::string_t>());
-                modData.insert_or_assign("side", gtnh2Packwiz::extras::convertSidedness(cfMod.second["side"]));
+                modData.insert_or_assign("side", gtnh2Packwiz::extras::convertSidedness(exMod.second["side"]));
 
                 // Download data
                 toml::table modDownload;
-                modDownload.insert_or_assign("mode", "metadata:curseforge");
-                modDownload.insert_or_assign("hash-format", "sha1"); // CF API has its own hash format :(
-
-                toml::table update;
-                toml::table cfMetadata;
-                cfMetadata.insert_or_assign("file-id", modVersion["curse_file"]["file_no"].get<json::number_integer_t>());
-                cfMetadata.insert_or_assign("project-id", modVersion["curse_file"]["project_no"].get<json::number_integer_t>());
-                update.insert_or_assign("curseforce", cfMetadata);
+                modDownload.insert_or_assign("url", modVersion["download_url"].get<json::string_t>());
+                modDownload.insert_or_assign("hash-format", PACKWIZ_HASH_FORMAT);
 
                 // Append tables
                 modData.insert_or_assign("download", modDownload);
-                modData.insert_or_assign("update", update);
 
                 // Add to list
-                cfMods.push_back(modData);
+                exMods.push_back(modData);
             }
         }
         logger.info("Metadata generated");
