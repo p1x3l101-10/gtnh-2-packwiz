@@ -10,6 +10,7 @@
 #include "gtnh2Packwiz/poolManager.hpp"
 #include "loggerMacro.hpp"
 #include <nlohmann/json.hpp>
+#include <boost/program_options/variables_map.hpp>
 
 // Toml is being dump
 using std::optional;
@@ -17,7 +18,7 @@ using std::optional;
 #include <toml++/impl/array.hpp>
 
 extern gtnh2Packwiz::poolManager pool;
-
+extern boost::program_options::variables_map args;
 [[noreturn]] void shutdown(bool fatal = false, bool silent = false);
 
 namespace fs = std::filesystem;
@@ -384,8 +385,10 @@ void gtnh2Packwiz::pack::build() {
         fs::copy(destDir, config->getConfig().outPath + "/dist", fs::copy_options::recursive);
         logger.info("Copied packwiz tree to output path");
         // Cleanup
-        fs::remove_all(CACHE);
-        logger.info("Cleared cache path");
+        if (args.count("clear-cache")) {
+            fs::remove_all(CACHE);
+            logger.info("Cleared cache path");
+        }
         // Alert the user that we are done
         logger.notice("Build complete");
     }
