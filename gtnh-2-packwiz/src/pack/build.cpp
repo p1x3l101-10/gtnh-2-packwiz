@@ -309,7 +309,7 @@ void gtnh2Packwiz::pack::build() {
             logger.info("Generating hashes for mod files");
             // Github mods
             {
-                path tempPath = CACHE "/modDownloads/github";
+                path tempPath = CACHE "/modDownloads";
                 if (!fs::exists(tempPath)) {
                     fs::create_directory(tempPath);
                 }
