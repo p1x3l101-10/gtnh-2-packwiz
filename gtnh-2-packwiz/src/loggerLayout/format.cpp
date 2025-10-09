@@ -72,7 +72,7 @@ std::string gtnh2Packwiz::loggerLayout::format(const log4cpp::LoggingEvent& even
     }
 
     // Create the output string
-    out << elapsedStr << priority << " " << thread;
+    out << color.str() << elapsedStr << priority << " " << thread;
     if (!event.categoryName.empty()) {
         out << " (" << event.categoryName << ")";
     } else {
