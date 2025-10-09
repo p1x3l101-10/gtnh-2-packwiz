@@ -15,7 +15,6 @@
 , cryptopp
 , curl
 , libzip
-, ncurses
 }:
 
 let
@@ -76,7 +75,6 @@ stdenv.mkDerivation {
     curlpp
     cryptopp
     libzip
-    ncurses
   ] ++ [ # Deps not in search path???
     curl
   ];

@@ -29,7 +29,6 @@ pkg_check_modules(tomlplusplus REQUIRED IMPORTED_TARGET tomlplusplus>=3.4.0)
 pkg_check_modules(log4cpp REQUIRED IMPORTED_TARGET log4cpp>=1.1)
 pkg_check_modules(cryptopp REQUIRED IMPORTED_TARGET libcryptopp>=8.9)
 pkg_check_modules(libzip REQUIRED IMPORTED_TARGET libzip>=1.11.4)
-pkg_check_modules(ncursesppw REQUIRED IMPORTED_TARGET ncurses++w>=6.5)
 if(BAD_CURLPP_VERSION_FORMAT)
     pkg_check_modules(curlpp REQUIRED IMPORTED_TARGET curlpp)
 else()
@@ -74,7 +73,6 @@ build(
         PkgConfig::log4cpp
         PkgConfig::cryptopp
         PkgConfig::curlpp
-        PkgConfig::ncursesppw
         Boost::program_options
         Boost::filesystem
         Boost::process
