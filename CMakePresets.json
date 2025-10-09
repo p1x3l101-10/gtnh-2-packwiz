@@ -11,6 +11,15 @@
             }
         },
         {
+            "name": "full",
+            "displayName": "All features",
+            "inherits": "basic",
+            "cacheVariables": {
+                "USING_UNSUP": "ON",
+                "EXCLUSIVLY_TARGET_CLIENT": "ON"
+            }
+        },
+        {
             "name": "dev",
             "inherits": "basic",
             "cacheVariables": {
@@ -23,6 +32,12 @@
             "name": "basic",
             "displayName": "Basic Build",
             "configurePreset": "basic"
+        },
+        {
+            "name": "full",
+            "inherits": "basic",
+            "configurePreset": "full",
+            "displayName": "Full Build"
         },
         {
             "name": "dev",
@@ -42,6 +57,20 @@
                 {
                     "type": "build",
                     "name": "basic"
+                }
+            ]
+        },
+        {
+            "name": "full",
+            "displayName": "Full Build",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "full"
+                },
+                {
+                    "type": "build",
+                    "name": "full"
                 }
             ]
         },
