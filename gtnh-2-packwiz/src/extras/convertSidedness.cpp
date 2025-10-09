@@ -16,7 +16,8 @@ enum class gtnhSides {
     CLIENT,
     SERVER,
     CLIENT_JAVA9,
-    SERVER_JAVA9
+    SERVER_JAVA9,
+    BOTH_JAVA9
 };
 enum class pwSides {
     both,
@@ -34,7 +35,8 @@ pwSides convertEnum(gtnhSides side) {
         case gtnhSides::SERVER_JAVA9: {
             return pwSides::server;
         }
-        case gtnhSides::BOTH: {
+        case gtnhSides::BOTH: 
+        case gtnhSides::BOTH_JAVA9: {
             return pwSides::both;
         }
     }
