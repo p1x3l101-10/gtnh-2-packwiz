@@ -21,7 +21,7 @@
         },
         {
             "name": "dev",
-            "inherits": "basic",
+            "inherits": "full",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
             }
