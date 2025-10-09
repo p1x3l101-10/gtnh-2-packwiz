@@ -422,7 +422,7 @@ void gtnh2Packwiz::pack::build() {
             logger.warn("Destination already exists, proceding anyways and removing it");
             fs::remove_all(output);
         }
-        fs::copy(destDir, config->getConfig().outPath + "/dist", fs::copy_options::recursive);
+        fs::copy(destDir, output, fs::copy_options::recursive);
         logger.info("Copied packwiz tree to output path");
         // Cleanup
         logger.debug("Cleaned workdir");
