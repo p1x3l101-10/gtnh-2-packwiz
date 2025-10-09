@@ -8,20 +8,25 @@
 
 using rang::setControlMode;
 using rang::control;
+using std::cout;
+using log4cpp::OstreamAppender;
+using log4cpp::FileAppender;
+using log4cpp::Category;
+using log4cpp::Appender;
 
 void gtnh2Packwiz::init::logger() {
     // Setup colors
     setControlMode(control::Auto);
 
     // Setup the actual logger
-    log4cpp::Appender* appender;
+    Appender* appender;
     if (gtnh2Packwiz::init::args.count("logfile")) {
-        appender = new log4cpp::FileAppender("default", args["logfile"].as<std::string>());
+        appender = new FileAppender("default", args["logfile"].as<std::string>());
     } else {
-        appender = new log4cpp::OstreamAppender("console", &std::cout);
+        appender = new OstreamAppender("console", &cout);
     }
     appender->setLayout(new gtnh2Packwiz::loggerLayout());
-    log4cpp::Category& root = log4cpp::Category::getRoot();
+    Category& root = Category::getRoot();
     root.setAppender(appender);
     try { // Set loglevel
         root.setPriority(gtnh2Packwiz::init::getPriority());
