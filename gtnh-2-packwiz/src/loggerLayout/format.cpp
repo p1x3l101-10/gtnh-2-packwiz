@@ -24,7 +24,7 @@ std::string gtnh2Packwiz::loggerLayout::format(const log4cpp::LoggingEvent& even
 
     // Loglevel
     string priority = "[" + log4cpp::Priority::getPriorityName(event.priority) + "]";
-    priority.resize(7, ' ');
+    priority.resize(8, ' ');
 
     // Thread PID
     string thread;
