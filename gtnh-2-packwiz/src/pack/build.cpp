@@ -82,13 +82,6 @@ void gtnh2Packwiz::pack::build() {
             pool.reset();
             logger.info("Files extracted");
         }
-
-        // Cleanup
-        {
-            logger.debug("Cleaning used zip files");
-            fs::remove(packZip);
-            fs::remove(configZip);
-        }
     }
     // Parse the modpack json for data
     json gtnhModpack;
