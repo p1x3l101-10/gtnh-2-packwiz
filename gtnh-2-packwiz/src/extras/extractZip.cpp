@@ -105,9 +105,13 @@ void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir) {
         // Only delete file when it is older than 8 hours
         auto now = chrono::file_clock::now();
         auto fileAge = fs::last_write_time(outDir);
+        auto parentAge = fs::last_write_time(zipFile);
         auto age = now - fileAge;
         if (age > chrono::hours(8)) {
             logger.debug("Deleting stale path...");
+            fs::remove_all(outDir);
+        } else if (fileAge > parentAge) {
+            logger.debug("Zip is newer than extracted contents, deleting stale path...");
             fs::remove_all(outDir);
         } else {
             logger.info("Using cached path");
