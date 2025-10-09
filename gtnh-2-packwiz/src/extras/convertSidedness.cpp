@@ -48,6 +48,7 @@ string gtnh2Packwiz::extras::convertSidedness(string side) {
         return (magic_enum::enum_name<pwSides>(newSide)).data();
     } else {
         logger.fatal("Bad mod side");
+        logger.fatalStream() << "Got side: '" << side << "'";
         shutdown(true);
     }
 }
