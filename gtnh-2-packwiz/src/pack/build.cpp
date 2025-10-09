@@ -247,7 +247,7 @@ void gtnh2Packwiz::pack::build() {
             logger.info("Loading pack metadata from JSON");
             logger.debug("Loading the very large file that is the gtnh-assets.json");
             ifstream gtnhAssetsFile(packDir.string() + "/gtnh-assets.json");
-            *gtnhAssets = json::parse(gtnhAssetsFile);
+            gtnhAssets = std::make_shared<json>(json::parse(gtnhAssetsFile));
             logger.debug("Loading the release manifest");
             path releaseFile = packDir.string() + "/releases/manifests/" + packVersion.string() + ".json";
             ifstream gtnhReleaseFile(releaseFile);
