@@ -36,7 +36,8 @@ void gtnh2Packwiz::init::logger() {
     // Setup colors
     if (!selectedColors.selected) {
         if (gtnh2Packwiz::init::args.count("colors")) {
-            selectedColors.mode = gtnh2Packwiz::init::args["colors"].as<colorMode>();
+            auto candidate = magic_enum::enum_cast<colorMode>(gtnh2Packwiz::init::args["colors"].as<std::string>());
+            selectedColors.mode = candidate.value_or(colorMode::automatic);
         } else {
             selectedColors.mode = colorMode::automatic;
         }

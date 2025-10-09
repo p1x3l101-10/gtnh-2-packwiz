@@ -1,3 +1,4 @@
+#include <string>
 #define DEFINE_ARGS
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/parsers.hpp>
@@ -13,22 +14,6 @@
 #include "gtnh2Packwiz/init.hpp"
 #include "license.h"
 
-// Class for color mode
-enum class colorMode {
-    on,
-    off,
-    automatic
-};
-namespace boost::program_options {
-    template<> void validate (boost::any& v, const std::vector<std::string>& values, colorMode*, long) {
-        validators::check_first_occurrence(v);
-        const auto s = magic_enum::enum_cast<colorMode>(values[0]);
-        if (! s.has_value()) {
-            throw validation_error(validation_error::invalid_option_value);
-        }
-    }
-}// namespace boost::program_options
-
 namespace po = boost::program_options;
 
 boost::program_options::variables_map args;
@@ -43,7 +28,7 @@ void gtnh2Packwiz::init::argProcesser(std::pair<int, char**> arg) {
         ("version", "print the version info")
         ("buildinfo", "prints the options used to build this program")
         ("license", "print the full license info for this program")
-        ("colors", po::value<colorMode>(), "color mode (on, off, or automatic(default))")
+        ("colors", po::value<std::string>(), "color mode (on, off, or automatic(default))")
         ("clear-cache", "clear the cache on completion")
         ("logfile", po::value<std::string>(), "path to log file")
         ("loglevel", po::value<std::string>(), "minimum loglevel to use")
