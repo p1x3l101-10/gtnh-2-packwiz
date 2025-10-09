@@ -13,7 +13,7 @@ namespace gtnh2Packwiz {
                     bool generateRemoteHashes;
                     std::string outPath;
             };
-#if USING_UNSUP == 0
+#if USING_UNSUP == 1
             struct unsupStruct {
                 std::string targetURL;
                 bool enableSigning;
@@ -26,13 +26,13 @@ namespace gtnh2Packwiz {
         private:
             log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".configFile");
             configStruct config;
-#if USING_UNSUP == 0
+#if USING_UNSUP == 1
             unsupStruct unsup;
 #endif
         public:
             configFile(std::string filePath);
             const configStruct getConfig() const;
-#if USING_UNSUP == 0
+#if USING_UNSUP == 1
             const unsupStruct getUnsupConfig() const;
 #endif
     };
