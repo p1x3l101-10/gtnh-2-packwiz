@@ -9,10 +9,8 @@
 static auto program_start = std::chrono::system_clock::now();
 using std::string;
 using rang::style;
-using rang::control;
 using rang::fg;
 using rang::bg;
-using log4cpp::Priority;
 
 std::string gtnh2Packwiz::loggerLayout::format(const log4cpp::LoggingEvent& event) {
     std::ostringstream out;
