@@ -4,6 +4,11 @@
 #include <log4cpp/OstreamAppender.hh>
 #include "gtnh2Packwiz/init.hpp"
 #include "gtnh2Packwiz/loggerLayout.hpp"
+#ifdef OLD_MAGIC_ENUM
+#include <magic_enum.hpp>
+#else
+#include <magic_enum/magic_enum.hpp>
+#endif
 #include <rang/rang.hpp>
 
 using rang::setControlMode;
@@ -14,9 +19,41 @@ using log4cpp::FileAppender;
 using log4cpp::Category;
 using log4cpp::Appender;
 
+enum class colorMode {
+    on,
+    off,
+    automatic
+};
+
+struct selectedColorsStruct {
+    colorMode mode;
+    bool selected = false;
+};
+
+static selectedColorsStruct selectedColors;
+
 void gtnh2Packwiz::init::logger() {
     // Setup colors
-    setControlMode(control::Auto);
+    if (!selectedColors.selected) {
+        if (gtnh2Packwiz::init::args.count("colors")) {
+            selectedColors.mode = gtnh2Packwiz::init::args["colors"].as<colorMode>();
+        } else {
+            selectedColors.mode = colorMode::automatic;
+        }
+        // Setup rang
+        switch (selectedColors.mode) {
+            case colorMode::on: {
+                setControlMode(control::Force); break;
+            }
+            case colorMode::off: {
+                setControlMode(control::Off); break;
+            }
+            case colorMode::automatic: {
+                setControlMode(control::Auto); break;
+            }
+        }
+        selectedColors.selected = true;
+    }
 
     // Setup the actual logger
     Appender* appender;
