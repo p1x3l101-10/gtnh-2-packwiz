@@ -48,13 +48,10 @@ void gtnh2Packwiz::pack::build() {
 
     // Create cache directory
     {
-        if (fs::exists(CACHE)) {
-            logger.debugStream() << "Rereated cache at: " << CACHE;
-            fs::remove_all(CACHE);
-        } else {
+        if (! fs::exists(CACHE)) {
             logger.debugStream() << "Created cache at: " << CACHE;
+            fs::create_directories(CACHE);
         }
-        fs::create_directories(CACHE);
     }
 
     {
