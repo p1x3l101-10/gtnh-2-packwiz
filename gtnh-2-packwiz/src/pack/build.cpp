@@ -134,11 +134,6 @@ void gtnh2Packwiz::pack::build() {
             // Remove the annoying .github directory
             fs::remove_all(destDir.string() + "/.github");
         }
-        // Cleanup
-        {
-            logger.debug("Removing config directory as it isnt used anymore");
-            fs::remove_all(configDir);
-        }
     }
     // Construct the index toml
     toml::table packwizIndex;
