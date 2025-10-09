@@ -5,10 +5,12 @@ It downloads the files from DreamAssemblerXXL and the main modpack repo, and ass
 
 # Dependancies
 See [The dependancies file](./DEPENDANCIES.md) for the list
+
 Or just build with nix, this repo provides a flake
 
 # Building
 You need the dependancies, and if you feel inclined, you can use the cmake workflow.
+
 Otherwise it is just a normal cmake build
 
 # Build options
