@@ -5,6 +5,7 @@
 #include <string>
 #include <rang/rang.hpp>
 #include "gtnh2Packwiz/loggerLayout.hpp"
+#include "config.hpp"
 
 static auto program_start = std::chrono::system_clock::now();
 using std::string;
@@ -26,8 +27,11 @@ std::string gtnh2Packwiz::loggerLayout::format(const log4cpp::LoggingEvent& even
     priority.resize(7, ' ');
 
     // Thread PID
-    string thread = "<" + log4cpp::threading::getThreadId() + ">";
-    thread.resize(14, ' ');
+    string thread;
+    if constexpr (MULTITHREADED_LOGS) {
+        string thread = "<" + log4cpp::threading::getThreadId() + ">";
+        thread.resize(14, ' ');
+    }
 
     // Colors for the output
     std::ostringstream color;
@@ -70,7 +74,10 @@ std::string gtnh2Packwiz::loggerLayout::format(const log4cpp::LoggingEvent& even
     }
 
     // Create the output string
-    out << color.str() << elapsedStr << priority << " " << thread;
+    out << color.str() << elapsedStr << priority;
+    if constexpr (MULTITHREADED_LOGS) {
+        out << " " << thread;
+    }
     if (!event.categoryName.empty()) {
         out << " (" << event.categoryName << ")";
     } else {
