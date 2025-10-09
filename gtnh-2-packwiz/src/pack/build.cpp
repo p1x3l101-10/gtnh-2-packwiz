@@ -297,8 +297,8 @@ void gtnh2Packwiz::pack::build() {
 
                 toml::table update;
                 toml::table cfMetadata;
-                cfMetadata.insert_or_assign("file-id", modVersion["curse_file"]["file_no"].get<json::string_t>());
-                cfMetadata.insert_or_assign("project-id", modVersion["curse_file"]["project_no"].get<json::string_t>());
+                cfMetadata.insert_or_assign("file-id", modVersion["curse_file"]["file_no"].get<json::number_integer_t>());
+                cfMetadata.insert_or_assign("project-id", modVersion["curse_file"]["project_no"].get<json::number_integer_t>());
                 update.insert_or_assign("curseforce", cfMetadata);
 
                 // Append tables
