@@ -240,8 +240,7 @@ void gtnh2Packwiz::pack::build() {
         shared_ptr<json> gtnhAssets; // Oof, thats a big one
         json gtnhRelease;
         // These need to be downloaded and have a hash generated for them
-        vector<toml::table> ghMods;
-        vector<toml::table> exMods;
+        vector<toml::table> mods;
         {
             // Load files
             logger.info("Loading pack metadata from JSON");
@@ -277,7 +276,7 @@ void gtnh2Packwiz::pack::build() {
                 modData.insert_or_assign("download", modDownload);
 
                 // Add to list
-                ghMods.push_back(modData);
+                mods.push_back(modData);
             }
             logger.debug("Generating packwiz metafiles for curseforge mods");
             // External mods
@@ -299,7 +298,7 @@ void gtnh2Packwiz::pack::build() {
                 modData.insert_or_assign("download", modDownload);
 
                 // Add to list
-                exMods.push_back(modData);
+                mods.push_back(modData);
             }
         }
         logger.info("Metadata generated");
@@ -307,15 +306,13 @@ void gtnh2Packwiz::pack::build() {
         {
             vector<packwizFileEntry> indexFiles; // New index file
             logger.info("Generating hashes for mod files");
-            // Github mods
             {
                 path tempPath = CACHE "/modDownloads";
                 if (!fs::exists(tempPath)) {
                     fs::create_directory(tempPath);
                 }
-                logger.debug("Downloading github mods for hash calculations");
-                for (int i = 0; i < ghMods.size(); i++) {
-                    const auto &mod = ghMods.at(i);
+                for (int i = 0; i < mods.size(); i++) {
+                    const auto &mod = mods.at(i);
                     logger.debugStream() << "Current mod: '" << mod.at_path("name").ref<string>() << "'";
                     string dlURL = mod.at_path("download.url").ref<string>();
                     path dlPath = tempPath.string() + "/" + mod.at_path("filename").ref<string>();
@@ -323,7 +320,7 @@ void gtnh2Packwiz::pack::build() {
                     logger.debug("Generating hash");
                     string hash = gtnh2Packwiz::extras::generatePWHash(dlPath, PACKWIZ_HASH_FORMAT);
                     // Add the hash to the packwiz file
-                    ghMods.at(i).insert_or_assign("download.hash", hash);
+                    mods.at(i).insert_or_assign("download.hash", hash);
                 }
             }
         }
@@ -333,7 +330,7 @@ void gtnh2Packwiz::pack::build() {
         }
         {
             toml::array fileArray = packwizIndex.at_path("files").ref<toml::array>();
-            for (const auto &entry : ghMods) {
+            for (const auto &entry : mods) {
                 toml::table file;
                 {
                     ofstream metaToml(destDir.string() + "/mods/" + entry.at_path("name").ref<string>() + ".pw.toml");
