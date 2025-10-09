@@ -309,6 +309,7 @@ void gtnh2Packwiz::pack::build() {
                 cfMods.push_back(modData);
             }
         }
+        // Generate hashes
         // Add meta files to index
     }
     // Write index
