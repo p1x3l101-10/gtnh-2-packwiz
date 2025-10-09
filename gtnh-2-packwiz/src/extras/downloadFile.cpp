@@ -42,13 +42,24 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination) {
         // Create callback
         log4cpp::Category& callbacklogger = log4cpp::Category::getInstance(NAME ".extras.downloadFile.callback");
         auto t0 = std::chrono::high_resolution_clock::now();
+        auto tL0 = std::chrono::high_resolution_clock::now();
         auto tf = std::chrono::high_resolution_clock::now();
         auto deltaT = std::chrono::milliseconds(500);
-        ct::ProgressFunctionFunctor progressCallback = [&logger = callbacklogger, &t0, &tf, deltaT](double dltotal, double dlnow, double ultotal, double ulnow){
+        auto longDeltaT = std::chrono::seconds(30);
+        int longOffence = 0;
+        ct::ProgressFunctionFunctor progressCallback = [&logger = callbacklogger, &t0, &tL0, &tf, &longOffence, deltaT, longDeltaT, destination](double dltotal, double dlnow, double ultotal, double ulnow){
             tf = std::chrono::high_resolution_clock::now();
             if ((tf - t0) >= deltaT) {
                 logger.debugStream() << "Downloaded: `" << humanReadableBytes(dlnow) << "` out of: `" << humanReadableBytes(dltotal) << "`"; 
                 t0 = std::chrono::high_resolution_clock::now();
+            }
+            if ((tf - tL0) >= longDeltaT) {
+                if (longOffence == 0) {
+                    logger.warnStream() << "Download is taking a long time, offending file: '" << destination.string() << "'";
+                } else {
+                    logger.errorStream() << "Download is taking a very long time, is something wrong?";
+                }
+                longOffence++;
             }
             return 0; // 0 to continue, 1 to abort
         };
