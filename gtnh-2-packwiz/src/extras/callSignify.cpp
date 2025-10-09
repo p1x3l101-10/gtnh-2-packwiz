@@ -12,6 +12,7 @@ using fs::path;
 using std::string;
 using boost::process::environment::find_executable;
 using boost::process::process;
+using boost::process::execute;
 using std::vector;
 
 extern gtnh2Packwiz::poolManager pool;
@@ -37,11 +38,11 @@ void gtnh2Packwiz::extras::callSignify(path file, path signature, path key) {
             };
 
             auto tp = pool.getPool().lock();
-            process signifyProc(
+            execute(process(
                 tp->get_executor(),
                 signifyBin.string(),
                 args
-            );
+            ));
             logger.debugStream() << "Signed file: '" << file.string() << "'";
             return; // Needed to avoid triggering bad log messages
         }
