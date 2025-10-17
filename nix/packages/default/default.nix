@@ -15,6 +15,8 @@
 , cryptopp
 , curl
 , libzip
+# Runtime Deps
+, signify
 }:
 
 let
@@ -77,6 +79,8 @@ stdenv.mkDerivation {
     libzip
   ] ++ [ # Deps not in search path???
     curl
+  ] ++ [
+    signify
   ];
 
   cmakeFlags = [
