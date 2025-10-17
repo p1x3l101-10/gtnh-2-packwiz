@@ -241,6 +241,8 @@ void gtnh2Packwiz::pack::build() {
         json gtnhRelease;
         // These need to be downloaded and have a hash generated for them
         vector<toml::table> mods;
+        // One percent of the mods
+        int onepercentMods;
         {
             // Load files
             logger.info("Loading pack metadata from JSON");
@@ -251,15 +253,26 @@ void gtnh2Packwiz::pack::build() {
             path releaseFile = packDir.string() + "/releases/manifests/" + packVersion.string() + ".json";
             ifstream gtnhReleaseFile(releaseFile);
             gtnhReleaseFile >> gtnhRelease;
+            // Calculate percentage for progress
+            onepercentMods = (gtnhRelease["github_mods"].begin() - gtnhRelease["github_mods"].end()) + (gtnhRelease["external_mods"].begin() - gtnhRelease["external_mods"].end());
         }
         // Generate meta files
         {
             path modDir = destDir.string() + "/mods";
             fs::create_directory(modDir);
             logger.debug("Generating packwiz metafiles for github mods");
+            int progress = 0;
+            int current = 0;
             // Github mods
             for (const auto &ghMod : gtnhRelease["github_mods"].get<json::object_t>()) {
                 logger.debugStream() << "Generating metadata for mod: '" << ghMod.first << "'";
+                // Calc the percentage things
+                current++;
+                if  (current >= onepercentMods) {
+                    current = 0;
+                    progress++;
+                    logger.infoStream() << "Percentage calculated: " << progress << "%";
+                }
                 json modVersion = gtnh2Packwiz::extras::getModVersion(gtnhAssets, ghMod.first, ghMod.second["version"]);
                 toml::table modData;
                 // Header data
@@ -281,6 +294,13 @@ void gtnh2Packwiz::pack::build() {
             logger.debug("Generating packwiz metafiles for curseforge mods");
             // External mods
             for (const auto &exMod : gtnhRelease["external_mods"].get<json::object_t>()) {
+                // Calc the percentage things
+                current++;
+                if  (current >= onepercentMods) {
+                    current = 0;
+                    progress++;
+                    logger.infoStream() << "Percentage calculated: " << progress << "%";
+                }
                 logger.debugStream() << "Generating metadata for mod: '" << exMod.first << "'";
                 json modVersion = gtnh2Packwiz::extras::getModVersion(gtnhAssets, exMod.first, exMod.second["version"]);
                 toml::table modData;
@@ -304,6 +324,8 @@ void gtnh2Packwiz::pack::build() {
         logger.info("Metadata generated");
         // Generate hashes
         {
+            int current = 0;
+            int progress = 0;
             vector<packwizFileEntry> indexFiles; // New index file
             logger.info("Generating hashes for mod files");
             {
@@ -312,6 +334,13 @@ void gtnh2Packwiz::pack::build() {
                     fs::create_directory(tempPath);
                 }
                 for (int i = 0; i < mods.size(); i++) {
+                    // Calc the percentage things
+                    current++;
+                    if  (current >= onepercentMods) {
+                        current = 0;
+                        progress++;
+                        logger.infoStream() << "Percentage calculated: " << progress << "%";
+                    }
                     const auto &mod = mods.at(i);
                     logger.debugStream() << "Current mod: '" << mod.at_path("name").ref<string>() << "'";
                     string dlURL = mod.at_path("download.url").ref<string>();
