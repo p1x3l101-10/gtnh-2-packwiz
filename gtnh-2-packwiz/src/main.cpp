@@ -6,7 +6,6 @@
 #include "gtnh2Packwiz/init.hpp"
 #include "gtnh2Packwiz/pack.hpp"
 #include "gtnh2Packwiz/poolManager.hpp"
-#include <indicators/cursor_control.hpp>
 
 gtnh2Packwiz::poolManager pool(THREAD_POOL_MAX_THREADS);
 
