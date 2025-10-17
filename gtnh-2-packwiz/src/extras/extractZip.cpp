@@ -130,6 +130,7 @@ void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir) {
             if (fileCount >= onePercent) {
                 fileCount = 0;
                 percent++;
+                logger.infoStream() << "Extraction progress: " << percent << "%";
                 // Set percent
             } else {
                 fileCount++;
