@@ -2,7 +2,7 @@
 , internal
 , llvmPackages_20
 , stdenvNoCC
-, yq
+, toml-cli
 , pkgconf
 , cmakeMinimal
 # Project Deps
@@ -63,7 +63,7 @@ stdenv.mkDerivation {
   nativeBuildInputs = [
     cmakeMinimal
     pkgconf
-    yq
+    toml-cli
   ];
 
   buildInputs = [
