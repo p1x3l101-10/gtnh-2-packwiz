@@ -254,7 +254,7 @@ void gtnh2Packwiz::pack::build() {
             ifstream gtnhReleaseFile(releaseFile);
             gtnhReleaseFile >> gtnhRelease;
             // Calculate percentage for progress
-            onepercentMods = (gtnhRelease["github_mods"].get<json::object_t>().begin()->first.begin() - gtnhRelease["github_mods"].get<json::object_t>().end()->first.end()) + (gtnhRelease["external_mods"].get<json::object_t>().begin()->first.begin() - gtnhRelease["external_mods"].get<json::object_t>().end()->first.end());
+            onepercentMods = gtnhRelease["github_mods"].get<json::object_t>().size() + gtnhRelease["external_mods"].get<json::object_t>().size();
         }
         // Generate meta files
         {
