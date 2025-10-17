@@ -103,9 +103,11 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination, bool debug
         throw;
     } catch (curlpp::RuntimeError& e) {
         logger.fatalStream() << e.what();
+        fs::remove(destination);
         throw;
     } catch (std::runtime_error& e) {
         logger.emergStream() << e.what();
+        fs::remove(destination);
         throw;
     }
 }
