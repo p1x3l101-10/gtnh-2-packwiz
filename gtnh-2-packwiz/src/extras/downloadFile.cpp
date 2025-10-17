@@ -71,7 +71,7 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination, bool debug
         // Write to file
         std::ofstream outFile(destination, std::ios::out);
         // Check for proxy
-        if (! strcmp(std::getenv("all_proxy"), "")) {
+        if (!string(std::getenv("all_proxy")).empty()) {
             request.setOpt(new co::Proxy(std::getenv("all_proxy")));
         }
         // Create the request
