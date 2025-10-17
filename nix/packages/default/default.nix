@@ -2,11 +2,11 @@
 , internal
 , llvmPackages_20
 , stdenvNoCC
-, toml-cli
+, yq
 , pkgconf
 , cmakeMinimal
 # Project Deps
-, boost
+, boost189
 , magic-enum
 , nlohmann_json
 , tomlplusplus
@@ -62,12 +62,12 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [
     cmakeMinimal
-    toml-cli
     pkgconf
+    yq
   ];
 
   buildInputs = [
-    boost
+    boost189
     magic-enum
     nlohmann_json
     tomlplusplus
