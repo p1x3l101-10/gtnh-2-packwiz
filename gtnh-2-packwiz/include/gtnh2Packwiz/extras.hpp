@@ -10,7 +10,7 @@
 #include "config.hpp"
 
 namespace gtnh2Packwiz::extras {
-    void downloadFile(std::string url, std::filesystem::path destination);
+    void downloadFile(std::string url, std::filesystem::path destination, bool debugDownload = false);
     void extractZip(std::filesystem::path zip, std::filesystem::path outDir);
     const std::string humanReadableBytes(uint64_t size, unsigned precision = 0);
     const std::string generatePWHash(std::filesystem::path file, std::string pwHashFormat);

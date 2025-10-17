@@ -21,7 +21,7 @@ namespace co = curlpp::options;
 namespace ct = curlpp::Types;
 namespace chrono = std::chrono;
 
-void gtnh2Packwiz::extras::downloadFile(string url, path destination) {
+void gtnh2Packwiz::extras::downloadFile(string url, path destination, bool debugDownload) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.downloadFile");
     if (fs::exists(destination)) {
         // Only delete file when it is older than 12 hours
@@ -37,7 +37,11 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination) {
         }
     }
     try {
-        logger.infoStream() << "Downloading URL: '" << url << "'";
+        if (debugDownload) {
+            logger.debugStream() << "Downloading URL: '" << url << "'";
+        } else {
+            logger.infoStream() << "Downloading URL: '" << url << "'";
+        }
         curlpp::Easy request;
         // Create callback
         log4cpp::Category& callbacklogger = log4cpp::Category::getInstance(NAME ".extras.downloadFile.callback");

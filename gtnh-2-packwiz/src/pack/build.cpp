@@ -316,7 +316,7 @@ void gtnh2Packwiz::pack::build() {
                     logger.debugStream() << "Current mod: '" << mod.at_path("name").ref<string>() << "'";
                     string dlURL = mod.at_path("download.url").ref<string>();
                     path dlPath = tempPath.string() + "/" + mod.at_path("filename").ref<string>();
-                    extras::downloadFile(dlURL, dlPath);
+                    extras::downloadFile(dlURL, dlPath, true);
                     logger.debug("Generating hash");
                     string hash = gtnh2Packwiz::extras::generatePWHash(dlPath, PACKWIZ_HASH_FORMAT);
                     // Add the hash to the packwiz file
