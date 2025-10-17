@@ -186,7 +186,7 @@ void gtnh2Packwiz::pack::build() {
                 << "preset=minecraft\n"
                 << "behavior=auto\n";
             if (config->getUnsupConfig().targetURL != "") {
-                unsupINI << "source=" << config->getUnsupConfig().targetURL << "\n";
+                unsupINI << "source=" << config->getUnsupConfig().targetURL << "/pack.toml" << "\n";
             } else {
                 unsupINI
                     << "; Uncomment the following line and put the destination path\n"
