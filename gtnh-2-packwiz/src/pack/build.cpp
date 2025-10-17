@@ -348,6 +348,10 @@ void gtnh2Packwiz::pack::build() {
                     extras::downloadFile(dlURL, dlPath, true);
                     logger.debug("Generating hash");
                     string hash = gtnh2Packwiz::extras::generatePWHash(dlPath, PACKWIZ_HASH_FORMAT);
+                    // Check if the hash is a known bad hash
+                    if (hash == "D9AB29846A62A78DC96626A912BF8BFE3340D8D466AF3D44BA9B5CBF5D38394E") {
+                        logger.warn("Hash generated is on the list of known bad hashes!");
+                    }
                     // Add the hash to the packwiz file
                     mods.at(i)["download"].as_table()->insert_or_assign("hash", hash);
                 }
