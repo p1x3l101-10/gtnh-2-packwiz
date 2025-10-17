@@ -372,7 +372,7 @@ void gtnh2Packwiz::pack::build() {
                         // Update the table
                         mods.at(i)["download"].as_table()->insert_or_assign("url", realUrl);
                         // Dont do extra work if github provides the hash
-                        if (apiResponce.contains("digest")) {
+                        if (!apiResponce["digest"].is_null()) {
                             logger.debug("Hash is provided, skipping recalculation...");
                             string digest = apiResponce["digest"].get<json::string_t>();
                             auto delim = digest.find(':');
