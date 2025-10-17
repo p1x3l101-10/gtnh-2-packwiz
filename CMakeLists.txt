@@ -86,5 +86,6 @@ build(
 
 install(
     FILES "${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}/defaultConfigs.toml"
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/${CMAKE_PROJECT_NAME}/config.toml"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/${CMAKE_PROJECT_NAME}"
+    RENAME "config.toml"
 )
