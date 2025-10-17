@@ -11,6 +11,7 @@
 #include <log4cpp/Category.hh>
 #include <stdexcept>
 #include <string>
+#include <cstdlib>
 #include "config.hpp"
 #include "gtnh2Packwiz/extras.hpp"
 
@@ -69,6 +70,10 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination, bool debug
         };
         // Write to file
         std::ofstream outFile(destination, std::ios::out);
+        // Check for proxy
+        if (string(std::getenv("all_proxy")) != "") {
+            request.setOpt(new co::Proxy(std::getenv("all_proxy")));
+        }
         // Create the request
         request.setOpt(new co::Url(url));
         request.setOpt(new co::WriteStream(&outFile));
