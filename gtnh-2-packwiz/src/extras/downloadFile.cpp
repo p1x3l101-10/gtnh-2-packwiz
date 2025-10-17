@@ -22,6 +22,20 @@ namespace co = curlpp::options;
 namespace ct = curlpp::Types;
 namespace chrono = std::chrono;
 
+constexpr string userAgent() {
+    string curlPfx = "curl/";
+    string curlVersion;
+    if (strcmp(CURL_VERSION, "")) {
+        // As a default, this is the curl version i developed with
+        curlVersion = "8.7.1";
+    } else {
+        curlVersion = CURL_VERSION;
+    }
+    string agentSuffix = "";
+    string agent = curlPfx + curlVersion + " " + agentSuffix;
+    return agent;
+}
+
 void gtnh2Packwiz::extras::downloadFile(string url, path destination, bool debugDownload) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.downloadFile");
     if (fs::exists(destination)) {
@@ -75,6 +89,7 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination, bool debug
             request.setOpt(new co::Proxy(std::getenv("all_proxy")));
         }
         // Create the request
+        request.setOpt(new co::UserAgent(userAgent()));
         request.setOpt(new co::Url(url));
         request.setOpt(new co::WriteStream(&outFile));
         request.setOpt(new co::NoProgress(false));
