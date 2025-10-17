@@ -81,7 +81,9 @@ stdenv.mkDerivation {
 
   cmakeFlags = [
     "-DBAD_CURLPP_VERSION_FORMAT=TRUE"
-    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+    "-DUSING_UNSUP=ON"
+    "-DEXCLUSIVLY_TARGET_CLIENT=ON"
+    "-DCMAKE_BUILD_TYPE=Release"
   ];
 
   meta = with lib; {
