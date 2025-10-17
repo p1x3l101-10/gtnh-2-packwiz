@@ -339,8 +339,12 @@ void gtnh2Packwiz::pack::build() {
             logger.info("Generating hashes for mod files");
             {
                 path tempPath = CACHE "/modDownloads";
+                path apiCache = CACHE "/apiCache";
                 if (!fs::exists(tempPath)) {
                     fs::create_directory(tempPath);
+                }
+                if (!fs::exists(apiCache)) {
+                    fs::create_directory(apiCache);
                 }
                 for (int i = 0; i < mods.size(); i++) {
                     // Calc the percentage things
@@ -353,16 +357,39 @@ void gtnh2Packwiz::pack::build() {
                     const auto &mod = mods.at(i);
                     logger.debugStream() << "Current mod: '" << mod.at_path("name").ref<string>() << "'";
                     string dlURL = mod.at_path("download.url").ref<string>();
-                    path dlPath = tempPath.string() + "/" + mod.at_path("filename").ref<string>();
-                    extras::downloadFile(dlURL, dlPath, true);
-                    logger.debug("Generating hash");
-                    string hash = gtnh2Packwiz::extras::generatePWHash(dlPath, PACKWIZ_HASH_FORMAT);
-                    // Check if the hash is a known bad hash
-                    if (hash == "D9AB29846A62A78DC96626A912BF8BFE3340D8D466AF3D44BA9B5CBF5D38394E") {
-                        logger.warn("Hash generated is on the list of known bad hashes!");
+                    // Check if the url is a redirect json
+                    if (dlURL.contains("api.github.com")) {
+                        // If it contains a redirect json, download it and get the real URL
+                        path dlPath = apiCache.string() + mod.at_path("filename").ref<string>();
+                        logger.debug("This mod's download is behind an api");
+                        extras::downloadFile(dlURL, dlPath, true);
+                        json apiResponce;
+                        {
+                            ifstream responceFile(dlPath);
+                            responceFile >> apiResponce;
+                        }
+                        string realUrl = apiResponce["browser_download_url"].get<json::string_t>();
+                        string digest = apiResponce["digest"].get<json::string_t>();
+                        auto delim = digest.find(':');
+                        string digestType = digest.substr(0, delim);
+                        digest.erase(0, delim + 1);
+                        // Update the table
+                        mods.at(i)["download"].as_table()->insert_or_assign("url", realUrl);
+                        mods.at(i)["download"].as_table()->insert_or_assign("hash-format", digestType);
+                        mods.at(i)["download"].as_table()->insert_or_assign("hash", digest);
+                    } else {
+                        // Needs the hash to be manually generated
+                        path dlPath = tempPath.string() + "/" + mod.at_path("filename").ref<string>();
+                        extras::downloadFile(dlURL, dlPath, true);
+                        logger.debug("Generating hash");
+                        string hash = gtnh2Packwiz::extras::generatePWHash(dlPath, PACKWIZ_HASH_FORMAT);
+                        // Check if the hash is a known bad hash
+                        if (hash == "D9AB29846A62A78DC96626A912BF8BFE3340D8D466AF3D44BA9B5CBF5D38394E") {
+                            logger.warn("Hash generated is on the list of known bad hashes!");
+                        }
+                        // Add the hash to the packwiz file
+                        mods.at(i)["download"].as_table()->insert_or_assign("hash", hash);
                     }
-                    // Add the hash to the packwiz file
-                    mods.at(i)["download"].as_table()->insert_or_assign("hash", hash);
                 }
             }
         }
