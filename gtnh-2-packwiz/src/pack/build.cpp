@@ -360,7 +360,7 @@ void gtnh2Packwiz::pack::build() {
                     // Check if the url is a redirect json
                     if (dlURL.contains("api.github.com")) {
                         // If it contains a redirect json, download it and get the real URL
-                        path dlPath = apiCache.string() + mod.at_path("filename").ref<string>();
+                        path dlPath = apiCache.string() + "/" + mod.at_path("filename").ref<string>();
                         logger.debug("This mod's download is behind an api");
                         extras::downloadFile(dlURL, dlPath, true);
                         json apiResponce;
