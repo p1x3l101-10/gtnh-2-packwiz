@@ -43,6 +43,7 @@ void gtnh2Packwiz::pack::build() {
     createLogger(logger);
 
     path packDir = CACHE "/pack";
+    path configDirBase = CACHE "/config";
     path configDir = CACHE "/config/v" + packVersion.string();
     path destDir = CACHE "/packwiz";
 
@@ -56,7 +57,7 @@ void gtnh2Packwiz::pack::build() {
 
     {
         path packZip = packDir.string() + ".zip";
-        path configZip = configDir.string() + "-" + packVersion.string() + ".zip";
+        path configZip = configDirBase.string() + "-" + packVersion.string() + ".zip";
 
         // Download zips
         {
