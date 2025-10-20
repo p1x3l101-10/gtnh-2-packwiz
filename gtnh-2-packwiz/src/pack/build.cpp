@@ -43,7 +43,7 @@ void gtnh2Packwiz::pack::build() {
     createLogger(logger);
 
     path packDir = CACHE "/pack";
-    path configDir = CACHE "/config";
+    path configDir = CACHE "/config/v" + packVersion.string();
     path destDir = CACHE "/packwiz";
 
     // Create cache directory
@@ -82,7 +82,6 @@ void gtnh2Packwiz::pack::build() {
     }
     // Redo the path variables for the new paths
     packDir = packDir.string() + "/DreamAssemblerXXL-master";
-    configDir = configDir.string() + "/GT-New-Horizons-Modpack-" + packVersion.string();
     // Parse the modpack json for data
     json gtnhModpack;
     {

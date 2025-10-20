@@ -100,6 +100,10 @@ void safeCreateDirs(path dirName) {
 void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir, expirationConditions expirationConditions) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.extractZip");
 
+    path workPath = CACHE "/extrationCache";
+    workPath = workPath.string() + "/" + zipFile.stem().string();
+    fs::create_directories(workPath);
+
     // Use cached paths
     if (fs::exists(outDir)) {
         if (expirationConditions.enableExpiration) {
@@ -145,11 +149,20 @@ void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir, expirationCondi
                 fileCount++;
             }
             logger.debugStream() << "Extracting file: '" << file.first << "'";
-            path filePath = outDir.string() + "/" + file.first;
+            path filePath = workPath.string() + "/" + file.first;
             safeCreateDirs(filePath.parent_path());
             std::ofstream outFile(filePath);
             za.writeFile(file.first, &outFile);
         }
+        // Move to final destination
+        path extractedDir;
+        for (const auto& entry : fs::directory_iterator(workPath)) {
+            if (fs::is_directory(entry)) {
+                extractedDir = entry;
+                break;
+            }
+        }
+        fs::rename(extractedDir, outDir);
     } catch (std::runtime_error& e) {
         logger.fatalStream() << e.what();
         throw;
