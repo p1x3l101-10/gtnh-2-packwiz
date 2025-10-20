@@ -362,7 +362,7 @@ void gtnh2Packwiz::pack::build() {
                         // If it contains a redirect json, download it and get the real URL
                         path dlPath = apiCache.string() + "/" + mod.at_path("filename").ref<string>();
                         logger.debug("This mod's download is behind an api");
-                        extras::downloadFile(dlURL, dlPath, true);
+                        extras::downloadFile(dlURL, dlPath, true, { false, true });
                         json apiResponce;
                         {
                             ifstream responceFile(dlPath);
@@ -391,7 +391,7 @@ void gtnh2Packwiz::pack::build() {
                     } else {
                         // Needs the hash to be manually generated
                         path dlPath = tempPath.string() + "/" + mod.at_path("filename").ref<string>();
-                        extras::downloadFile(dlURL, dlPath, true);
+                        extras::downloadFile(dlURL, dlPath, true, { false, true });
                         logger.debug("Generating hash");
                         string hash = gtnh2Packwiz::extras::generatePWHash(dlPath, PACKWIZ_HASH_FORMAT);
                         // Add the hash to the packwiz file
