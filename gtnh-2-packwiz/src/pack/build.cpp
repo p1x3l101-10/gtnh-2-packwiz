@@ -75,7 +75,7 @@ void gtnh2Packwiz::pack::build() {
             logger.info("Extracting downloaded files...");
             auto tp = pool.getPool().lock();
             post(*tp, [packZip, packDir]() { gtnh2Packwiz::extras::extractZip(packZip, packDir); });
-            post(*tp, [configZip, configDir]() { gtnh2Packwiz::extras::extractZip(configZip, configDir); });
+            post(*tp, [configZip, configDir]() { gtnh2Packwiz::extras::extractZip(configZip, configDir, { true }); });
             pool.reset();
             logger.info("Files extracted");
         }
