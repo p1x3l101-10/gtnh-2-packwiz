@@ -12,9 +12,19 @@
 
 namespace gtnh2Packwiz::extras {
     struct expirationConditions {
-        bool enableExpiration = true;
-        bool keepOld = false; // Only in effect if expiration is disabled
-        std::chrono::duration<double> expiration = std::chrono::hours(12);
+        const bool enableExpiration;
+        const bool keepOld; // Only in effect if expiration is disabled
+        const std::chrono::duration<double> expiration;
+        expirationConditions(bool enable, bool old)
+        : enableExpiration(enable)
+        , keepOld(old)
+        , expiration(std::chrono::hours(12))
+        {}
+        expirationConditions(bool enable, bool old, std::chrono::duration<double> expiration)
+        : enableExpiration(enable)
+        , keepOld(old)
+        , expiration(expiration)
+        {}
     };
     void downloadFile(std::string url, std::filesystem::path destination, bool debugDownload = false, expirationConditions expirationConditions = { true, false, std::chrono::hours(12)});
     void extractZip(std::filesystem::path zip, std::filesystem::path outDir, expirationConditions expirationConditions = { true, false, std::chrono::hours(8)});
