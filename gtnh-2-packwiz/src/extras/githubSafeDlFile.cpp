@@ -36,6 +36,7 @@ void gtnh2Packwiz::extras::githubSafeDlFile(string url, path destination, bool d
             responceFile >> responce;
         }
         if ((responce.contains("message")) && (responce["message"].get<json::string_t>().contains("API rate limit exceeded"))) {
+            fs::remove(destination);
             logger.warn("We have hit the github rate limit, letting it cool off...");
             std::this_thread::sleep_for(chrono::seconds(5 * attempts));
             attempts++;
