@@ -25,6 +25,12 @@ namespace gtnh2Packwiz::extras {
         , keepOld(old)
         , expiration(expiration)
         {}
+        // This one is an unconditional redownload and only determines if to keep the old file
+        expirationConditions(bool keepOld)
+        : enableExpiration(false)
+        , keepOld(keepOld)
+        , expiration(std::chrono::hours(12))
+        {}
     };
     void downloadFile(std::string url, std::filesystem::path destination, bool debugDownload = false, expirationConditions expirationConditions = { true, false, std::chrono::hours(12)});
     void extractZip(std::filesystem::path zip, std::filesystem::path outDir, expirationConditions expirationConditions = { true, false, std::chrono::hours(8)});
