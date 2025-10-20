@@ -368,6 +368,14 @@ void gtnh2Packwiz::pack::build() {
                             ifstream responceFile(dlPath);
                             responceFile >> apiResponce;
                         }
+                        // Send an error if GH responds with 404 instead of just failing
+                        if (apiResponce.contains("status")) {
+                            string status = apiResponce["status"].get<json::string_t>();
+                            if (status == "404") {
+                                logger.errorStream() << "Mod: '" << mod.at_path("name").ref<string>() << "' does not exist on github!";
+                                continue;
+                            }
+                        }
                         string realUrl = apiResponce["browser_download_url"].get<json::string_t>();
                         // Update the table
                         mods.at(i)["download"].as_table()->insert_or_assign("url", realUrl);
