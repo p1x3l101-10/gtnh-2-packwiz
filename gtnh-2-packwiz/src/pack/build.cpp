@@ -294,8 +294,13 @@ void gtnh2Packwiz::pack::build() {
                 modDownload.insert_or_assign("url", modVersion["download_url"].get<json::string_t>());
                 modDownload.insert_or_assign("hash-format", PACKWIZ_HASH_FORMAT);
 
+                // Extra data
+                toml::table extraData;
+                extraData.insert_or_assign("version", ghMod.second["version"].get<json::string_t>());
+
                 // Append tables
                 modData.insert_or_assign("download", modDownload);
+                modData.insert_or_assign("x-generator", extraData);
 
                 // Add to list
                 mods.push_back(modData);
@@ -373,7 +378,8 @@ void gtnh2Packwiz::pack::build() {
                             string status = apiResponce["status"].get<json::string_t>();
                             if (status == "404") {
                                 logger.warnStream() << "Mod: '" << mod.at_path("name").ref<string>() << "' does not exist on github!";
-                                string dlURL = gtnhRelease["github_mods"]["browser_download_url"].get<json::string_t>();
+                                json modVersion = gtnh2Packwiz::extras::getModVersion(gtnhAssets, mod.at_path("name").ref<string>(), mod.at_path("x-generator.version").ref<string>());
+                                string dlURL = modVersion["download_url"].get<json::string_t>();
                                 mods.at(i)["download"].as_table()->insert_or_assign("url", dlURL);
                                 goto forceRegen;
                                 continue;
