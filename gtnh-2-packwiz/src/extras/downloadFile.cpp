@@ -36,27 +36,46 @@ constexpr string userAgent() {
     return agent;
 }
 
-void gtnh2Packwiz::extras::downloadFile(string url, path destination, bool debugDownload) {
+void gtnh2Packwiz::extras::downloadFile(string url, path destination, bool debugDownload, expirationConditions expirationConditions) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.downloadFile");
+
+    if (debugDownload) {
+        logger.debugStream() << "Downloading URL: '" << url << "'";
+    } else {
+        logger.infoStream() << "Downloading URL: '" << url << "'";
+    }
+
     if (fs::exists(destination)) {
-        // Only delete file when it is older than 12 hours
-        auto now = chrono::file_clock::now();
-        auto fileAge = fs::last_write_time(destination);
-        auto age = now - fileAge;
-        if (age > chrono::hours(12)) {
-            logger.debug("Deleting stale file...");
-            fs::remove(destination);
+        if (expirationConditions.enableExpiration) {
+            auto now = chrono::file_clock::now();
+            auto fileAge = fs::last_write_time(destination);
+            auto age = now - fileAge;
+            if (age > expirationConditions.expiration) {
+                logger.debug("Deleting stale file...");
+                fs::remove(destination);
+            } else {
+                logger.info("Using cached file");
+                return;
+            }
         } else {
-            logger.info("Using cached file");
-            return;
+            if (expirationConditions.keepOld) {
+                if (debugDownload) {
+                    logger.debug("File exists, skipping...");
+                } else {
+                    logger.info("File exists, skipping...");
+                }
+                return;
+            } else {
+                if (debugDownload) {
+                    logger.debug("Redownloading file");
+                } else {
+                    logger.info("Redownloading file");
+                }
+                fs::remove(destination);
+            }
         }
     }
     try {
-        if (debugDownload) {
-            logger.debugStream() << "Downloading URL: '" << url << "'";
-        } else {
-            logger.infoStream() << "Downloading URL: '" << url << "'";
-        }
         curlpp::Easy request;
         // Create callback
         log4cpp::Category& callbacklogger = log4cpp::Category::getInstance(NAME ".extras.downloadFile.callback");

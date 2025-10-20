@@ -97,25 +97,34 @@ void safeCreateDirs(path dirName) {
     return;
 }
 
-void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir) {
+void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir, expirationConditions expirationConditions) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.extractZip");
 
     // Use cached paths
     if (fs::exists(outDir)) {
-        // Only delete file when it is older than 8 hours
-        auto now = chrono::file_clock::now();
-        auto fileAge = fs::last_write_time(outDir);
-        auto parentAge = now - fs::last_write_time(zipFile);
-        auto age = now - fileAge;
-        if (age > chrono::hours(8)) {
-            logger.debug("Deleting stale path...");
-            fs::remove_all(outDir);
-        } else if (parentAge < age) {
-            logger.debug("Zip is newer than extracted contents, deleting stale path...");
-            fs::remove_all(outDir);
+        if (expirationConditions.enableExpiration) {
+            auto now = chrono::file_clock::now();
+            auto fileAge = fs::last_write_time(outDir);
+            auto parentAge = now - fs::last_write_time(zipFile);
+            auto age = now - fileAge;
+            if (age > expirationConditions.expiration) {
+                logger.debug("Deleting stale path...");
+                fs::remove_all(outDir);
+            } else if (parentAge < age) {
+                logger.debug("Zip is newer than extracted contents, deleting stale path...");
+                fs::remove_all(outDir);
+            } else {
+                logger.info("Using cached path");
+                return;
+            }
         } else {
-            logger.info("Using cached path");
-            return;
+            if (expirationConditions.keepOld) {
+                logger.info("Extracted path exists, skipping...");
+                return;
+            } else {
+                logger.debug("Forcing reextraction");
+                fs::remove_all(outDir);
+            }
         }
     }
 

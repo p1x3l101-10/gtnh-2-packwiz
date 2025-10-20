@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <cstdint>
 #include <filesystem>
 #include <vector>
@@ -10,8 +11,13 @@
 #include "config.hpp"
 
 namespace gtnh2Packwiz::extras {
-    void downloadFile(std::string url, std::filesystem::path destination, bool debugDownload = false);
-    void extractZip(std::filesystem::path zip, std::filesystem::path outDir);
+    struct expirationConditions {
+        bool enableExpiration = true;
+        bool keepOld = false; // Only in effect if expiration is disabled
+        std::chrono::duration<double> expiration = std::chrono::hours(12);
+    };
+    void downloadFile(std::string url, std::filesystem::path destination, bool debugDownload = false, expirationConditions expirationConditions = { true, false, std::chrono::hours(12)});
+    void extractZip(std::filesystem::path zip, std::filesystem::path outDir, expirationConditions expirationConditions = { true, false, std::chrono::hours(8)});
     const std::string humanReadableBytes(uint64_t size, unsigned precision = 0);
     const std::string generatePWHash(std::filesystem::path file, std::string pwHashFormat);
     void callSignify(std::filesystem::path file, std::filesystem::path signature, std::filesystem::path key);
