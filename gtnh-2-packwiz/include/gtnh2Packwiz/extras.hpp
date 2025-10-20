@@ -33,6 +33,7 @@ namespace gtnh2Packwiz::extras {
         {}
     };
     void downloadFile(std::string url, std::filesystem::path destination, bool debugDownload = false, expirationConditions expirationConditions = { true, false, std::chrono::hours(12)});
+    void githubSafeDlFile(std::string url, std::filesystem::path destination, bool debugDownload = false, expirationConditions expirationConditions = { true, false, std::chrono::hours(12)});
     void extractZip(std::filesystem::path zip, std::filesystem::path outDir, expirationConditions expirationConditions = { true, false, std::chrono::hours(8)});
     const std::string humanReadableBytes(uint64_t size, unsigned precision = 0);
     const std::string generatePWHash(std::filesystem::path file, std::string pwHashFormat);
