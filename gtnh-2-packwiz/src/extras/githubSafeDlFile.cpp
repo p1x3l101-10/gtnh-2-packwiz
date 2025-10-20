@@ -16,7 +16,7 @@ using std::ifstream;
 
 // A safe version that can handle github rate limits for the api
 // Can only be used for api requests, otherwise fails
-void gtnh2Packwiz::extras::githubSafeDlFile(string url, path destination, bool debugDownload, expirationConditions expirationConditions) {
+bool gtnh2Packwiz::extras::githubSafeDlFile(string url, path destination, bool debugDownload, expirationConditions expirationConditions) {
     log4cpp::Category& logger = log4cpp::Category::getInstance(NAME ".extras.githubSafeDlFile");
     bool success = false;
     bool first = true;
@@ -37,6 +37,10 @@ void gtnh2Packwiz::extras::githubSafeDlFile(string url, path destination, bool d
         }
         if ((responce.contains("message")) && (responce["message"].get<json::string_t>().contains("API rate limit exceeded"))) {
             fs::remove(destination);
+            if (attempts <= 3) {
+                // Only try 3 times
+                return false;
+            }
             logger.warn("We have hit the github rate limit, letting it cool off...");
             std::this_thread::sleep_for(chrono::seconds(5 * attempts));
             attempts++;
@@ -44,4 +48,5 @@ void gtnh2Packwiz::extras::githubSafeDlFile(string url, path destination, bool d
             break;
         }
     }
+    return true;
 }
