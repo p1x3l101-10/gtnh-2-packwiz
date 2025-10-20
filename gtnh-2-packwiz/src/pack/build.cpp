@@ -372,7 +372,10 @@ void gtnh2Packwiz::pack::build() {
                         if (apiResponce.contains("status")) {
                             string status = apiResponce["status"].get<json::string_t>();
                             if (status == "404") {
-                                logger.errorStream() << "Mod: '" << mod.at_path("name").ref<string>() << "' does not exist on github!";
+                                logger.warnStream() << "Mod: '" << mod.at_path("name").ref<string>() << "' does not exist on github!";
+                                string dlURL = gtnhRelease["github_mods"]["browser_download_url"].get<json::string_t>();
+                                mods.at(i)["download"].as_table()->insert_or_assign("url", dlURL);
+                                goto forceRegen;
                                 continue;
                             }
                         }
@@ -397,6 +400,7 @@ void gtnh2Packwiz::pack::build() {
                             mods.at(i)["download"].as_table()->insert_or_assign("hash", hash);
                         }
                     } else {
+                        forceRegen:
                         // Needs the hash to be manually generated
                         path dlPath = tempPath.string() + "/" + mod.at_path("filename").ref<string>();
                         extras::downloadFile(dlURL, dlPath, true, { false, true });
