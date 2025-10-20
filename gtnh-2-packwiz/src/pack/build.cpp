@@ -56,7 +56,7 @@ void gtnh2Packwiz::pack::build() {
 
     {
         path packZip = packDir.string() + ".zip";
-        path configZip = configDir.string() + ".zip";
+        path configZip = configDir.string() + "-" + packVersion.string() + ".zip";
 
         // Download zips
         {
