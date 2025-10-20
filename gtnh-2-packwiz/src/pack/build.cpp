@@ -297,6 +297,7 @@ void gtnh2Packwiz::pack::build() {
                 // Extra data
                 toml::table extraData;
                 extraData.insert_or_assign("version", ghMod.second["version"].get<json::string_t>());
+                extraData.insert_or_assign("rateLimited", false);
 
                 // Append tables
                 modData.insert_or_assign("download", modDownload);
@@ -351,6 +352,7 @@ void gtnh2Packwiz::pack::build() {
                 if (!fs::exists(apiCache)) {
                     fs::create_directory(apiCache);
                 }
+                bool apiWorking = true;
                 for (int i = 0; i < mods.size(); i++) {
                     // Calc the percentage things
                     current++;
@@ -363,11 +365,17 @@ void gtnh2Packwiz::pack::build() {
                     logger.debugStream() << "Current mod: '" << mod.at_path("name").ref<string>() << "'";
                     string dlURL = mod.at_path("download.url").ref<string>();
                     // Check if the url is a redirect json
-                    if (dlURL.contains("api.github.com")) {
+                    if (dlURL.contains("api.github.com") && apiWorking) {
                         // If it contains a redirect json, download it and get the real URL
                         path dlPath = apiCache.string() + "/" + mod.at_path("filename").ref<string>();
                         logger.debug("This mod's download is behind an api");
-                        extras::githubSafeDlFile(dlURL, dlPath, true, { false, true });
+                        apiWorking = extras::githubSafeDlFile(dlURL, dlPath, true, { false, true });
+                        if (!apiWorking) {
+                            // Api broke here
+                            // Retry loop
+                            i--;
+                            continue;
+                        }
                         json apiResponce;
                         {
                             ifstream responceFile(dlPath);
@@ -378,9 +386,6 @@ void gtnh2Packwiz::pack::build() {
                             string status = apiResponce["status"].get<json::string_t>();
                             if (status == "404") {
                                 logger.warnStream() << "Mod: '" << mod.at_path("name").ref<string>() << "' does not exist on the api!";
-                                json modVersion = gtnh2Packwiz::extras::getModVersion(gtnhAssets, mod.at_path("name").ref<string>(), mod.at_path("x-generator.version").ref<string>());
-                                string dlURL = modVersion["download_url"].get<json::string_t>();
-                                mods.at(i)["download"].as_table()->insert_or_assign("url", dlURL);
                                 goto forceRegen;
                                 continue;
                             }
@@ -407,6 +412,16 @@ void gtnh2Packwiz::pack::build() {
                         }
                     } else {
                         forceRegen:
+                        // Fallback api handling
+                        if (dlURL.contains("api.github.com")) {
+                            json modVersion = gtnh2Packwiz::extras::getModVersion(gtnhAssets, mod.at_path("name").ref<string>(), mod.at_path("x-generator.version").ref<string>());
+                            string dlURL = modVersion["download_url"].get<json::string_t>();
+                            mods.at(i)["download"].as_table()->insert_or_assign("url", dlURL);
+                        }
+                        // Mark files as tainted
+                        if (!apiWorking) {
+                            mods.at(i)["x-generator"].as_table()->insert_or_assign("rateLimited", true);
+                        }
                         // Needs the hash to be manually generated
                         path dlPath = tempPath.string() + "/" + mod.at_path("filename").ref<string>();
                         extras::downloadFile(dlURL, dlPath, true, { false, true });

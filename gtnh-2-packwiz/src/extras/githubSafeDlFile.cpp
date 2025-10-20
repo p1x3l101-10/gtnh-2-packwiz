@@ -39,6 +39,7 @@ bool gtnh2Packwiz::extras::githubSafeDlFile(string url, path destination, bool d
             fs::remove(destination);
             if (attempts <= 3) {
                 // Only try 3 times
+                logger.error("API usage has been exceeded, all other files will be downloaded by browser url");
                 return false;
             }
             logger.warn("We have hit the github rate limit, letting it cool off...");
