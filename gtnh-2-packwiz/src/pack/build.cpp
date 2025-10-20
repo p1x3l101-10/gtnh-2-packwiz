@@ -297,6 +297,7 @@ void gtnh2Packwiz::pack::build() {
                 // Extra data
                 toml::table extraData;
                 extraData.insert_or_assign("version", ghMod.second["version"].get<json::string_t>());
+                extraData.insert_or_assign("usedApi", false);
                 extraData.insert_or_assign("rateLimited", false);
 
                 // Append tables
@@ -390,6 +391,8 @@ void gtnh2Packwiz::pack::build() {
                                 continue;
                             }
                         }
+                        // Mark as using api
+                        mods.at(i)["x-generator"].as_table()->insert_or_assign("usedApi", true);
                         string realUrl = apiResponce["browser_download_url"].get<json::string_t>();
                         // Update the table
                         mods.at(i)["download"].as_table()->insert_or_assign("url", realUrl);
