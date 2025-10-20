@@ -377,7 +377,7 @@ void gtnh2Packwiz::pack::build() {
                         if (apiResponce.contains("status")) {
                             string status = apiResponce["status"].get<json::string_t>();
                             if (status == "404") {
-                                logger.warnStream() << "Mod: '" << mod.at_path("name").ref<string>() << "' does not exist on github!";
+                                logger.warnStream() << "Mod: '" << mod.at_path("name").ref<string>() << "' does not exist on the api!";
                                 json modVersion = gtnh2Packwiz::extras::getModVersion(gtnhAssets, mod.at_path("name").ref<string>(), mod.at_path("x-generator.version").ref<string>());
                                 string dlURL = modVersion["download_url"].get<json::string_t>();
                                 mods.at(i)["download"].as_table()->insert_or_assign("url", dlURL);
