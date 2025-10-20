@@ -49,6 +49,10 @@ namespace helpers {
         // CryptoPP pipelines intentionally look like this
         // Objects are closer to functions in this case (very weird)
         StringSource(buffer.str(), true, new HashFilter(hash, new HexEncoder(new StringSink(digest))));
+        // Make the hash lowercase
+        for (char &c : digest) {
+            c = std::tolower(c);
+        }
         logger.debugStream() << "Generated hash: '" << digest << "' for file: '" << filePath.string() << "'";
         return digest;
     }
