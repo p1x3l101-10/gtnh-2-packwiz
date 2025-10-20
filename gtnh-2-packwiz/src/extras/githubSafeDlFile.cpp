@@ -27,7 +27,7 @@ void gtnh2Packwiz::extras::githubSafeDlFile(string url, path destination, bool d
             downloadFile(url, destination, debugDownload, expirationConditions);
         } else {
             // Force a redownload
-            logger.debugStream() << "Download attempt: " << attempts;
+            logger.infoStream() << "Download attempt: " << attempts;
             downloadFile(url, destination, debugDownload, {false});
         }
         json responce;
