@@ -332,8 +332,15 @@ void gtnh2Packwiz::pack::build() {
                 modDownload.insert_or_assign("url", modVersion["download_url"].get<json::string_t>());
                 modDownload.insert_or_assign("hash-format", PACKWIZ_HASH_FORMAT);
 
+                // Extra data
+                toml::table extraData;
+                extraData.insert_or_assign("version", exMod.second["version"].get<json::string_t>());
+                extraData.insert_or_assign("usedApi", false);
+                extraData.insert_or_assign("rateLimited", false);
+
                 // Append tables
                 modData.insert_or_assign("download", modDownload);
+                modData.insert_or_assign("x-generator", extraData);
 
                 // Add to list
                 mods.push_back(modData);
