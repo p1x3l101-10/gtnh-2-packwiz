@@ -14,6 +14,7 @@ class progress {
         percentage minimumChange = percentage::fromPercent(0.1);
         progress(int capacity);
         progress& operator++();
+        progress operator++(int);
         void tick();
         bool worthPrinting();
         percentage getPercent() const;
