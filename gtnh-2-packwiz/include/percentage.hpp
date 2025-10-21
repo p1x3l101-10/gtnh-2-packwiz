@@ -28,5 +28,6 @@ class percentage {
         // Easy printing
         friend std::ostream& operator<<(std::ostream& os, const percentage& p) {
             os << std::fixed << std::setprecision(p.defaultPrecision) << p.get(p.defaultPrecision) << "%";
-        }
+            return os;
+        };
 };
