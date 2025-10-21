@@ -53,6 +53,10 @@ void gtnh2Packwiz::pack::build() {
             logger.debugStream() << "Created cache at: " << CACHE;
             fs::create_directories(CACHE);
         }
+        if (!fs::exists(configDirBase)) {
+            logger.debug("Created config cache");
+            fs::create_directories(configDirBase);
+        }
     }
 
     {
