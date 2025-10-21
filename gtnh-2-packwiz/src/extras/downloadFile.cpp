@@ -98,6 +98,7 @@ void gtnh2Packwiz::extras::downloadFile(string url, path destination, bool debug
                     logger.errorStream() << "Download is taking a very long time, is something wrong?";
                 }
                 longOffence++;
+                tL0 = std::chrono::high_resolution_clock::now();
             }
             return 0; // 0 to continue, 1 to abort
         };
