@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include "config.hpp"
 #include "gtnh2Packwiz/extras.hpp"
+#include "percentage.hpp"
 
 namespace fs = std::filesystem;
 namespace chrono = std::chrono;
@@ -136,17 +137,11 @@ void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir, expirationCondi
         logger.debugStream() << "Opening file: '" << zipFile.string() << "'";
         zip za(zipFile.string());
 
-        int onePercent = za.getEntryCount() / 100;
-        int fileCount = 0;
-        int percent = 0;
+        percentage zipProgress(za.getEntryCount());
         for (const auto& file : za.getContents()) {
-            if (fileCount >= onePercent) {
-                fileCount = 0;
-                percent++;
-                logger.infoStream() << "Extraction progress: " << percent << "%";
-                // Set percent
-            } else {
-                fileCount++;
+            zipProgress.tick(static_cast<long double>(1));
+            if (zipProgress.worthPrinting()) {
+                logger.infoStream() << "Extraction progress: " << zipProgress.getWhole() << "%";
             }
             logger.debugStream() << "Extracting file: '" << file.first << "'";
             path filePath = workPath.string() + "/" + file.first;
