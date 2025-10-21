@@ -209,16 +209,11 @@ void gtnh2Packwiz::pack::build() {
             // Assign hash format
             packwizIndex.insert_or_assign("hash-format", PACKWIZ_HASH_FORMAT);
             int baseLength = destDir.string().length() + 1; // Add one to account for trailing '/'
-            // NOTE: None of these files will be metadata files
-            int onePercent = files.size() / 100;
-            int current = 0;
-            int progress = 0;
+            class progress hashing = files.size();
             for (const auto &file : files) {
-                current++;
-                if (current >= onePercent) {
-                    current = 0;
-                    progress++;
-                    logger.infoStream() << "Hashed " << progress << "\% of files";
+                hashing++;
+                if (hashing.worthPrinting()) {
+                    logger.infoStream() << "Hashed " << hashing.getPercent() << " of files";
                 }
                 string hash = gtnh2Packwiz::extras::generatePWHash(file, PACKWIZ_HASH_FORMAT);
                 string fileBasename = file.string().erase(0, baseLength);
