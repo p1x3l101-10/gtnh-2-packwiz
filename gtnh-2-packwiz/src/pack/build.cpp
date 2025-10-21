@@ -81,8 +81,6 @@ void gtnh2Packwiz::pack::build() {
             logger.info("Files extracted");
         }
     }
-    // Redo the path variables for the new paths
-    packDir = packDir.string() + "/DreamAssemblerXXL-master";
     // Parse the modpack json for data
     json gtnhModpack;
     {
