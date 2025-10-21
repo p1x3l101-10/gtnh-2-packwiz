@@ -1,12 +1,15 @@
 #include "percentage.hpp"
 #include <ostream>
 #include <iomanip>
+#include <sstream>
 
 using std::ostream;
 using std::setprecision;
+using std::stringstream;
 
 ostream& operator<<(ostream& os, const percentage& p) {
-    std::streamsize originalPrecision = os.precision();
-    os << setprecision(2) << p.asPercent() << "%" << setprecision(originalPrecision);
+    stringstream ss;
+    ss << setprecision(2) << p.asPercent() << "%";
+    os << ss.str();
     return os;
 }
