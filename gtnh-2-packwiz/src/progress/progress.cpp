@@ -2,5 +2,6 @@
 
 progress::progress(int capacity)
 : realMax(capacity)
-, impactOne(percentage::fromPercent(1).applyTo(capacity))
+, impactOne(1 / static_cast<double>(capacity))
+, minimumChange(0.001)
 {}
