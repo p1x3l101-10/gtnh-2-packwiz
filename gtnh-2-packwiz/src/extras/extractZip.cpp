@@ -139,9 +139,9 @@ void gtnh2Packwiz::extras::extractZip(path zipFile, path outDir, expirationCondi
 
         percentage zipProgress(za.getEntryCount());
         for (const auto& file : za.getContents()) {
-            zipProgress.tick(static_cast<long double>(1));
+            zipProgress.tick();
             if (zipProgress.worthPrinting()) {
-                logger.infoStream() << "Extraction progress: " << zipProgress.getWhole() << "%";
+                logger.infoStream() << "Extraction progress: " << zipProgress;
             }
             logger.debugStream() << "Extracting file: '" << file.first << "'";
             path filePath = workPath.string() + "/" + file.first;
