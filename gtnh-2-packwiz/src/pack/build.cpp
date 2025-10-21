@@ -44,7 +44,7 @@ void gtnh2Packwiz::pack::build() {
 
     path packDir = CACHE "/pack";
     path configDirBase = CACHE "/config";
-    path configDir = CACHE "/config/v" + packVersion.string();
+    path configDir = configDirBase.string() + "/v" + packVersion.string();
     path destDir = CACHE "/packwiz";
 
     // Create cache directory
