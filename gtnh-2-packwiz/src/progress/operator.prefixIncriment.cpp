@@ -2,4 +2,5 @@
 
 progress& progress::operator++() {
     tick();
+    return *this;
 }
