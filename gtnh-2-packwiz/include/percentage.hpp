@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iomanip>
 #include <ostream>
 
 class percentage {
@@ -26,7 +25,5 @@ class percentage {
         bool operator>=(const percentage& other) const;
         bool operator==(const percentage& other) const;
         bool operator!=(const percentage& other) const;
+        friend std::ostream& operator<<(std::ostream& os, const percentage& p);
 };
-
-// Non-member overloads
-std::ostream& operator<<(std::ostream& os, const percentage& p);
