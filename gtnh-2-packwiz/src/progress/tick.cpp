@@ -2,5 +2,5 @@
 
 void progress::tick() {
     realProgress++;
-    value = value + impactOne;
+    value += impactOne;
 }
