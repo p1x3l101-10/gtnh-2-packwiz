@@ -7,15 +7,17 @@ class percentage {
     private:
         double value;
     public:
-        explicit percentage(double decimalValue = 0.0);
+        percentage(double decimalValue = 0.0);
         static percentage fromPercent(double percentValue);
         double asDecimal() const;
         double asPercent() const;
         percentage operator+(const percentage& other) const;
         percentage operator-(const percentage& other) const;
         double operator*(const double& other) const;
-        percentage operator=(const percentage& other);
-        percentage operator=(const double& value);
+        percentage& operator=(const int& value);
+        percentage& operator=(const double& value);
+        percentage& operator=(const percentage& other);
+        operator double() const;
         bool operator>(const percentage& other) const;
         bool operator<=(const percentage& other) const;
         bool operator<(const percentage& other) const;

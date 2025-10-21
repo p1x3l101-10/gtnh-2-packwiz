@@ -1,6 +1,6 @@
 #include "percentage.hpp"
 
-percentage percentage::operator=(const double& other) {
+percentage& percentage::operator=(const double& other) {
     if (this->value != other) {
         value = other;
     }
