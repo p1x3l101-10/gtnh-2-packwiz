@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <ostream>
 
-class percentage {
+class progress {
     private:
         const int capacity;
         const long double onePercent;
@@ -12,7 +12,7 @@ class percentage {
         long double prevValue = 0;
         long double roundToPrecision(long double value, int decimalPlaces);
     public:
-        percentage(int capacity);
+        progress(int capacity);
         int defaultPrecision = 0;
         // Add a percentage
         void setPercent(float percent = 1);
@@ -26,7 +26,7 @@ class percentage {
         // Precision is the digit to round to 0 is 1.0, 1 is 0.1, 2 is 0.01, etc.
         bool worthPrinting(int precision = 0) const;
         // Easy printing
-        friend std::ostream& operator<<(std::ostream& os, const percentage& p) {
+        friend std::ostream& operator<<(std::ostream& os, const progress& p) {
             os << std::fixed << std::setprecision(p.defaultPrecision) << p.get(p.defaultPrecision) << "%";
             return os;
         };

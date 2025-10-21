@@ -1,6 +1,6 @@
-#include "percentage.hpp"
+#include "progress.hpp"
 
-void percentage::setProgress(int progress) {
+void progress::setProgress(int progress) {
     prevValue = value;
     value = (static_cast<long double>(capacity) / progress);
 }

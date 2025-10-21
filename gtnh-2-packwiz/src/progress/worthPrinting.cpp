@@ -1,6 +1,6 @@
-#include "percentage.hpp"
+#include "progress.hpp"
 
-bool percentage::worthPrinting(int precision) {
+bool progress::worthPrinting(int precision) {
     long double current = roundToPrecision(value, precision);
     long double old = roundToPrecision(prevValue, precision);
     // If the current value is bigger
