@@ -14,8 +14,8 @@ class percentage {
         percentage operator+(const percentage& other) const;
         percentage operator-(const percentage& other) const;
         double operator*(const double& other) const;
-        percentage operator=(const percentage& other) const;
-        percentage operator=(double value) const;
+        percentage operator=(const percentage& other);
+        percentage operator=(const double& value);
         bool operator>(const percentage& other) const;
         bool operator<=(const percentage& other) const;
         bool operator<(const percentage& other) const;
