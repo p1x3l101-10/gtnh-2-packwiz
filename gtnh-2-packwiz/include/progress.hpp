@@ -11,11 +11,12 @@ class progress {
         percentage value = 0;
         percentage lastPrinted = 0;
     public:
-        percentage minimumChange = percentage::fromPercent(0.1);
+        percentage minimumChange;
         progress(int capacity);
         progress& operator++();
         progress operator++(int);
         void tick();
         bool worthPrinting();
         percentage getPercent() const;
+        friend std::ostream& operator<<(std::ostream& os, const progress& p);
 };
