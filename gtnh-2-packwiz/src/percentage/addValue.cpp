@@ -1,6 +1,6 @@
 #include "percentage.hpp"
 
-void percentage::tick(long double amount) {
+void percentage::addValue(long double amount) {
     prevValue = value;
     value = value + amount;
 }
