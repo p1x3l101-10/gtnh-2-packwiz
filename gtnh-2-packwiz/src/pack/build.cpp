@@ -293,7 +293,7 @@ void gtnh2Packwiz::pack::build() {
 
                 // Download data
                 toml::table modDownload;
-                modDownload.insert_or_assign("url", modVersion["download_url"].get<json::string_t>());
+                modDownload.insert_or_assign("url", modVersion["browser_download_url"].get<json::string_t>());
                 modDownload.insert_or_assign("hash-format", PACKWIZ_HASH_FORMAT);
 
                 // Extra data
