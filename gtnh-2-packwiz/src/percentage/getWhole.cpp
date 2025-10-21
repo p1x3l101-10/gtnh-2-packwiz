@@ -1,5 +1,5 @@
 #include "percentage.hpp"
 
 int percentage::getWhole() {
-    return static_cast<int>(roundToPrecision(value, 0));
+    return static_cast<int>(get(0));
 }

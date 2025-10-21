@@ -15,7 +15,7 @@ class percentage {
         // Add a value specifically (useful for loops)
         void tick(long double amount);
         int getWhole();
-        long double get();
+        long double get(int precision = 0);
         int getCapacity();
         // Precision is the digit to round to 0 is 1.0, 1 is 0.1, 2 is 0.01, etc.
         bool worthPrinting(int precision = 0);
