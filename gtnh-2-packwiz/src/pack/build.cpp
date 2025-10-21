@@ -11,6 +11,7 @@
 #include "loggerMacro.hpp"
 #include <nlohmann/json.hpp>
 #include <boost/program_options/variables_map.hpp>
+#include "progress.hpp"
 
 // Toml is being dump
 using std::optional;
@@ -253,7 +254,6 @@ void gtnh2Packwiz::pack::build() {
         // These need to be downloaded and have a hash generated for them
         vector<toml::table> mods;
         // One percent of the mods
-        int onepercentMods;
         {
             // Load files
             logger.info("Loading pack metadata from JSON");
@@ -264,25 +264,22 @@ void gtnh2Packwiz::pack::build() {
             path releaseFile = packDir.string() + "/releases/manifests/" + packVersion.string() + ".json";
             ifstream gtnhReleaseFile(releaseFile);
             gtnhReleaseFile >> gtnhRelease;
-            // Calculate percentage for progress
-            onepercentMods = (gtnhRelease["github_mods"].get<json::object_t>().size() + gtnhRelease["external_mods"].get<json::object_t>().size()) / 100;
         }
+        // Create the progress trackers
+        progress metaGeneration = (gtnhRelease["github_mods"].get<json::object_t>().size() + gtnhRelease["external_mods"].get<json::object_t>().size());
+        progress modHashing = metaGeneration;
         // Generate meta files
         {
             path modDir = destDir.string() + "/mods";
             fs::create_directory(modDir);
             logger.debug("Generating packwiz metafiles for github mods");
-            int progress = 0;
-            int current = 0;
             // Github mods
             for (const auto &ghMod : gtnhRelease["github_mods"].get<json::object_t>()) {
                 logger.debugStream() << "Generating metadata for mod: '" << ghMod.first << "'";
                 // Calc the percentage things
-                current++;
-                if  (current >= onepercentMods) {
-                    current = 0;
-                    progress++;
-                    logger.infoStream() << "Percentage calculated: " << progress << "%";
+                metaGeneration++;
+                if  (metaGeneration.worthPrinting()) {
+                    logger.infoStream() << "Percentage calculated: " << metaGeneration.getPercent();
                 }
                 json modVersion = gtnh2Packwiz::extras::getModVersion(gtnhAssets, ghMod.first, ghMod.second["version"]);
                 toml::table modData;
@@ -313,11 +310,9 @@ void gtnh2Packwiz::pack::build() {
             // External mods
             for (const auto &exMod : gtnhRelease["external_mods"].get<json::object_t>()) {
                 // Calc the percentage things
-                current++;
-                if  (current >= onepercentMods) {
-                    current = 0;
-                    progress++;
-                    logger.infoStream() << "Percentage calculated: " << progress << "%";
+                metaGeneration++;
+                if  (metaGeneration.worthPrinting()) {
+                    logger.infoStream() << "Percentage calculated: " << metaGeneration.getPercent();
                 }
                 logger.debugStream() << "Generating metadata for mod: '" << exMod.first << "'";
                 json modVersion = gtnh2Packwiz::extras::getModVersion(gtnhAssets, exMod.first, exMod.second["version"]);
@@ -365,11 +360,9 @@ void gtnh2Packwiz::pack::build() {
                 bool apiWorking = true;
                 for (int i = 0; i < mods.size(); i++) {
                     // Calc the percentage things
-                    current++;
-                    if  (current >= onepercentMods) {
-                        current = 0;
-                        progress++;
-                        logger.infoStream() << "Percentage calculated: " << progress << "%";
+                    modHashing++;
+                    if  (modHashing.worthPrinting()) {
+                        logger.infoStream() << "Percentage calculated: " << modHashing.getPercent();
                     }
                     const auto &mod = mods.at(i);
                     logger.debugStream() << "Current mod: '" << mod.at_path("name").ref<string>() << "'";
