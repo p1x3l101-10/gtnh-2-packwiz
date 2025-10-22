@@ -67,6 +67,8 @@ option(USING_UNSUP OFF) # Allow generating a normal packwiz tree without unsup c
 set(UNSUP_MINIMUM_VERSION "1.1.5") # This is the unsup version I am testing against
 option(EXCLUSIVLY_TARGET_CLIENT ON) # I dont want to work out the logic to exclude server files, im just gonna use this on my client anyways
 option(MULTITHREADED_LOGS OFF) # An extra segment in the logs reporting thread id
+option(PRINT_PERCENTAGES ON) # Determines if we should print percentages at all
+option(INTERCEPT_PRINTING_PROGRESS_FOR_BAR OFF) # Unimplimented # Determines if the print should be intercepted to use indicators lib
 
 build(
     BINARY ${CMAKE_PROJECT_NAME}
