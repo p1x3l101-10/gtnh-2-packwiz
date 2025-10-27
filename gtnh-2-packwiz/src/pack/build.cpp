@@ -159,7 +159,10 @@ void gtnh2Packwiz::pack::build() {
                 for (const auto &entry : fs::directory_iterator(baseDir)) {
                     if (entry.is_regular_file()) {
                         logger.debugStream() << "Found file: '" << static_cast<path>(entry).string() << "'";
-                        files.push_back(entry);
+                        if (entry.path().string() != "") {
+                            // Avoid that stupid edge case
+                            files.push_back(entry);
+                        }
                     } else if (entry.is_directory()) {
                         logger.debugStream() << "Recursing into directory: '" << static_cast<path>(entry).string() << "'";
                         self(entry);
@@ -172,8 +175,6 @@ void gtnh2Packwiz::pack::build() {
             };
             // Call my recursive function
             fileFinder(destDir);
-            // Remove the bad path that always shows up at the end
-            files.pop_back();
         }
         // Add the unsup.toml file if support is enabled
         if constexpr (USING_UNSUP) {
