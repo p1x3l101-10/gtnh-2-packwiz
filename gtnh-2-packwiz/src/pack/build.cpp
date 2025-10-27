@@ -172,6 +172,8 @@ void gtnh2Packwiz::pack::build() {
             };
             // Call my recursive function
             fileFinder(destDir);
+            // Remove the bad path that always shows up at the end
+            files.pop_back();
         }
         // Add the unsup.toml file if support is enabled
         if constexpr (USING_UNSUP) {
