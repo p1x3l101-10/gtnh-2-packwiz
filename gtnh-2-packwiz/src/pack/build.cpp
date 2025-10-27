@@ -345,8 +345,6 @@ void gtnh2Packwiz::pack::build() {
         logger.info("Metadata generated");
         // Generate hashes
         {
-            int current = 0;
-            int progress = 0;
             vector<packwizFileEntry> indexFiles; // New index file
             logger.info("Generating hashes for mod files");
             {
