@@ -3,6 +3,8 @@
 #include <fstream>
 #include <memory>
 #include <string>
+#include <toml++/impl/forward_declarations.hpp>
+#include <toml++/impl/toml_formatter.hpp>
 #include <vector>
 #include "config.hpp"
 #include "gtnh2Packwiz/extras.hpp"
@@ -31,6 +33,7 @@ using nlohmann::json;
 using std::ifstream;
 using std::ofstream;
 using std::shared_ptr;
+using toml::format_flags;
 
 template vector<string> gtnh2Packwiz::extras::setIntersection<string>(std::vector<string> a, std::vector<string> b);
 
@@ -242,6 +245,9 @@ void gtnh2Packwiz::pack::build() {
         }
     }
 
+    // Set formatting flags for toml
+    toml::format_flags fileFormatter = format_flags::none;
+
     // Find downloads and write the meta files
     {
         shared_ptr<json> gtnhAssets; // Oof, thats a big one
@@ -443,7 +449,8 @@ void gtnh2Packwiz::pack::build() {
                 toml::table file;
                 {
                     ofstream metaToml(destDir.string() + "/mods/" + entry.at_path("name").ref<string>() + ".pw.toml");
-                    metaToml << entry;
+                    toml::toml_formatter formatted{entry, fileFormatter};
+                    metaToml << formatted;
                 }
                 string localPath = "mods/" + entry.at_path("name").ref<string>() + ".pw.toml";
                 file.insert_or_assign("file", localPath);
@@ -460,7 +467,8 @@ void gtnh2Packwiz::pack::build() {
     // Write index
     {
         ofstream indexTOML(destDir.string() + "/index.toml");
-        indexTOML << packwizIndex;
+        toml::toml_formatter formatted{packwizIndex, fileFormatter};
+        indexTOML << formatted;
         logger.info("Wrote index.toml");
     }
     // Write pack.toml
@@ -490,7 +498,8 @@ void gtnh2Packwiz::pack::build() {
         }
         {
             ofstream packTOML(destDir.string() + "/pack.toml");
-            packTOML << pack;
+            toml::toml_formatter formatted{pack, fileFormatter};
+            packTOML << formatted;
         }
         logger.info("Wrote pack.toml");
     }
