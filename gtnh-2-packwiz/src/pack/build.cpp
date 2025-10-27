@@ -223,11 +223,13 @@ void gtnh2Packwiz::pack::build() {
                 }
                 string hash = gtnh2Packwiz::extras::generatePWHash(file, PACKWIZ_HASH_FORMAT);
                 string fileBasename = file.string().erase(0, baseLength);
-                indexFiles.push_back({
-                    fileBasename,
-                    hash,
-                    false
-                });
+                if (fileBasename != "") {
+                    indexFiles.push_back({
+                        fileBasename,
+                        hash,
+                        false
+                    });
+                }
             }
         }
         // Convert custom struct into a toml table for the index
