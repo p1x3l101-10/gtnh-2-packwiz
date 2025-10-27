@@ -445,14 +445,15 @@ void gtnh2Packwiz::pack::build() {
             toml::array fileArray = packwizIndex.at_path("files").ref<toml::array>();
             for (const auto &entry : mods) {
                 toml::table file;
+                path outFile = destDir.string() + "/mods/" + entry.at_path("name").ref<string>() + ".pw.toml";
                 {
-                    ofstream metaToml(destDir.string() + "/mods/" + entry.at_path("name").ref<string>() + ".pw.toml");
+                    ofstream metaToml(outFile);
                     toml::toml_formatter formatted{entry, fileFormatter};
                     metaToml << formatted;
                 }
                 string localPath = "mods/" + entry.at_path("name").ref<string>() + ".pw.toml";
                 file.insert_or_assign("file", localPath);
-                file.insert_or_assign("hash", entry.at_path("download.hash").ref<string>());
+                file.insert_or_assign("hash", gtnh2Packwiz::extras::generatePWHash(outFile, PACKWIZ_HASH_FORMAT));
                 file.insert_or_assign("metafile", true);
                 fileArray.push_back(file);
                 logger.debugStream() << "Wrote metadata file for mod: '" << entry.at_path("name").ref<string>() << "'";
